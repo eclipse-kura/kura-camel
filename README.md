@@ -17,6 +17,15 @@ independently.
 | `org.eclipse.kura.wire.camel` | Camel wire components — `CamelConsume`, `CamelProcess`, `CamelProduce` — for use in a Kura Wire graph. |
 | `org.eclipse.kura.camel.sun.misc` | Metadata-only OSGi fragment adding a `sun.misc` import to `camel-core`. |
 
+Example applications, moved here from [kura-apps](https://github.com/eclipse-kura/kura-apps) so that
+all the Camel code lives in one place:
+
+| Bundle | Purpose |
+|---|---|
+| `org.eclipse.kura.example.camel.quickstart` | Two configurable gateways publishing a random temperature, one built with the Java DSL and one with the XML DSL. |
+| `org.eclipse.kura.example.camel.publisher` | A periodic cloud publisher driven entirely by its component configuration. |
+| `org.eclipse.kura.example.camel.aggregation` | An aggregation route averaging a generated temperature over a time window. |
+
 The Camel runtime itself (`camel-core` and friends, Spring, Qpid) is shipped by the Debian package,
 not embedded in the bundles.
 
@@ -36,8 +45,12 @@ mvn clean install -Presolve-integration-tests   # also re-resolve the integratio
 mvn clean install -DreleaseBuild                # release version numbers, no ~gitYYYY... suffix
 ```
 
-The Debian package is produced at
-`distrib/kura-camel/target/deb/kura-camel_<version>-<revision>_all.deb`.
+Two Debian packages are produced:
+
+| Package | Contents |
+|---|---|
+| `distrib/kura-camel/target/deb/kura-camel_*.deb` | the five service bundles and the Camel runtime |
+| `distrib/kura-camel-example/target/deb/kura-camel-example_*.deb` | the three example bundles; depends on `kura-camel` |
 
 Bundle start levels are encoded in the directory names under `distrib/kura-camel/target/plugins/`:
 `<n>` means start level `n`, `<n>s` means start level `n` with auto-start. `camel-core` and

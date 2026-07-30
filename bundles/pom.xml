@@ -34,6 +34,9 @@
         <module>org.eclipse.kura.camel.xml</module>
         <module>org.eclipse.kura.camel.sun.misc</module>
         <module>org.eclipse.kura.wire.camel</module>
+        <module>org.eclipse.kura.example.camel.aggregation</module>
+        <module>org.eclipse.kura.example.camel.publisher</module>
+        <module>org.eclipse.kura.example.camel.quickstart</module>
     </modules>
 
 </project>

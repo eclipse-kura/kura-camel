@@ -32,6 +32,7 @@
     <!-- One child module per Debian package -->
     <modules>
         <module>kura-camel</module>
+        <module>kura-camel-example</module>
     </modules>
 
     <properties>
