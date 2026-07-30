@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2020 Red Hat Inc and others
+ * Copyright (c) 2011, 2026 Red Hat Inc and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,7 +18,7 @@ import java.util.Map;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
-import org.apache.camel.impl.DefaultComponent;
+import org.apache.camel.support.DefaultComponent;
 import org.eclipse.kura.camel.internal.cloud.CloudClientCache;
 import org.eclipse.kura.camel.internal.cloud.CloudClientCacheImpl;
 import org.eclipse.kura.cloud.CloudService;

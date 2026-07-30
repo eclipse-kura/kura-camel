@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.eclipse.kura</groupId>
         <artifactId>kura-camel-tests</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>3.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>org.eclipse.kura.camel.test</artifactId>
@@ -42,14 +42,114 @@
             <groupId>org.eclipse.kura</groupId>
             <artifactId>org.eclipse.kura.util</artifactId>
         </dependency>
-        <!-- MockEndpoint lives in camel-core in the 2.x line -->
+        <!-- the Camel runtime; the whole shippable set, so the bndrun resolve sees it -->
         <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-core</artifactId>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.camel</groupId>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-management-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-util-json</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-base-engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-management</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-core-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-core-reifier</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-core-processor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-core-engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-core-languages</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
             <artifactId>camel-core-osgi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-health</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-attachments</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-xml-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-xml-io-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-xml-jaxp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-bean</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-direct</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-seda</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-vm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-stream</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-timer</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-mock</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -72,18 +172,24 @@
             <groupId>org.eclipse.kura</groupId>
             <artifactId>org.eclipse.kura.core.testutil</artifactId>
         </dependency>
-        <!-- the javax.* JAXB and Activation namespaces Camel 2.x needs, absent from JDK 11+ -->
+        <!--
+            The sibling bundles are not used by any test. They are here so that the OSGi index
+            contains them and integration-test.bndrun can require them: that resolve is what proves
+            the whole add-on is satisfiable together. They used to arrive through the framework's
+            kura-pde-deps, which no longer carries them. Compile scope on purpose: the indexer only
+            walks compile and runtime dependencies.
+        -->
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
+            <groupId>org.eclipse.kura</groupId>
+            <artifactId>org.eclipse.kura.camel.cloud.factory</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-osgi</artifactId>
+            <groupId>org.eclipse.kura</groupId>
+            <artifactId>org.eclipse.kura.camel.xml</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.sun.activation</groupId>
-            <artifactId>javax.activation</artifactId>
+            <groupId>org.eclipse.kura</groupId>
+            <artifactId>org.eclipse.kura.wire.camel</artifactId>
         </dependency>
     </dependencies>
 

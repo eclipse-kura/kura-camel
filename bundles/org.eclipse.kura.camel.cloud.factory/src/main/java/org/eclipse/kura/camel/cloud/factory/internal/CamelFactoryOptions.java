@@ -30,9 +30,6 @@ public @interface CamelFactoryOptions {
     @AttributeDefinition(name = "Router XML", cardinality = 1, description = "The camel XML router configuration|TextArea")
     String xml();
 
-    @AttributeDefinition(name = "JavaScript init code", cardinality = 1, required = false, description = "JavaScript code which is called when the router is initialized first. The camel context is avaiable in the variable 'camelContext'.|TextArea")
-    String initCode();
-
     @AttributeDefinition(name = "Enable Camel JMX support", cardinality = 1, description = "This setting controls if JMX support for the Camel context will be activated or not.")
     boolean enableJmx() default true;
 

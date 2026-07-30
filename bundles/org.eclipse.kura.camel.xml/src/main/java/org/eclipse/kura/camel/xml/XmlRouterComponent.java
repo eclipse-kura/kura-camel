@@ -16,7 +16,6 @@ import static java.lang.String.format;
 import static org.eclipse.kura.camel.component.Configuration.asBoolean;
 import static org.eclipse.kura.camel.component.Configuration.asString;
 import static org.eclipse.kura.camel.runner.CamelRunner.createOsgiRegistry;
-import static org.eclipse.kura.camel.utils.CamelContexts.scriptInitCamelContext;
 import static org.osgi.framework.FrameworkUtil.getBundle;
 
 import java.util.Arrays;
@@ -85,7 +84,6 @@ public class XmlRouterComponent extends AbstractXmlCamelComponent {
     private static final String COMPONENT_PREREQS = "component.prereqs";
     private static final String LANGUAGE_PREREQS = "language.prereqs";
     private static final String DISABLE_JMX = "disableJmx";
-    private static final String INIT_CODE = "initCode";
 
     private final BundleContext bundleContext;
 
@@ -93,7 +91,6 @@ public class XmlRouterComponent extends AbstractXmlCamelComponent {
     private Set<String> requiredLanguages = new HashSet<>();
 
     private Map<String, String> cloudServiceRequirements = new HashMap<>();
-    private String initCode = "";
 
     private boolean disableJmx;
 
@@ -117,8 +114,6 @@ public class XmlRouterComponent extends AbstractXmlCamelComponent {
 
         final Map<String, String> cloudServiceRequirementsTemp = parseCloudServiceRequirements(
                 asString(properties, CLOUD_SERVICE_PREREQS));
-
-        final String initCodeTemp = parseInitCode(properties);
 
         // set component requirements
 
@@ -148,15 +143,6 @@ public class XmlRouterComponent extends AbstractXmlCamelComponent {
             builder.cloudService(null, filter, Builder.addAsCloudComponent(entry.getKey()));
         }
 
-        if (!initCodeTemp.isEmpty()) {
-
-            // call init code before context start
-
-            builder.addBeforeStart(camelContext -> {
-                scriptInitCamelContext(camelContext, initCodeTemp, XmlRouterComponent.class.getClassLoader());
-            });
-        }
-
         // build registry
 
         final BundleContext ctx = getBundle(XmlRouterComponent.class).getBundleContext();
@@ -169,7 +155,6 @@ public class XmlRouterComponent extends AbstractXmlCamelComponent {
         this.requiredComponents = newRequiredComponents;
         this.requiredLanguages = newRequiredLanguages;
         this.cloudServiceRequirements = cloudServiceRequirementsTemp;
-        this.initCode = initCodeTemp;
         this.disableJmx = disableJmxTemp;
     }
 
@@ -182,8 +167,6 @@ public class XmlRouterComponent extends AbstractXmlCamelComponent {
 
         final Map<String, String> cloudServiceRequirementsTemp = parseCloudServiceRequirements(
                 asString(properties, CLOUD_SERVICE_PREREQS));
-
-        final String initCodeTemp = parseInitCode(properties);
 
         if (this.disableJmx != disableJmxTemp) {
             logger.debug("Require restart due to '{}' change", DISABLE_JMX);
@@ -202,11 +185,6 @@ public class XmlRouterComponent extends AbstractXmlCamelComponent {
 
         if (!this.cloudServiceRequirements.equals(cloudServiceRequirementsTemp)) {
             logger.debug("Require restart due to '{}' change", CLOUD_SERVICE_PREREQS);
-            return true;
-        }
-
-        if (!this.initCode.equals(initCodeTemp)) {
-            logger.debug("Require restart due to '{}' change", INIT_CODE);
             return true;
         }
 
@@ -241,10 +219,6 @@ public class XmlRouterComponent extends AbstractXmlCamelComponent {
         }
 
         return new HashSet<>(Arrays.asList(value.split(TOKEN_PATTERN)));
-    }
-
-    private static String parseInitCode(final Map<String, Object> properties) {
-        return Configuration.asString(properties, INIT_CODE, "");
     }
 
     @Override

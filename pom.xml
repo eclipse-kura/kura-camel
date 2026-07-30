@@ -23,7 +23,7 @@
 
     <groupId>org.eclipse.kura</groupId>
     <artifactId>kura-camel</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <!-- Change this if your metadata is different -->
@@ -54,24 +54,16 @@
         <maven.compiler.release>21</maven.compiler.release>
         <bnd.version>7.2.2</bnd.version>
 
-        <kura-camel-bom.version>2.0.0-SNAPSHOT</kura-camel-bom.version>
-
-        <!-- Apache Camel runtime stack, inherited from the Kura target platform it was extracted from -->
-        <org.apache.camel.version>2.25.3</org.apache.camel.version>
-        <spring.version>4.3.20.RELEASE_1</spring.version>
-        <apache-qpid-jms-client.version>0.45.0</apache-qpid-jms-client.version>
-        <apache-qpid-proton-j.version>0.33.2</apache-qpid-proton-j.version>
-        <geronimo-jms-spec.version>1.0-alpha-2</geronimo-jms-spec.version>
+        <kura-camel-bom.version>3.0.0-SNAPSHOT</kura-camel-bom.version>
 
         <!--
-            Camel 2.x is built against the javax.* JAXB and Activation namespaces, which the JDK
-            dropped in Java 11 and which Kura no longer provides: the framework ships jaxb-osgi 4.x,
-            and that only exports jakarta.*. Without these three the Camel XML router cannot load a
-            route at all. To be removed together with Camel 2.x.
+            Apache Camel 4.18 is an LTS line. As of Camel 4 the org.apache.camel artifacts are plain
+            jars with no OSGi metadata; org.apache.camel.karaf republishes the same classes as
+            bundles, and that is the only OSGi-ready Camel 4 distribution. camel-core-osgi is the
+            OSGi glue and does not drag Karaf in.
         -->
-        <javax-jaxb-api.version>2.3.1</javax-jaxb-api.version>
-        <javax-jaxb-ri.version>2.3.9</javax-jaxb-ri.version>
-        <javax-activation.version>1.2.0</javax-activation.version>
+        <org.apache.camel.version>4.18.2</org.apache.camel.version>
+        <org.apache.camel.groupId>org.apache.camel.karaf</org.apache.camel.groupId>
     </properties>
 
     <modules>
@@ -90,103 +82,340 @@
                 target-platform (they only ever existed there for the Camel bundles).
             -->
             <dependency>
-                <groupId>org.apache.camel</groupId>
-                <artifactId>camel-core</artifactId>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-api</artifactId>
                 <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.apache.camel</groupId>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-attachments</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-base</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-base-engine</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-bean</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-console</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-core-engine</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-core-languages</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-core-model</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>${org.apache.camel.groupId}</groupId>
                 <artifactId>camel-core-osgi</artifactId>
                 <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.apache.camel</groupId>
-                <artifactId>camel-amqp</artifactId>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-core-processor</artifactId>
                 <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.apache.camel</groupId>
-                <artifactId>camel-jms</artifactId>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-core-reifier</artifactId>
                 <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.apache.camel</groupId>
-                <artifactId>camel-script</artifactId>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-direct</artifactId>
                 <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.apache.camel</groupId>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-health</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-log</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-management</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-management-api</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-mock</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-seda</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>${org.apache.camel.groupId}</groupId>
                 <artifactId>camel-stream</artifactId>
                 <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.apache.qpid</groupId>
-                <artifactId>qpid-jms-client</artifactId>
-                <version>${apache-qpid-jms-client.version}</version>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-support</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.apache.qpid</groupId>
-                <artifactId>proton-j</artifactId>
-                <version>${apache-qpid-proton-j.version}</version>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-timer</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.apache.servicemix.bundles</groupId>
-                <artifactId>org.apache.servicemix.bundles.spring-beans</artifactId>
-                <version>${spring.version}</version>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-util</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.apache.servicemix.bundles</groupId>
-                <artifactId>org.apache.servicemix.bundles.spring-context</artifactId>
-                <version>${spring.version}</version>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-util-json</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.apache.servicemix.bundles</groupId>
-                <artifactId>org.apache.servicemix.bundles.spring-core</artifactId>
-                <version>${spring.version}</version>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-vm</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.apache.servicemix.bundles</groupId>
-                <artifactId>org.apache.servicemix.bundles.spring-expression</artifactId>
-                <version>${spring.version}</version>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-xml-io</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.apache.servicemix.bundles</groupId>
-                <artifactId>org.apache.servicemix.bundles.spring-jms</artifactId>
-                <version>${spring.version}</version>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-xml-io-util</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.apache.servicemix.bundles</groupId>
-                <artifactId>org.apache.servicemix.bundles.spring-tx</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-            <!-- exports javax.jms, required at runtime by camel-jms and camel-amqp -->
-            <dependency>
-                <groupId>org.apache.geronimo.specs</groupId>
-                <artifactId>geronimo-jms_2.0_spec</artifactId>
-                <version>${geronimo-jms-spec.version}</version>
-            </dependency>
-            <!-- exports javax.xml.bind, needed by camel-core's JAXB route loading -->
-            <dependency>
-                <groupId>javax.xml.bind</groupId>
-                <artifactId>jaxb-api</artifactId>
-                <version>${javax-jaxb-api.version}</version>
-            </dependency>
-            <!-- the JAXB reference implementation behind JAXBContext.newInstance -->
-            <dependency>
-                <groupId>com.sun.xml.bind</groupId>
-                <artifactId>jaxb-osgi</artifactId>
-                <version>${javax-jaxb-ri.version}</version>
-            </dependency>
-            <!--
-                exports javax.activation. org.apache.camel.Message declares attachment methods
-                returning javax.activation.DataHandler, so this is needed both at runtime and on the
-                test classpath, where mocking the interface requires the whole signature graph to
-                resolve.
-            -->
-            <dependency>
-                <groupId>com.sun.activation</groupId>
-                <artifactId>javax.activation</artifactId>
-                <version>${javax-activation.version}</version>
+                <groupId>${org.apache.camel.groupId}</groupId>
+                <artifactId>camel-xml-jaxp</artifactId>
+                <version>${org.apache.camel.version}</version>
+                <exclusions>
+                    <!-- the plain, non-OSGi twin this bundle repackages -->
+                    <exclusion>
+                        <groupId>org.apache.camel</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <dependency>

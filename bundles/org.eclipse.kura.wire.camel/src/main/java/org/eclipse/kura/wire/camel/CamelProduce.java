@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018, 2022 Red Hat Inc and others
+ * Copyright (c) 2018, 2026 Red Hat Inc and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,8 +12,6 @@
  *  heyoulin <heyoulin@gmail.com>
  *******************************************************************************/
 package org.eclipse.kura.wire.camel;
-
-import static org.apache.camel.builder.DefaultFluentProducerTemplate.on;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.FluentProducerTemplate;
@@ -38,7 +36,7 @@ public class CamelProduce extends AbstractReceiverWireComponent {
         try {
             closeTemplate();
             if (context != null) {
-                this.template = on(context);
+                this.template = context.createFluentProducerTemplate();
             }
         } catch (Exception e) {
             logger.warn("Failed to bind Camel context", e);

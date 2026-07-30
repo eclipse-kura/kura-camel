@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat Inc and others
+ * Copyright (c) 2016, 2026 Red Hat Inc and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -21,6 +21,7 @@ import java.util.function.Supplier;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.model.RoutesDefinition;
+import org.apache.camel.xml.in.ModelParser;
 import org.apache.commons.io.input.ReaderInputStream;
 
 public class XmlRoutesProvider extends AbstractRoutesProvider {
@@ -39,8 +40,16 @@ public class XmlRoutesProvider extends AbstractRoutesProvider {
 
     @Override
     protected RoutesDefinition getRoutes(final CamelContext camelContext) throws Exception {
+        /*
+         * Camel 3 removed CamelContext.loadRoutesDefinition and with it the JAXB based XML model.
+         * ModelParser is the StAX parser which replaced it: it needs no JAXB provider at all, and
+         * constructed without an expected namespace it accepts both a plain <routes> document and
+         * one declaring the historical http://camel.apache.org/schema/spring namespace.
+         */
         try (final InputStream in = this.inputStreamProvider.get()) {
-            return camelContext.loadRoutesDefinition(in);
+            return new ModelParser(in).parseRoutesDefinition()
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "The route definition contains no <routes> element"));
         }
     }
 

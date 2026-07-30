@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2020 Red Hat Inc and others
+ * Copyright (c) 2011, 2026 Red Hat Inc and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -22,16 +22,21 @@ import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.CAMEL_K
 import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.apache.camel.impl.DefaultConsumer;
+import org.apache.camel.support.DefaultConsumer;
 import org.eclipse.kura.KuraException;
 import org.eclipse.kura.cloud.CloudClient;
 import org.eclipse.kura.cloud.CloudClientListener;
 import org.eclipse.kura.message.KuraPayload;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Consumer implementation for {@link KuraCloudComponent}
  */
 public class KuraCloudConsumer extends DefaultConsumer implements CloudClientListener {
+
+    // Camel 3 removed the inherited 'log' field from DefaultConsumer
+    private static final Logger logger = LoggerFactory.getLogger(KuraCloudConsumer.class);
 
     private final CloudClient cloudClient;
 
@@ -46,7 +51,7 @@ public class KuraCloudConsumer extends DefaultConsumer implements CloudClientLis
     protected void doStart() throws Exception {
         super.doStart();
 
-        this.log.debug("Starting CloudClientListener.");
+        logger.debug("Starting CloudClientListener.");
 
         this.cloudClient.addCloudClientListener(this);
         if (this.cloudClient.isConnected()) {
@@ -59,10 +64,10 @@ public class KuraCloudConsumer extends DefaultConsumer implements CloudClientLis
         try {
             this.cloudClient.unsubscribe(getEndpoint().getTopic());
         } catch (final Exception e) {
-            this.log.info("Failed to unsubscribe", e);
+            logger.info("Failed to unsubscribe", e);
         }
         this.cloudClient.removeCloudClientListener(this);
-        this.log.debug("Stopping CloudClientListener.");
+        logger.debug("Stopping CloudClientListener.");
         super.doStop();
     }
 
@@ -82,33 +87,33 @@ public class KuraCloudConsumer extends DefaultConsumer implements CloudClientLis
 
     @Override
     public void onConnectionLost() {
-        this.log.debug("Executing empty 'onConnectionLost' callback.");
+        logger.debug("Executing empty 'onConnectionLost' callback.");
     }
 
     @Override
     public void onConnectionEstablished() {
-        this.log.debug("Executing 'onConnectionEstablished'.");
+        logger.debug("Executing 'onConnectionEstablished'.");
         performSubscribe();
     }
 
     private void performSubscribe() {
         try {
-            this.log.debug("Perform subscribe: {} / {}", this.cloudClient, getEndpoint().getTopic());
+            logger.debug("Perform subscribe: {} / {}", this.cloudClient, getEndpoint().getTopic());
             this.cloudClient.subscribe(getEndpoint().getTopic(), 0);
         } catch (final KuraException e) {
-            this.log.warn("Failed to subscribe", e);
+            logger.warn("Failed to subscribe", e);
         }
     }
 
     @Override
     public void onMessageConfirmed(final int messageId, final String appTopic) {
-        this.log.debug("Executing empty 'onMessageConfirmed' callback with message ID {} and application topic {}.",
+        logger.debug("Executing empty 'onMessageConfirmed' callback with message ID {} and application topic {}.",
                 messageId, appTopic);
     }
 
     @Override
     public void onMessagePublished(final int messageId, final String appTopic) {
-        this.log.debug("Executing empty 'onMessagePublished' callback with message ID {} and application topic {}.",
+        logger.debug("Executing empty 'onMessagePublished' callback with message ID {} and application topic {}.",
                 messageId, appTopic);
     }
 
@@ -116,7 +121,7 @@ public class KuraCloudConsumer extends DefaultConsumer implements CloudClientLis
 
     private void onInternalMessageArrived(final String deviceId, final String appTopic, final KuraPayload message,
             final int qos, final boolean retain, final boolean control) {
-        this.log.debug("Received message with deviceId {}, application topic {}.", deviceId, appTopic);
+        logger.debug("Received message with deviceId {}, application topic {}.", deviceId, appTopic);
 
         final Exchange exchange = anExchange(getEndpoint().getCamelContext()) //
                 .withBody(message) //
@@ -127,7 +132,7 @@ public class KuraCloudConsumer extends DefaultConsumer implements CloudClientLis
                 .withHeader(CAMEL_KURA_CLOUD_RETAIN, retain) //
                 .build();
 
-        exchange.setFromEndpoint(getEndpoint());
+        exchange.getExchangeExtension().setFromEndpoint(getEndpoint());
 
         try {
             getProcessor().process(exchange);

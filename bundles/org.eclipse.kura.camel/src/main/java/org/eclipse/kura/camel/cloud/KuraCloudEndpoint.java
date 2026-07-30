@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2020 Red Hat Inc and others
+ * Copyright (c) 2011, 2026 Red Hat Inc and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,11 +12,12 @@
  *******************************************************************************/
 package org.eclipse.kura.camel.cloud;
 
+import org.apache.camel.Category;
 import org.apache.camel.Consumer;
 import org.apache.camel.Processor;
-import org.apache.camel.impl.DefaultEndpoint;
 import org.apache.camel.spi.UriEndpoint;
 import org.apache.camel.spi.UriParam;
+import org.apache.camel.support.DefaultEndpoint;
 import org.eclipse.kura.camel.internal.cloud.CloudClientCache;
 import org.eclipse.kura.camel.internal.cloud.CloudClientCache.CloudClientHandle;
 import org.slf4j.Logger;
@@ -25,7 +26,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Endpoint implementation for {@link KuraCloudComponent}
  */
-@UriEndpoint(scheme = "kura-cloud", title = "Kura Cloud", label = "iot,kura,cloud", syntax = "kura-cloud:applicationId/appTopic")
+@UriEndpoint(scheme = "kura-cloud", title = "Kura Cloud", category = { Category.IOT,
+        Category.CLOUD }, syntax = "kura-cloud:applicationId/appTopic")
 public class KuraCloudEndpoint extends DefaultEndpoint {
 
     private static final Logger logger = LoggerFactory.getLogger(KuraCloudEndpoint.class);

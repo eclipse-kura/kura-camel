@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat Inc and others
+ * Copyright (c) 2016, 2026 Red Hat Inc and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -15,7 +15,6 @@ package org.eclipse.kura.camel.cloud.factory.internal;
 import static org.apache.camel.ServiceStatus.Started;
 import static org.eclipse.kura.camel.cloud.factory.internal.CamelCloudServiceFactory.PID;
 import static org.eclipse.kura.camel.cloud.factory.internal.CamelFactory.FACTORY_ID;
-import static org.eclipse.kura.camel.utils.CamelContexts.scriptInitCamelContext;
 import static org.eclipse.kura.configuration.ConfigurationService.KURA_SERVICE_PID;
 import static org.osgi.framework.Constants.SERVICE_PID;
 
@@ -23,15 +22,13 @@ import java.io.ByteArrayInputStream;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import javax.script.ScriptException;
-
-import org.apache.camel.CamelContext;
 import org.apache.camel.ServiceStatus;
-import org.apache.camel.core.osgi.OsgiDefaultCamelContext;
-import org.apache.camel.core.osgi.OsgiServiceRegistry;
-import org.apache.camel.impl.CompositeRegistry;
-import org.apache.camel.impl.SimpleRegistry;
+import org.apache.camel.karaf.core.OsgiBeanRepository;
+import org.apache.camel.karaf.core.OsgiDefaultCamelContext;
 import org.apache.camel.model.RoutesDefinition;
+import org.apache.camel.support.DefaultRegistry;
+import org.apache.camel.support.SimpleRegistry;
+import org.apache.camel.xml.in.ModelParser;
 import org.eclipse.kura.camel.bean.PayloadFactory;
 import org.eclipse.kura.camel.camelcloud.DefaultCamelCloudService;
 import org.eclipse.kura.camel.cloud.KuraCloudComponent;
@@ -77,22 +74,17 @@ public class XmlCamelCloudService {
         // new registry
 
         final SimpleRegistry simpleRegistry = new SimpleRegistry();
-        simpleRegistry.put("payloadFactory", new PayloadFactory());
+        simpleRegistry.bind("payloadFactory", new PayloadFactory());
 
-        final CompositeRegistry registry = new CompositeRegistry();
-        registry.addRegistry(new OsgiServiceRegistry(this.context));
-        registry.addRegistry(simpleRegistry);
+        final DefaultRegistry registry = new DefaultRegistry(new OsgiBeanRepository(this.context), simpleRegistry);
 
         // new router
 
-        this.router = new OsgiDefaultCamelContext(this.context, registry);
+        this.router = new OsgiDefaultCamelContext(this.context);
+        this.router.getCamelContextExtension().setRegistry(registry);
         if (!configuration.isEnableJmx()) {
             this.router.disableJMX();
         }
-
-        // call init code
-
-        callInitCode(this.router);
 
         // new cloud service
 
@@ -103,8 +95,10 @@ public class XmlCamelCloudService {
         final KuraCloudComponent cloudComponent = new KuraCloudComponent(this.router, this.service);
         this.router.addComponent("kura-cloud", cloudComponent);
 
-        final RoutesDefinition routesDefinition = this.router
-                .loadRoutesDefinition(new ByteArrayInputStream(this.configuration.getXml().getBytes()));
+        final RoutesDefinition routesDefinition = new ModelParser(
+                new ByteArrayInputStream(this.configuration.getXml().getBytes())).parseRoutesDefinition()
+                        .orElseThrow(() -> new IllegalArgumentException(
+                                "The route definition contains no <routes> element"));
         this.router.addRouteDefinitions(routesDefinition.getRoutes());
 
         // start
@@ -138,10 +132,6 @@ public class XmlCamelCloudService {
             this.router.stop();
             this.router = null;
         }
-    }
-
-    private void callInitCode(final CamelContext router) throws ScriptException {
-        scriptInitCamelContext(router, configuration.getInitCode(), XmlCamelCloudService.class.getClassLoader());
     }
 
 }

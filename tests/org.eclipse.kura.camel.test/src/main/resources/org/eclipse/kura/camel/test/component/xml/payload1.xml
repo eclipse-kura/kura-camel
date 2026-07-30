@@ -8,7 +8,7 @@
         <from uri="direct:start"/>
         <split>
             <simple>${body.metrics().entrySet()}</simple>
-            <setHeader headerName="item">
+            <setHeader name="item">
                 <simple>${body.key()}</simple>
             </setHeader>
             <setBody>

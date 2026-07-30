@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat Inc and others
+ * Copyright (c) 2016, 2026 Red Hat Inc and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.kura.camel.runner;
 
+import static org.eclipse.kura.camel.runner.CamelRunner.model;
 import static org.eclipse.kura.camel.runner.CamelRunner.removeMissingRoutes;
 
 import org.apache.camel.CamelContext;
@@ -26,7 +27,7 @@ public abstract class AbstractRoutesProvider implements RoutesProvider {
 
         removeMissingRoutes(camelContext, routes.getRoutes());
 
-        camelContext.addRouteDefinitions(routes.getRoutes());
+        model(camelContext).addRouteDefinitions(routes.getRoutes());
     }
 
     protected abstract RoutesDefinition getRoutes(CamelContext camelContext) throws Exception;

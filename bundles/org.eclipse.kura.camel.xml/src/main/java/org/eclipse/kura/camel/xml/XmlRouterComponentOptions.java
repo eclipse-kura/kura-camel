@@ -45,9 +45,6 @@ public @interface XmlRouterComponentOptions {
     @AttributeDefinition(name = "Cloud Service Mappings", cardinality = 1, required = false, max = "2147483647", description = "A comma separated list of entries in the format name=filter or name=kura-pid, mapping cloud service instances to component names. (e.g. cloud=org.eclipse.kura.cloud.CloudService)")
     String cloudService_prereqs();
 
-    @AttributeDefinition(name = "JavaScript init code (Java 8 only)", cardinality = 1, required = false, description = "JavaScript code which is called when the router is initialized first. The camel context is available in the variable 'camelContext'. Warning: this feature only works on JRE with Nashorn (Java < 15).|TextArea")
-    String initCode();
-
     @AttributeDefinition(name = "Disable JMX", cardinality = 1, description = "Disable the JMX integration for this Camel context")
     boolean disableJmx() default false;
 

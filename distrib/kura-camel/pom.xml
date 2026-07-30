@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.eclipse.kura</groupId>
         <artifactId>kura-camel-distrib</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>3.0.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>kura-camel-deb</artifactId>
@@ -53,89 +53,103 @@
             <groupId>org.eclipse.kura</groupId>
             <artifactId>org.eclipse.kura.wire.camel</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.kura</groupId>
-            <artifactId>org.eclipse.kura.camel.sun.misc</artifactId>
-        </dependency>
 
         <!-- the Camel runtime -->
         <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-core</artifactId>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.camel</groupId>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-management-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-util-json</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-base</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-base-engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-management</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-core-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-core-reifier</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-core-processor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-core-engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-core-languages</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
             <artifactId>camel-core-osgi</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-amqp</artifactId>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-xml-io</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-jms</artifactId>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-xml-io-util</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-script</artifactId>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-xml-jaxp</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.camel</groupId>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-bean</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-direct</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-log</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-seda</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-vm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${org.apache.camel.groupId}</groupId>
             <artifactId>camel-stream</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.qpid</groupId>
-            <artifactId>qpid-jms-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.qpid</groupId>
-            <artifactId>proton-j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.servicemix.bundles</groupId>
-            <artifactId>org.apache.servicemix.bundles.spring-beans</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.servicemix.bundles</groupId>
-            <artifactId>org.apache.servicemix.bundles.spring-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.servicemix.bundles</groupId>
-            <artifactId>org.apache.servicemix.bundles.spring-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.servicemix.bundles</groupId>
-            <artifactId>org.apache.servicemix.bundles.spring-expression</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.servicemix.bundles</groupId>
-            <artifactId>org.apache.servicemix.bundles.spring-jms</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.servicemix.bundles</groupId>
-            <artifactId>org.apache.servicemix.bundles.spring-tx</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.geronimo.specs</groupId>
-            <artifactId>geronimo-jms_2.0_spec</artifactId>
-        </dependency>
-
-        <!--
-            The javax.* JAXB and Activation namespaces. Camel 2.x is compiled against them, the JDK
-            dropped them in Java 11 and Kura ships only the jakarta.* equivalents, so without these
-            the Camel XML router cannot load a route. To be dropped together with Camel 2.x.
-        -->
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-osgi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.activation</groupId>
-            <artifactId>javax.activation</artifactId>
+            <groupId>${org.apache.camel.groupId}</groupId>
+            <artifactId>camel-timer</artifactId>
         </dependency>
     </dependencies>
 
@@ -150,47 +164,12 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <!--
-                        Level 5, NOT auto-started: plain libraries with no Bundle-Activator, plus the
-                        sun.misc fragment. Equinox cannot start a fragment, so an ":start" entry for
-                        it would raise a BundleException on every boot.
-                    -->
-                    <execution>
-                        <id>copy-deps-5</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <excludeTypes>pom</excludeTypes>
-                            <excludeClassifiers>sources</excludeClassifiers>
-                            <excludeTransitive>true</excludeTransitive>
-                            <outputDirectory>${project.build.directory}/plugins/5</outputDirectory>
-                            <includeArtifactIds>
-                                camel-core-osgi,
-                                camel-amqp,
-                                camel-jms,
-                                camel-stream,
-                                qpid-jms-client,
-                                proton-j,
-                                org.apache.servicemix.bundles.spring-beans,
-                                org.apache.servicemix.bundles.spring-context,
-                                org.apache.servicemix.bundles.spring-core,
-                                org.apache.servicemix.bundles.spring-expression,
-                                org.apache.servicemix.bundles.spring-jms,
-                                org.apache.servicemix.bundles.spring-tx,
-                                geronimo-jms_2.0_spec,
-                                jaxb-api,
-                                jaxb-osgi,
-                                javax.activation,
-                                org.eclipse.kura.camel.sun.misc
-                            </includeArtifactIds>
-                        </configuration>
-                    </execution>
-                    <!--
-                        Level 5, auto-started: these two carry a Bundle-Activator. camel-core's
-                        activator installs the bundle tracker that discovers the
-                        META-INF/services/org/apache/camel/TypeConverter and ComponentResolver
-                        entries, so without :start the Kura type converters never register.
+                        Level 5, auto-started. Only camel-core-osgi carries a Bundle-Activator, but
+                        every Camel bundle still has to reach ACTIVE: that activator installs a
+                        BundleTracker over Bundle.ACTIVE which is what registers each bundle's
+                        META-INF/services/org/apache/camel/component, /language and /TypeConverter
+                        entries as OSGi services. A Camel bundle left merely installed contributes
+                        nothing and fails silently.
                     -->
                     <execution>
                         <id>copy-deps-5s</id>
@@ -204,8 +183,30 @@
                             <excludeTransitive>true</excludeTransitive>
                             <outputDirectory>${project.build.directory}/plugins/5s</outputDirectory>
                             <includeArtifactIds>
-                                camel-core,
-                                camel-script
+                                camel-api,
+                                camel-management-api,
+                                camel-util,
+                                camel-util-json,
+                                camel-support,
+                                camel-base,
+                                camel-base-engine,
+                                camel-management,
+                                camel-core-model,
+                                camel-core-reifier,
+                                camel-core-processor,
+                                camel-core-engine,
+                                camel-core-languages,
+                                camel-core-osgi,
+                                camel-xml-io,
+                                camel-xml-io-util,
+                                camel-xml-jaxp,
+                                camel-bean,
+                                camel-direct,
+                                camel-log,
+                                camel-seda,
+                                camel-vm,
+                                camel-stream,
+                                camel-timer
                             </includeArtifactIds>
                         </configuration>
                     </execution>
@@ -244,17 +245,6 @@
                         </goals>
                         <configuration>
                             <dataSet>
-                                <data>
-                                    <src>${project.build.directory}/plugins/5</src>
-                                    <type>directory</type>
-                                    <mapper>
-                                        <type>perm</type>
-                                        <prefix>${addon.installation.dir}/5</prefix>
-                                        <user>kurad</user>
-                                        <group>kurad</group>
-                                        <filemode>600</filemode>
-                                    </mapper>
-                                </data>
                                 <data>
                                     <src>${project.build.directory}/plugins/5s</src>
                                     <type>directory</type>

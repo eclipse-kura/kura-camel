@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat Inc and others
+ * Copyright (c) 2016, 2026 Red Hat Inc and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -25,16 +25,18 @@ import java.util.concurrent.TimeUnit;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Route;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.core.osgi.OsgiDefaultCamelContext;
-import org.apache.camel.core.osgi.OsgiServiceRegistry;
-import org.apache.camel.impl.CompositeRegistry;
-import org.apache.camel.impl.SimpleRegistry;
+import org.apache.camel.karaf.core.OsgiBeanRepository;
+import org.apache.camel.karaf.core.OsgiDefaultCamelContext;
+import org.apache.camel.model.ModelCamelContext;
 import org.apache.camel.model.OptionalIdentifiedDefinition;
 import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.RoutesDefinition;
+import org.apache.camel.spi.BeanRepository;
 import org.apache.camel.spi.ComponentResolver;
 import org.apache.camel.spi.LanguageResolver;
 import org.apache.camel.spi.Registry;
+import org.apache.camel.support.DefaultRegistry;
+import org.apache.camel.support.SimpleRegistry;
 import org.apache.camel.util.function.ThrowingBiConsumer;
 import org.eclipse.kura.camel.cloud.KuraCloudComponent;
 import org.eclipse.kura.cloud.CloudService;
@@ -66,20 +68,33 @@ public class CamelRunner {
     public static ContextFactory createOsgiFactory(final BundleContext bundleContext) {
         Objects.requireNonNull(bundleContext);
 
-        return registry -> new OsgiDefaultCamelContext(bundleContext, registry);
+        return registry -> {
+            final OsgiDefaultCamelContext context = new OsgiDefaultCamelContext(bundleContext);
+
+            /*
+             * OsgiDefaultCamelContext installs a registry of its own, so the one the
+             * RegistryFactory produced has to replace it after construction. Camel 4 dropped the
+             * constructor which took both.
+             */
+            if (registry != null) {
+                context.getCamelContextExtension().setRegistry(registry);
+            }
+
+            return context;
+        };
     }
 
     /**
-     * Creates a new {@link RegistryFactory} backed by {@link OsgiServiceRegistry}
+     * Creates a new {@link RegistryFactory} backed by {@link OsgiBeanRepository}
      *
      * @param bundleContext
      *            the bundle context to use
-     * @return a registry factory creating {@link OsgiServiceRegistry}s
+     * @return a registry factory creating registries backed by the OSGi service registry
      */
     public static RegistryFactory createOsgiRegistry(final BundleContext bundleContext) {
         Objects.requireNonNull(bundleContext);
 
-        return () -> new OsgiServiceRegistry(bundleContext);
+        return () -> new DefaultRegistry(new OsgiBeanRepository(bundleContext));
     }
 
     public static RegistryFactory createOsgiRegistry(final BundleContext bundleContext,
@@ -91,22 +106,25 @@ public class CamelRunner {
         }
 
         return () -> {
-            final List<Registry> registries = new LinkedList<>();
+            final List<BeanRepository> repositories = new LinkedList<>();
 
-            // add simple registry
+            // add the explicitly provided services
 
             final SimpleRegistry simple = new SimpleRegistry();
-            simple.putAll(services);
+            services.forEach(simple::bind);
 
-            registries.add(simple);
+            repositories.add(simple);
 
             // add OSGi registry
 
-            registries.add(new OsgiServiceRegistry(bundleContext));
+            repositories.add(new OsgiBeanRepository(bundleContext));
 
-            // return composite
+            /*
+             * DefaultRegistry queries its bean repositories in order and is what replaced the
+             * Camel 2 CompositeRegistry.
+             */
 
-            return new CompositeRegistry(registries);
+            return new DefaultRegistry(repositories);
         };
     }
 
@@ -559,7 +577,7 @@ public class CamelRunner {
         for (final String id : removedRouteIds) {
             try {
                 logger.debug("Stopping route: {}", id);
-                context.stopRoute(id);
+                context.getRouteController().stopRoute(id);
                 logger.debug("Removing route: {}", id);
                 context.removeRoute(id);
             } catch (Exception e) {
@@ -608,7 +626,31 @@ public class CamelRunner {
 
         // remove all routes
 
-        removeRoutes(context, fromDefs(context.getRouteDefinitions()));
+        removeRoutes(context, fromDefs(model(context).getRouteDefinitions()));
+    }
+
+    /**
+     * Get the model view of a context
+     * <p>
+     * The route model moved off {@link CamelContext} and onto {@link ModelCamelContext} in Camel 3,
+     * where it is reached as a context plugin.
+     * </p>
+     *
+     * @param context
+     *            the context to adapt
+     * @return the model view of the context, never {@code null}
+     */
+    public static ModelCamelContext model(final CamelContext context) {
+        Objects.requireNonNull(context);
+
+        final ModelCamelContext model = context.getCamelContextExtension().getContextPlugin(ModelCamelContext.class);
+
+        if (model == null) {
+            throw new IllegalStateException(
+                    String.format("Camel context '%s' does not support the route model", context.getName()));
+        }
+
+        return model;
     }
 
     /**

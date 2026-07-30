@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2020 Eurotech and/or its affiliates and others
+ * Copyright (c) 2017, 2026 Eurotech and/or its affiliates and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -29,6 +29,7 @@ import java.util.Set;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
+import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.spi.Registry;
 import org.eclipse.kura.camel.internal.cloud.CloudClientCache;
 import org.eclipse.kura.cloud.CloudService;
@@ -145,17 +146,22 @@ public class KuraCloudComponentTest {
     @Test
     public void testCreateEndpoint() throws Exception {
         KuraCloudComponent kcc = new KuraCloudComponent();
-        final CamelContext ctxMock = mock(CamelContext.class);
-        kcc.setCamelContext(ctxMock);
+        /*
+         * A real context rather than a mock: as of Camel 4 endpoint creation reaches into the
+         * registry and into several context plugins, which a bare mock cannot satisfy.
+         */
+        try (CamelContext context = new DefaultCamelContext()) {
+            kcc.setCamelContext(context);
 
-        String uri = "uri";
-        String remain = "app/topic";
-        Map<String, Object> parameters = new HashMap<String, Object>();
+            String uri = "uri";
+            String remain = "app/topic";
+            Map<String, Object> parameters = new HashMap<String, Object>();
 
-        Endpoint endpoint = kcc.createEndpoint(uri, remain, parameters);
+            Endpoint endpoint = kcc.createEndpoint(uri, remain, parameters);
 
-        assertNotNull(endpoint);
-        assertEquals(uri, endpoint.getEndpointUri());
+            assertNotNull(endpoint);
+            assertEquals(uri, endpoint.getEndpointUri());
+        }
     }
 
 }

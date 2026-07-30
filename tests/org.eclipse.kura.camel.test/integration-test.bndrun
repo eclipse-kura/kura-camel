@@ -29,12 +29,18 @@ Test-Cases: ${classes;CONCRETE;PUBLIC;NAMED;*Test}
 -runsystempackages: sun.reflect, sun.misc
 
 -runrequires.camel: \
-    osgi.identity;filter:='(osgi.identity=org.apache.camel.camel-core)',\
-    osgi.identity;filter:='(osgi.identity=org.apache.camel.camel-core-osgi)',\
-    osgi.identity;filter:='(osgi.identity=jaxb-api)',\
-    osgi.identity;filter:='(osgi.identity=com.sun.xml.bind.jaxb-osgi)',\
-    osgi.identity;filter:='(osgi.identity=com.sun.activation.javax.activation)',\
-    osgi.identity;filter:='(osgi.identity=org.eclipse.kura.camel.sun.misc)',\
+    osgi.identity;filter:='(osgi.identity=camel-core-engine)',\
+    osgi.identity;filter:='(osgi.identity=camel-core-osgi)',\
+    osgi.identity;filter:='(osgi.identity=camel-core-languages)',\
+    osgi.identity;filter:='(osgi.identity=camel-xml-io)',\
+    osgi.identity;filter:='(osgi.identity=camel-bean)',\
+    osgi.identity;filter:='(osgi.identity=camel-direct)',\
+    osgi.identity;filter:='(osgi.identity=camel-log)',\
+    osgi.identity;filter:='(osgi.identity=camel-mock)',\
+    osgi.identity;filter:='(osgi.identity=camel-seda)',\
+    osgi.identity;filter:='(osgi.identity=camel-stream)',\
+    osgi.identity;filter:='(osgi.identity=camel-timer)',\
+    osgi.identity;filter:='(osgi.identity=camel-vm)',\
     osgi.identity;filter:='(osgi.identity=org.eclipse.kura.camel.cloud.factory)',\
     osgi.identity;filter:='(osgi.identity=org.eclipse.kura.camel.xml)',\
     osgi.identity;filter:='(osgi.identity=org.eclipse.kura.wire.camel)',
@@ -142,8 +148,6 @@ Test-Cases: ${classes;CONCRETE;PUBLIC;NAMED;*Test}
 	org.eclipse.jetty.session;version='[12.0.33,12.0.34)',\
 	org.eclipse.jetty.util;version='[12.0.33,12.0.34)',\
 	org.eclipse.kura.api;version='[3.0.0,3.0.1)',\
-	org.eclipse.kura.camel;version='[2.0.0,2.0.1)',\
-	org.eclipse.kura.camel.test;version='[2.0.0,2.0.1)',\
 	org.eclipse.kura.cloud.base.provider;version='[1.0.0,1.0.1)',\
 	org.eclipse.kura.cloudconnection.kapua.mqtt.provider;version='[1.0.0,1.0.1)',\
 	org.eclipse.kura.core;version='[2.0.0,2.0.1)',\
@@ -212,12 +216,32 @@ Test-Cases: ${classes;CONCRETE;PUBLIC;NAMED;*Test}
 	quartz;version='[2.5.0,2.5.1)',\
 	slf4j.api;version='[2.0.17,2.0.18)',\
 	usb4java-javax;version='[2.0.0,2.0.1)',\
-	org.apache.camel.camel-core;version='[2.25.3,2.25.4)',\
-	org.apache.camel.camel-core-osgi;version='[2.25.3,2.25.4)',\
-	org.eclipse.kura.camel.cloud.factory;version='[2.0.0,2.0.1)',\
-	org.eclipse.kura.camel.sun.misc;version='[2.0.0,2.0.1)',\
-	org.eclipse.kura.camel.xml;version='[2.0.0,2.0.1)',\
-	org.eclipse.kura.wire.camel;version='[2.0.0,2.0.1)',\
-	com.sun.activation.javax.activation;version='[1.2.0,1.2.1)',\
-	com.sun.xml.bind.jaxb-osgi;version='[2.3.9,2.3.10)',\
-	jaxb-api;version='[2.3.1,2.3.2)'
+	camel-api;version='[4.18.2,4.18.3)',\
+	camel-base;version='[4.18.2,4.18.3)',\
+	camel-base-engine;version='[4.18.2,4.18.3)',\
+	camel-bean;version='[4.18.2,4.18.3)',\
+	camel-core-engine;version='[4.18.2,4.18.3)',\
+	camel-core-languages;version='[4.18.2,4.18.3)',\
+	camel-core-model;version='[4.18.2,4.18.3)',\
+	camel-core-osgi;version='[4.18.2,4.18.3)',\
+	camel-core-processor;version='[4.18.2,4.18.3)',\
+	camel-core-reifier;version='[4.18.2,4.18.3)',\
+	camel-direct;version='[4.18.2,4.18.3)',\
+	camel-log;version='[4.18.2,4.18.3)',\
+	camel-management-api;version='[4.18.2,4.18.3)',\
+	camel-mock;version='[4.18.2,4.18.3)',\
+	camel-seda;version='[4.18.2,4.18.3)',\
+	camel-stream;version='[4.18.2,4.18.3)',\
+	camel-support;version='[4.18.2,4.18.3)',\
+	camel-timer;version='[4.18.2,4.18.3)',\
+	camel-util;version='[4.18.2,4.18.3)',\
+	camel-util-json;version='[4.18.2,4.18.3)',\
+	camel-vm;version='[4.18.2,4.18.3)',\
+	camel-xml-io;version='[4.18.2,4.18.3)',\
+	camel-xml-io-util;version='[4.18.2,4.18.3)',\
+	camel-xml-jaxp;version='[4.18.2,4.18.3)',\
+	org.eclipse.kura.camel;version='[3.0.0,3.0.1)',\
+	org.eclipse.kura.camel.cloud.factory;version='[3.0.0,3.0.1)',\
+	org.eclipse.kura.camel.test;version='[3.0.0,3.0.1)',\
+	org.eclipse.kura.camel.xml;version='[3.0.0,3.0.1)',\
+	org.eclipse.kura.wire.camel;version='[3.0.0,3.0.1)'

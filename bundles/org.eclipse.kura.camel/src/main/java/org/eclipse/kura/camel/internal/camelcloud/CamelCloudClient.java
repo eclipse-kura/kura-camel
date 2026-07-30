@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2020 Red Hat Inc and others
+ * Copyright (c) 2011, 2026 Red Hat Inc and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -39,7 +39,7 @@ import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.StartupListener;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.impl.DefaultShutdownStrategy;
+import org.apache.camel.impl.engine.DefaultShutdownStrategy;
 import org.apache.camel.spi.ShutdownStrategy;
 import org.eclipse.kura.KuraErrorCode;
 import org.eclipse.kura.KuraException;
@@ -248,7 +248,7 @@ public class CamelCloudClient implements CloudClient {
 
             // perform shutdown
 
-            this.camelContext.stopRoute(internalQueue);
+            this.camelContext.getRouteController().stopRoute(internalQueue);
             this.camelContext.removeRoute(internalQueue);
         } catch (Exception e) {
             throw new KuraException(KuraErrorCode.SUBSCRIPTION_ERROR, e, internalQueue);

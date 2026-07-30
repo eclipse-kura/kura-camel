@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat Inc and others
+ * Copyright (c) 2016, 2026 Red Hat Inc and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,7 +18,6 @@ package org.eclipse.kura.camel.cloud.factory.internal;
 public class ServiceConfiguration {
 
     private String xml;
-    private String initCode;
     private boolean enableJmx;
 
     /**
@@ -33,14 +32,6 @@ public class ServiceConfiguration {
 
     public String getXml() {
         return this.xml;
-    }
-
-    public void setInitCode(String initCode) {
-        this.initCode = initCode;
-    }
-
-    public String getInitCode() {
-        return this.initCode;
     }
 
     public void setEnableJmx(boolean enableJmx) {
@@ -63,7 +54,6 @@ public class ServiceConfiguration {
         final int prime = 31;
         int result = 1;
         result = prime * result + (this.enableJmx ? 1231 : 1237);
-        result = prime * result + (this.initCode == null ? 0 : this.initCode.hashCode());
         result = prime * result + (this.xml == null ? 0 : this.xml.hashCode());
         return result;
     }
@@ -81,13 +71,6 @@ public class ServiceConfiguration {
         }
         ServiceConfiguration other = (ServiceConfiguration) obj;
         if (this.enableJmx != other.enableJmx) {
-            return false;
-        }
-        if (this.initCode == null) {
-            if (other.initCode != null) {
-                return false;
-            }
-        } else if (!this.initCode.equals(other.initCode)) {
             return false;
         }
         if (this.xml == null) {

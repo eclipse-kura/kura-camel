@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2020 Red Hat Inc and others
+ * Copyright (c) 2017, 2026 Red Hat Inc and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -13,7 +13,7 @@
 package org.eclipse.kura.example.camel.aggregation;
 
 import org.apache.camel.Exchange;
-import org.apache.camel.processor.aggregate.AggregationStrategy;
+import org.apache.camel.AggregationStrategy;
 
 final class AverageAggregationStrategy implements AggregationStrategy {
 

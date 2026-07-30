@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.kura.wire.camel;
 
-import static org.apache.camel.builder.DefaultFluentProducerTemplate.on;
-
 import java.util.Arrays;
 
 import org.apache.camel.CamelContext;
@@ -36,7 +34,7 @@ public class CamelProcess extends AbstractReceiverWireComponent implements WireE
     protected void processReceive(final CamelContext context, final String endpointUri, final WireEnvelope envelope)
             throws Exception {
 
-        final WireRecord[] result = on(context) //
+        final WireRecord[] result = context.createFluentProducerTemplate() //
                 .withBody(envelope) //
                 .to(endpointUri) //
                 .request(WireRecord[].class);

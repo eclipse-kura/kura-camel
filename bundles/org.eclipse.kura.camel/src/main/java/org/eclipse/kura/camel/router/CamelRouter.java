@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat Inc and others
+ * Copyright (c) 2016, 2026 Red Hat Inc and others
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -28,7 +28,7 @@ import org.osgi.framework.ServiceReference;
  *
  * @deprecated Use the {@link org.eclipse.kura.camel.runner.CamelRunner}, one of the abstract implementations from
  *             {@link org.eclipse.kura.camel.component} or the native
- *             {@link org.apache.camel.core.osgi.OsgiDefaultCamelContext}
+ *             {@link org.apache.camel.karaf.core.OsgiDefaultCamelContext}
  */
 @Deprecated
 public abstract class CamelRouter extends AbstractXmlCamelComponent implements BundleActivator {

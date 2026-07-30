@@ -64,7 +64,6 @@ public class CamelFactory implements ConfigurableComponent {
 
         final ServiceConfiguration serviceConfiguration = new ServiceConfiguration();
         serviceConfiguration.setXml(asString(properties, "xml"));
-        serviceConfiguration.setInitCode(asString(properties, "initCode"));
         serviceConfiguration.setEnableJmx(asBoolean(properties, "enableJmx", true));
 
         createService(pid, serviceConfiguration);
