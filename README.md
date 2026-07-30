@@ -20,6 +20,12 @@ independently.
 The Camel runtime itself (`camel-core` and friends, Spring, Qpid) is shipped by the Debian package,
 not embedded in the bundles.
 
+Camel 2.x is compiled against the `javax.xml.bind` and `javax.activation` namespaces, which the JDK
+dropped in Java 11 and which Kura no longer provides — the framework ships `jaxb-osgi` 4.x, and that
+exports only `jakarta.*`. The package therefore also ships `jaxb-api` 2.3.1, the JAXB 2.3.9 reference
+implementation and `javax.activation` 1.2.0. Without them the Camel XML router cannot load a route at
+all. These three go away with the move off Camel 2.x.
+
 ## Building
 
 Requires **JDK 21** and Maven 3.9+.

@@ -2,8 +2,6 @@ index: target/index.xml
 
 -standalone: ${index}
 
--resolve.effective: active
-
 -runfw: org.eclipse.osgi
 
 -runee: JavaSE-21
@@ -28,7 +26,18 @@ Test-Cases: ${classes;CONCRETE;PUBLIC;NAMED;*Test}
 	${argLine}
 
 # Used by Objenesis/Mockito and not actually optional
--runsystempackages: sun.reflect
+-runsystempackages: sun.reflect, sun.misc
+
+-runrequires.camel: \
+    osgi.identity;filter:='(osgi.identity=org.apache.camel.camel-core)',\
+    osgi.identity;filter:='(osgi.identity=org.apache.camel.camel-core-osgi)',\
+    osgi.identity;filter:='(osgi.identity=jaxb-api)',\
+    osgi.identity;filter:='(osgi.identity=com.sun.xml.bind.jaxb-osgi)',\
+    osgi.identity;filter:='(osgi.identity=com.sun.activation.javax.activation)',\
+    osgi.identity;filter:='(osgi.identity=org.eclipse.kura.camel.sun.misc)',\
+    osgi.identity;filter:='(osgi.identity=org.eclipse.kura.camel.cloud.factory)',\
+    osgi.identity;filter:='(osgi.identity=org.eclipse.kura.camel.xml)',\
+    osgi.identity;filter:='(osgi.identity=org.eclipse.kura.wire.camel)',
 
 # Require Kura Emulator
 -runrequires.emulator: \
@@ -108,7 +117,6 @@ Test-Cases: ${classes;CONCRETE;PUBLIC;NAMED;*Test}
 	org.apache.commons.commons-io;version='[2.19.0,2.19.1)',\
 	org.apache.commons.exec;version='[1.3.0,1.3.1)',\
 	org.apache.commons.lang3;version='[3.19.0,3.19.1)',\
-	org.apache.felix.gogo.command;version='[1.1.2,1.1.3)',\
 	org.apache.felix.gogo.runtime;version='[1.1.6,1.1.7)',\
 	org.apache.felix.gogo.shell;version='[1.1.4,1.1.5)',\
 	org.apache.felix.http.bridge;version='[5.1.8,5.1.9)',\
@@ -203,4 +211,13 @@ Test-Cases: ${classes;CONCRETE;PUBLIC;NAMED;*Test}
 	osgi.cmpn;version='[4.2.0,4.2.1)',\
 	quartz;version='[2.5.0,2.5.1)',\
 	slf4j.api;version='[2.0.17,2.0.18)',\
-	usb4java-javax;version='[2.0.0,2.0.1)'
+	usb4java-javax;version='[2.0.0,2.0.1)',\
+	org.apache.camel.camel-core;version='[2.25.3,2.25.4)',\
+	org.apache.camel.camel-core-osgi;version='[2.25.3,2.25.4)',\
+	org.eclipse.kura.camel.cloud.factory;version='[2.0.0,2.0.1)',\
+	org.eclipse.kura.camel.sun.misc;version='[2.0.0,2.0.1)',\
+	org.eclipse.kura.camel.xml;version='[2.0.0,2.0.1)',\
+	org.eclipse.kura.wire.camel;version='[2.0.0,2.0.1)',\
+	com.sun.activation.javax.activation;version='[1.2.0,1.2.1)',\
+	com.sun.xml.bind.jaxb-osgi;version='[2.3.9,2.3.10)',\
+	jaxb-api;version='[2.3.1,2.3.2)'

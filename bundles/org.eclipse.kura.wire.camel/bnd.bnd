@@ -17,10 +17,6 @@ Bundle-SymbolicName: ${project.artifactId};singleton:=true
 Bundle-Vendor: Eclipse Kura
 Bundle-ActivationPolicy: lazy
 
-# MANDATORY. @Activate/@Modified/@Deactivate and the WireHelperService @Reference are declared
-# on the shared superclass AbstractWireComponent, not on the three @Component classes. Without
-# this option bnd silently emits component descriptors with no lifecycle methods and no
-# reference, so CamelConsume/CamelProcess/CamelProduce build and install but never activate.
 -dsannotations-options: inherit
 
 Import-Package: \

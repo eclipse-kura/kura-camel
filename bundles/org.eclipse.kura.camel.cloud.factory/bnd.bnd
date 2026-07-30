@@ -17,7 +17,6 @@ Bundle-SymbolicName: ${project.artifactId};singleton:=true
 Bundle-Vendor: Eclipse Kura
 Bundle-ActivationPolicy: lazy
 
-# The XML routes configured at runtime may reference any Camel component or language.
 DynamicImport-Package: *
 
 Import-Package: \

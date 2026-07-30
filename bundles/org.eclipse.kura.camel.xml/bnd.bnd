@@ -13,14 +13,10 @@
 #
 
 Bundle-Name: Plain XML router component
-# Deliberately NOT singleton:=true. This asymmetry with the other three Camel bundles
-# predates the migration and is carried over as-is.
 Bundle-SymbolicName: ${project.artifactId}
 Bundle-Vendor: Eclipse Kura
 Bundle-ActivationPolicy: lazy
 
-# The XML routes configured at runtime may reference any Camel component or language,
-# none of which is visible at build time.
 DynamicImport-Package: *
 
 Import-Package: \
@@ -30,8 +26,6 @@ Import-Package: \
     org.eclipse.kura.camel.component;version="[1.1,2.0)",\
     *
 
-# OSGI-INF/logo.png, referenced by the metatype @Icon, is a Maven resource
-# (src/main/resources/OSGI-INF) and is packaged from the classes directory.
 -includeresource: \
     about.html,\
     about_files=about_files/

@@ -60,6 +60,16 @@
         <apache-qpid-jms-client.version>0.45.0</apache-qpid-jms-client.version>
         <apache-qpid-proton-j.version>0.33.2</apache-qpid-proton-j.version>
         <geronimo-jms-spec.version>1.0-alpha-2</geronimo-jms-spec.version>
+
+        <!--
+            Camel 2.x is built against the javax.* JAXB and Activation namespaces, which the JDK
+            dropped in Java 11 and which Kura no longer provides: the framework ships jaxb-osgi 4.x,
+            and that only exports jakarta.*. Without these three the Camel XML router cannot load a
+            route at all. To be removed together with Camel 2.x.
+        -->
+        <javax-jaxb-api.version>2.3.1</javax-jaxb-api.version>
+        <javax-jaxb-ri.version>2.3.9</javax-jaxb-ri.version>
+        <javax-activation.version>1.2.0</javax-activation.version>
     </properties>
 
     <modules>
@@ -152,6 +162,29 @@
                 <groupId>org.apache.geronimo.specs</groupId>
                 <artifactId>geronimo-jms_2.0_spec</artifactId>
                 <version>${geronimo-jms-spec.version}</version>
+            </dependency>
+            <!-- exports javax.xml.bind, needed by camel-core's JAXB route loading -->
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${javax-jaxb-api.version}</version>
+            </dependency>
+            <!-- the JAXB reference implementation behind JAXBContext.newInstance -->
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-osgi</artifactId>
+                <version>${javax-jaxb-ri.version}</version>
+            </dependency>
+            <!--
+                exports javax.activation. org.apache.camel.Message declares attachment methods
+                returning javax.activation.DataHandler, so this is needed both at runtime and on the
+                test classpath, where mocking the interface requires the whole signature graph to
+                resolve.
+            -->
+            <dependency>
+                <groupId>com.sun.activation</groupId>
+                <artifactId>javax.activation</artifactId>
+                <version>${javax-activation.version}</version>
             </dependency>
 
             <dependency>

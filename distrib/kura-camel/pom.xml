@@ -119,6 +119,24 @@
             <groupId>org.apache.geronimo.specs</groupId>
             <artifactId>geronimo-jms_2.0_spec</artifactId>
         </dependency>
+
+        <!--
+            The javax.* JAXB and Activation namespaces. Camel 2.x is compiled against them, the JDK
+            dropped them in Java 11 and Kura ships only the jakarta.* equivalents, so without these
+            the Camel XML router cannot load a route. To be dropped together with Camel 2.x.
+        -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-osgi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.activation</groupId>
+            <artifactId>javax.activation</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -161,6 +179,9 @@
                                 org.apache.servicemix.bundles.spring-jms,
                                 org.apache.servicemix.bundles.spring-tx,
                                 geronimo-jms_2.0_spec,
+                                jaxb-api,
+                                jaxb-osgi,
+                                javax.activation,
                                 org.eclipse.kura.camel.sun.misc
                             </includeArtifactIds>
                         </configuration>
