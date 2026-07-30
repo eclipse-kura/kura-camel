@@ -2,8 +2,12 @@
 
 node {
     continuousIntegrationPipeline(
+        buildType: "deploy",
         sonar: [
-            enable: false
+            enable: false,
+            projectKey: "eclipse-kura_kura-camel",
+            tokenId: "sonarcloud-token-kura-camel",
+            exclusions: "tests/**/*.java"
         ],
     )
 }
