@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.eclipse.kura</groupId>
+        <artifactId>kura-camel-distrib</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>kura-camel-deb</artifactId>
+    <packaging>pom</packaging>
+    <description>kura-camel Debian package</description>
+
+    <properties>
+        <package.name>kura-camel</package.name>
+        <summary>Eclipse Kura Add-on for Apache Camel</summary>
+        <long.description>Apache Camel integration for the Eclipse Kura Framework: the Camel core and API bundle, the Camel cloud service factory, the XML router component, the Camel wire components and the Camel runtime libraries.</long.description>
+    </properties>
+
+    <dependencies>
+        <!-- the add-on bundles -->
+        <dependency>
+            <groupId>org.eclipse.kura</groupId>
+            <artifactId>org.eclipse.kura.camel</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.kura</groupId>
+            <artifactId>org.eclipse.kura.camel.cloud.factory</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.kura</groupId>
+            <artifactId>org.eclipse.kura.camel.xml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.kura</groupId>
+            <artifactId>org.eclipse.kura.wire.camel</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.kura</groupId>
+            <artifactId>org.eclipse.kura.camel.sun.misc</artifactId>
+        </dependency>
+
+        <!-- the Camel runtime -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-core-osgi</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-amqp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-script</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-stream</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.qpid</groupId>
+            <artifactId>qpid-jms-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.qpid</groupId>
+            <artifactId>proton-j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.servicemix.bundles</groupId>
+            <artifactId>org.apache.servicemix.bundles.spring-beans</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.servicemix.bundles</groupId>
+            <artifactId>org.apache.servicemix.bundles.spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.servicemix.bundles</groupId>
+            <artifactId>org.apache.servicemix.bundles.spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.servicemix.bundles</groupId>
+            <artifactId>org.apache.servicemix.bundles.spring-expression</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.servicemix.bundles</groupId>
+            <artifactId>org.apache.servicemix.bundles.spring-jms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.servicemix.bundles</groupId>
+            <artifactId>org.apache.servicemix.bundles.spring-tx</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-jms_2.0_spec</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!--
+                gen_config_ini.sh derives the OSGi start level from the directory name:
+                plugins/<n>  => bundle@<n>
+                plugins/<n>s => bundle@<n>:start
+            -->
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <!--
+                        Level 5, NOT auto-started: plain libraries with no Bundle-Activator, plus the
+                        sun.misc fragment. Equinox cannot start a fragment, so an ":start" entry for
+                        it would raise a BundleException on every boot.
+                    -->
+                    <execution>
+                        <id>copy-deps-5</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <excludeTypes>pom</excludeTypes>
+                            <excludeClassifiers>sources</excludeClassifiers>
+                            <excludeTransitive>true</excludeTransitive>
+                            <outputDirectory>${project.build.directory}/plugins/5</outputDirectory>
+                            <includeArtifactIds>
+                                camel-core-osgi,
+                                camel-amqp,
+                                camel-jms,
+                                camel-stream,
+                                qpid-jms-client,
+                                proton-j,
+                                org.apache.servicemix.bundles.spring-beans,
+                                org.apache.servicemix.bundles.spring-context,
+                                org.apache.servicemix.bundles.spring-core,
+                                org.apache.servicemix.bundles.spring-expression,
+                                org.apache.servicemix.bundles.spring-jms,
+                                org.apache.servicemix.bundles.spring-tx,
+                                geronimo-jms_2.0_spec,
+                                org.eclipse.kura.camel.sun.misc
+                            </includeArtifactIds>
+                        </configuration>
+                    </execution>
+                    <!--
+                        Level 5, auto-started: these two carry a Bundle-Activator. camel-core's
+                        activator installs the bundle tracker that discovers the
+                        META-INF/services/org/apache/camel/TypeConverter and ComponentResolver
+                        entries, so without :start the Kura type converters never register.
+                    -->
+                    <execution>
+                        <id>copy-deps-5s</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <excludeTypes>pom</excludeTypes>
+                            <excludeClassifiers>sources</excludeClassifiers>
+                            <excludeTransitive>true</excludeTransitive>
+                            <outputDirectory>${project.build.directory}/plugins/5s</outputDirectory>
+                            <includeArtifactIds>
+                                camel-core,
+                                camel-script
+                            </includeArtifactIds>
+                        </configuration>
+                    </execution>
+                    <!-- Level 6, auto-started: the add-on's own DS components -->
+                    <execution>
+                        <id>copy-deps-6s</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <excludeTypes>pom</excludeTypes>
+                            <excludeClassifiers>sources</excludeClassifiers>
+                            <excludeTransitive>true</excludeTransitive>
+                            <outputDirectory>${project.build.directory}/plugins/6s</outputDirectory>
+                            <includeArtifactIds>
+                                org.eclipse.kura.camel,
+                                org.eclipse.kura.camel.cloud.factory,
+                                org.eclipse.kura.camel.xml,
+                                org.eclipse.kura.wire.camel
+                            </includeArtifactIds>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.vafer</groupId>
+                <artifactId>jdeb</artifactId>
+                <executions>
+                    <execution>
+                        <id>generate-deb</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jdeb</goal>
+                        </goals>
+                        <configuration>
+                            <dataSet>
+                                <data>
+                                    <src>${project.build.directory}/plugins/5</src>
+                                    <type>directory</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>${addon.installation.dir}/5</prefix>
+                                        <user>kurad</user>
+                                        <group>kurad</group>
+                                        <filemode>600</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <src>${project.build.directory}/plugins/5s</src>
+                                    <type>directory</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>${addon.installation.dir}/5s</prefix>
+                                        <user>kurad</user>
+                                        <group>kurad</group>
+                                        <filemode>600</filemode>
+                                    </mapper>
+                                </data>
+                                <data>
+                                    <src>${project.build.directory}/plugins/6s</src>
+                                    <type>directory</type>
+                                    <mapper>
+                                        <type>perm</type>
+                                        <prefix>${addon.installation.dir}/6s</prefix>
+                                        <user>kurad</user>
+                                        <group>kurad</group>
+                                        <filemode>600</filemode>
+                                    </mapper>
+                                </data>
+                            </dataSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

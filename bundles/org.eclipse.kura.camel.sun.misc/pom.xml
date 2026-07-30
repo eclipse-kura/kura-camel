@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2017, 2026 Red Hat Inc and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Red Hat Inc
+     Eurotech
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.eclipse.kura</groupId>
+        <artifactId>kura-camel-bundles</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>org.eclipse.kura.camel.sun.misc</artifactId>
+    <name>Camel :: Core :: Import sun.misc</name>
+    <description>Metadata-only OSGi fragment adding an sun.misc import to camel-core</description>
+
+    <build>
+        <plugins>
+            <!--
+                This module contains no classes: it is a metadata-only fragment attached to
+                camel-core. There is nothing for bnd to analyse, so bnd-process is skipped and
+                the OSGi headers are written literally by the jar plugin instead.
+            -->
+            <plugin>
+                <groupId>biz.aQute.bnd</groupId>
+                <artifactId>bnd-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <!-- there are no classes, but the jar must still be produced -->
+                    <forceCreation>true</forceCreation>
+                    <skipIfEmpty>false</skipIfEmpty>
+                    <!-- drops the inherited manifestFile, which points at a bnd manifest that is never generated here -->
+                    <archive combine.self="override">
+                        <manifestEntries>
+                            <Bundle-ManifestVersion>2</Bundle-ManifestVersion>
+                            <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+                            <Bundle-Name>${project.name}</Bundle-Name>
+                            <Bundle-Version>2.0.0.SNAPSHOT</Bundle-Version>
+                            <Bundle-Vendor>Eclipse Kura</Bundle-Vendor>
+                            <Fragment-Host>org.apache.camel.camel-core;bundle-version="[2.16.0,2.26.0)"</Fragment-Host>
+                            <Import-Package>sun.misc</Import-Package>
+                            <Require-Capability>osgi.ee;filter:="(&amp;(osgi.ee=JavaSE)(version=21))"</Require-Capability>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

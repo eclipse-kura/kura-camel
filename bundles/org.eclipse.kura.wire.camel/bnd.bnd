@@ -1,0 +1,37 @@
+#
+# Copyright (c) 2018, 2026 Red Hat Inc and others
+#
+#  This program and the accompanying materials are made
+#  available under the terms of the Eclipse Public License 2.0
+#  which is available at https://www.eclipse.org/legal/epl-2.0/
+#
+#  SPDX-License-Identifier: EPL-2.0
+#
+#  Contributors:
+#   Red Hat Inc
+#   Eurotech
+#
+
+Bundle-Name: org.eclipse.kura.wire.camel
+Bundle-SymbolicName: ${project.artifactId};singleton:=true
+Bundle-Vendor: Eclipse Kura
+Bundle-ActivationPolicy: lazy
+
+# MANDATORY. @Activate/@Modified/@Deactivate and the WireHelperService @Reference are declared
+# on the shared superclass AbstractWireComponent, not on the three @Component classes. Without
+# this option bnd silently emits component descriptors with no lifecycle methods and no
+# reference, so CamelConsume/CamelProcess/CamelProduce build and install but never activate.
+-dsannotations-options: inherit
+
+Import-Package: \
+    org.eclipse.kura.configuration;version="[1.2,2.0)",\
+    org.eclipse.kura.type;version="[1.1,2.0)",\
+    org.eclipse.kura.util.base;version="[1.0,2.0)",\
+    org.eclipse.kura.util.osgi;version="[1.0,2.0)",\
+    org.eclipse.kura.wire;version="[2.0,3.0)",\
+    org.eclipse.kura.camel.component;version="[1.1,2.0)",\
+    *
+
+-includeresource: \
+    about.html,\
+    about_files=about_files/

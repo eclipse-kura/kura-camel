@@ -1,0 +1,36 @@
+#
+# Copyright (c) 2016, 2026 Red Hat Inc and others
+#
+#  This program and the accompanying materials are made
+#  available under the terms of the Eclipse Public License 2.0
+#  which is available at https://www.eclipse.org/legal/epl-2.0/
+#
+#  SPDX-License-Identifier: EPL-2.0
+#
+#  Contributors:
+#   Red Hat Inc
+#   Eurotech
+#
+
+Bundle-Name: Camel Cloud Factory
+Bundle-SymbolicName: ${project.artifactId};singleton:=true
+Bundle-Vendor: Eclipse Kura
+Bundle-ActivationPolicy: lazy
+
+# The XML routes configured at runtime may reference any Camel component or language.
+DynamicImport-Package: *
+
+Import-Package: \
+    org.eclipse.kura;version="[1.2,2.0)",\
+    org.eclipse.kura.cloud;version="[1.0,2.0)",\
+    org.eclipse.kura.cloud.factory;version="[1.1,1.2)",\
+    org.eclipse.kura.configuration;version="[1.1,2.0)",\
+    org.eclipse.kura.camel.bean;version="[1.1,2.0)",\
+    org.eclipse.kura.camel.camelcloud;version="[1.1,2.0)",\
+    org.eclipse.kura.camel.cloud;version="[1.1,2.0)",\
+    org.eclipse.kura.camel.component;version="[1.1,2.0)",\
+    *
+
+-includeresource: \
+    about.html,\
+    about_files=about_files/
