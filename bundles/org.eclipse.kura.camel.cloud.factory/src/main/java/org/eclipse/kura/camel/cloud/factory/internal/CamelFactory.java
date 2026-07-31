@@ -36,8 +36,17 @@ import org.slf4j.LoggerFactory;
  * through the Kura configuration system and will forward this configuration to the
  * {@link XmlCamelCloudService} which will take care of the lifecycle of the Camel context.
  * </p>
+ * <p>
+ * Instances must be created through the Cloud Connections page, which drives
+ * {@link CamelCloudServiceFactory}: that is the only path which fills in the {@code cloud.service.pid}
+ * property this component keys off. {@code kura.ui.factory.hide} keeps it out of the generic factory
+ * list on the Services page, where creating an instance would silently produce a configuration that
+ * never registers a cloud service.
+ * </p>
  */
-@Component(name = "org.eclipse.kura.camel.cloud.factory.CamelFactory", immediate = true, configurationPolicy = ConfigurationPolicy.REQUIRE, service = { ConfigurableComponent.class }, property = "kura.ui.service.hide:Boolean=true")
+@Component(name = "org.eclipse.kura.camel.cloud.factory.CamelFactory", immediate = true, configurationPolicy = ConfigurationPolicy.REQUIRE, service = {
+        ConfigurableComponent.class }, property = { "kura.ui.service.hide:Boolean=true",
+                "kura.ui.factory.hide:Boolean=true" })
 @Designate(ocd = CamelFactoryOptions.class, factory = true)
 public class CamelFactory implements ConfigurableComponent {
 
