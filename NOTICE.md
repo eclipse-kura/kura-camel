@@ -1,4 +1,4 @@
-# Notices for the Eclipse Kura Camel add-on
+# Notices for Eclipse Kura Camel Addon
 
 This content is produced and maintained by the Eclipse Kura project.
 
@@ -32,50 +32,35 @@ The project maintains the following source code repositories:
 
 This project leverages the following third party content.
 
-Content provided by the Eclipse Kura framework itself is not repeated here; see
-the `NOTICE.md` of https://github.com/eclipse-kura/kura. The list below was
-produced with the Eclipse Dash License Tool and covers only what this
-repository adds, that is the Apache Camel runtime shipped by the Debian package.
-Test-only libraries are omitted, following the convention of the framework's own
-notice file.
-
-As of Camel 4 the `org.apache.camel` artifacts carry no OSGi metadata, so the
-bundles consumed here are the `org.apache.camel.karaf` repackages of the same
-classes. ClearlyDefined holds no license determination for those coordinates,
-which is why every entry below is reported as `restricted` with an empty license
-field: Apache Camel itself is Apache-2.0, but the repackaged artifacts have not
-been vetted. **They require an Eclipse IP team review before this add-on can be
-released.**
-
 ### Maven Dependencies
 
-* maven/mavencentral/org.apache.camel.karaf/camel-api/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-attachments/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-base-engine/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-base/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-bean/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-core-engine/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-core-languages/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-core-model/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-core-osgi/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-core-processor/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-core-reifier/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-direct/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-health/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-log/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-management-api/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-management/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-mock/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-seda/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-stream/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-support/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-timer/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-util-json/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-util/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-vm/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-xml-io-util/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-xml-io/4.18.2, , restricted, clearlydefined
-* maven/mavencentral/org.apache.camel.karaf/camel-xml-jaxp/4.18.2, , restricted, clearlydefined
+* maven/mavencentral/org.apache.camel.karaf/camel-api/4.18.2, Apache-2.0, approved, #29954
+* maven/mavencentral/org.apache.camel.karaf/camel-attachments/4.18.2, Apache-2.0, approved, #29955
+* maven/mavencentral/org.apache.camel.karaf/camel-base-engine/4.18.2, Apache-2.0, approved, #29956
+* maven/mavencentral/org.apache.camel.karaf/camel-base/4.18.2, Apache-2.0, approved, #29957
+* maven/mavencentral/org.apache.camel.karaf/camel-bean/4.18.2, Apache-2.0, approved, #29958
+* maven/mavencentral/org.apache.camel.karaf/camel-core-engine/4.18.2, Apache-2.0, approved, #29959
+* maven/mavencentral/org.apache.camel.karaf/camel-core-languages/4.18.2, Apache-2.0, approved, #29960
+* maven/mavencentral/org.apache.camel.karaf/camel-core-model/4.18.2, Apache-2.0, approved, #29961
+* maven/mavencentral/org.apache.camel.karaf/camel-core-osgi/4.18.2, Apache-2.0, approved, #29962
+* maven/mavencentral/org.apache.camel.karaf/camel-core-processor/4.18.2, Apache-2.0, approved, #29963
+* maven/mavencentral/org.apache.camel.karaf/camel-core-reifier/4.18.2, Apache-2.0, approved, #29964
+* maven/mavencentral/org.apache.camel.karaf/camel-direct/4.18.2, Apache-2.0, approved, #29965
+* maven/mavencentral/org.apache.camel.karaf/camel-health/4.18.2, Apache-2.0, approved, #29966
+* maven/mavencentral/org.apache.camel.karaf/camel-log/4.18.2, Apache-2.0, approved, #29967
+* maven/mavencentral/org.apache.camel.karaf/camel-management-api/4.18.2, Apache-2.0, approved, #29968
+* maven/mavencentral/org.apache.camel.karaf/camel-management/4.18.2, Apache-2.0, approved, #29969
+* maven/mavencentral/org.apache.camel.karaf/camel-mock/4.18.2, Apache-2.0, approved, #29970
+* maven/mavencentral/org.apache.camel.karaf/camel-seda/4.18.2, Apache-2.0, approved, #29971
+* maven/mavencentral/org.apache.camel.karaf/camel-stream/4.18.2, Apache-2.0, approved, #29972
+* maven/mavencentral/org.apache.camel.karaf/camel-support/4.18.2, Apache-2.0, approved, #29977
+* maven/mavencentral/org.apache.camel.karaf/camel-timer/4.18.2, Apache-2.0, approved, #29973
+* maven/mavencentral/org.apache.camel.karaf/camel-util-json/4.18.2, Apache-2.0, approved, #29974
+* maven/mavencentral/org.apache.camel.karaf/camel-util/4.18.2, Apache-2.0, approved, #29978
+* maven/mavencentral/org.apache.camel.karaf/camel-vm/4.18.2, Apache-2.0, approved, #29975
+* maven/mavencentral/org.apache.camel.karaf/camel-xml-io-util/4.18.2, Apache-2.0, approved, #29979
+* maven/mavencentral/org.apache.camel.karaf/camel-xml-io/4.18.2, Apache-2.0, approved, #29980
+* maven/mavencentral/org.apache.camel.karaf/camel-xml-jaxp/4.18.2, Apache-2.0, approved, #29976
 
 ## Cryptography
 
