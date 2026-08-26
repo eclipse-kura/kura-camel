@@ -50,8 +50,8 @@
         <package.revision>1</package.revision>
 
         <!-- properties used for artifact upload on artifactory repository -->
-        <kura.repo.distribution>kura-addons</kura.repo.distribution>
-        <kura.repo.module>kura-camel</kura.repo.module>
+        <kura.repo.distribution>kura-6</kura.repo.distribution>
+        <kura.repo.module>base</kura.repo.module>
     </properties>
 
     <profiles>
