@@ -32,6 +32,7 @@ import org.apache.camel.Endpoint;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.spi.Registry;
 import org.eclipse.kura.camel.internal.cloud.CloudClientCache;
+import org.eclipse.kura.cloud.CloudClient;
 import org.eclipse.kura.cloud.CloudService;
 import org.eclipse.kura.core.testutil.TestUtil;
 import org.junit.Test;
@@ -140,6 +141,33 @@ public class KuraCloudComponentTest {
             fail("Exception was expected.");
         } catch (IllegalArgumentException e) {
             assertTrue(e.getMessage().startsWith("Wrong kura-cloud URI format"));
+        }
+    }
+
+    @Test
+    public void testEndpointCreatedBeforeComponentStart() throws Exception {
+        /*
+         * Camel 4 constructs endpoints before the owning component's doStart has run:
+         * an endpoint must not capture component state that only exists after start.
+         */
+        try (CamelContext context = new DefaultCamelContext()) {
+            CloudService cs = mock(CloudService.class);
+            CloudClient client = mock(CloudClient.class);
+            when(cs.newCloudClient("app")).thenReturn(client);
+            context.getRegistry().bind("cloudService", CloudService.class, cs);
+
+            KuraCloudComponent kcc = new KuraCloudComponent(context);
+
+            Endpoint endpoint = kcc.createEndpoint("kura-cloud:app/topic", "app/topic",
+                    new HashMap<String, Object>());
+
+            kcc.start();
+            endpoint.start();
+
+            verify(cs, times(1)).newCloudClient("app");
+
+            endpoint.stop();
+            kcc.stop();
         }
     }
 

@@ -50,6 +50,34 @@ public class KuraCloudComponent extends DefaultComponent {
 
     @Override
     protected void doStart() throws Exception {
+        // fail fast when no CloudService is resolvable, before any route starts
+        getCache();
+
+        super.doStart();
+    }
+
+    @Override
+    protected synchronized void doStop() throws Exception {
+        super.doStop();
+        if (this.cache != null) {
+            this.cache.close();
+            this.cache = null;
+        }
+    }
+
+    /**
+     * Returns the client cache, creating it on first use.
+     * <p>
+     * Creation cannot live in {@link #doStart()} alone: endpoints may be created, and even
+     * started, before the component's own start has run, so the cache must be resolvable
+     * whenever an endpoint first asks for it.
+     */
+    public synchronized CloudClientCache getCache() {
+        final CloudClientCache currentCache = this.cache;
+        if (currentCache != null) {
+            return currentCache;
+        }
+
         final CloudService cloudServiceInstance = lookupCloudService();
 
         if (cloudServiceInstance == null) {
@@ -58,24 +86,16 @@ public class KuraCloudComponent extends DefaultComponent {
         }
 
         this.cache = new CloudClientCacheImpl(cloudServiceInstance);
-
-        super.doStart();
-    }
-
-    @Override
-    protected void doStop() throws Exception {
-        super.doStop();
-        if (this.cache != null) {
-            this.cache.close();
-            this.cache = null;
-        }
+        return this.cache;
     }
 
     // Operations
 
     @Override
     protected Endpoint createEndpoint(String uri, String remain, Map<String, Object> parameters) throws Exception {
-        final KuraCloudEndpoint kuraCloudEndpoint = new KuraCloudEndpoint(uri, this, this.cache);
+        // the endpoint resolves the cache from this component when it starts — under Camel 4
+        // this method runs before doStart(), so no cache exists to hand over yet
+        final KuraCloudEndpoint kuraCloudEndpoint = new KuraCloudEndpoint(uri, this);
 
         final String[] res = remain.split("/", 2);
         if (res.length < 2) {
