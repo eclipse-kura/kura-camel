@@ -70,9 +70,6 @@ public class KuraCloudEndpoint extends DefaultEndpoint {
     protected void doStart() throws Exception {
         synchronized (this) {
             if (this.cache == null) {
-                // resolved at start, not at construction: under Camel 4 the endpoint is
-                // created before the owning component has started, so a cache captured
-                // in the constructor would still be null
                 this.cache = getComponent().getCache();
             }
             this.cloudClientHandle = this.cache.getOrCreate(this.applicationId);

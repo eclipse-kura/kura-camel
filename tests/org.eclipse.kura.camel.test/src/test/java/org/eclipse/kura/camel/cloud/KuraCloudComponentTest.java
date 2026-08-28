@@ -146,10 +146,6 @@ public class KuraCloudComponentTest {
 
     @Test
     public void testEndpointCreatedBeforeComponentStart() throws Exception {
-        /*
-         * Camel 4 constructs endpoints before the owning component's doStart has run:
-         * an endpoint must not capture component state that only exists after start.
-         */
         try (CamelContext context = new DefaultCamelContext()) {
             CloudService cs = mock(CloudService.class);
             CloudClient client = mock(CloudClient.class);
