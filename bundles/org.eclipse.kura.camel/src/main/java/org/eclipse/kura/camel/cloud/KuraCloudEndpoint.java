@@ -55,7 +55,11 @@ public class KuraCloudEndpoint extends DefaultEndpoint {
 
     private CloudClientHandle cloudClientHandle;
 
-    private final CloudClientCache cache;
+    private CloudClientCache cache;
+
+    public KuraCloudEndpoint(String uri, KuraCloudComponent kuraCloudComponent) {
+        super(uri, kuraCloudComponent);
+    }
 
     public KuraCloudEndpoint(String uri, KuraCloudComponent kuraCloudComponent, CloudClientCache cache) {
         super(uri, kuraCloudComponent);
@@ -65,6 +69,9 @@ public class KuraCloudEndpoint extends DefaultEndpoint {
     @Override
     protected void doStart() throws Exception {
         synchronized (this) {
+            if (this.cache == null) {
+                this.cache = getComponent().getCache();
+            }
             this.cloudClientHandle = this.cache.getOrCreate(this.applicationId);
             logger.debug("CloudClient {} -> {}", this.applicationId, this.cloudClientHandle.getClient());
         }
