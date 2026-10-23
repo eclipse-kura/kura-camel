@@ -16,13 +16,17 @@ package org.eclipse.kura.wire.camel;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
-@ObjectClassDefinition(id = "org.eclipse.kura.wire.camel.CamelProduce", name = "Camel Producer", description = "Produce an exchange using a Camel endpoint")
+@ObjectClassDefinition(
+        id = "org.eclipse.kura.wire.camel.CamelProduce",
+        name = "Camel Producer",
+        description = "Produce an exchange using a Camel endpoint")
 public @interface CamelProduceOptions {
 
     @AttributeDefinition(name = "ID", description = "The ID of the Camel Context")
     String id();
 
-    @AttributeDefinition(name = "Endpoint URI", description = "The URI to the Camel endpoint the component will produce.")
+    @AttributeDefinition(
+            name = "Endpoint URI",
+            description = "The URI to the Camel endpoint the component will produce.")
     String endpointUri();
-
 }

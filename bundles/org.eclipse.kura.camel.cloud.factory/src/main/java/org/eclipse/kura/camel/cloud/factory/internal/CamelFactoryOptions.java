@@ -24,13 +24,21 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
  * device configurations keep resolving.
  * </p>
  */
-@ObjectClassDefinition(id = "org.eclipse.kura.camel.cloud.factory.CamelFactory", name = "Camel Cloud Client", description = "Camel Cloud Client factory")
+@ObjectClassDefinition(
+        id = "org.eclipse.kura.camel.cloud.factory.CamelFactory",
+        name = "Camel Cloud Client",
+        description = "Camel Cloud Client factory")
 public @interface CamelFactoryOptions {
 
-    @AttributeDefinition(name = "Router XML", cardinality = 1, description = "The camel XML router configuration|TextArea")
+    @AttributeDefinition(
+            name = "Router XML",
+            cardinality = 1,
+            description = "The camel XML router configuration|TextArea")
     String xml();
 
-    @AttributeDefinition(name = "Enable Camel JMX support", cardinality = 1, description = "This setting controls if JMX support for the Camel context will be activated or not.")
+    @AttributeDefinition(
+            name = "Enable Camel JMX support",
+            cardinality = 1,
+            description = "This setting controls if JMX support for the Camel context will be activated or not.")
     boolean enableJmx() default true;
-
 }

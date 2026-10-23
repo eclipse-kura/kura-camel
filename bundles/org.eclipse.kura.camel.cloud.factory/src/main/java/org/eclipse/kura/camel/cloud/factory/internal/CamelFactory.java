@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *  Eurotech
@@ -17,7 +17,6 @@ import static org.eclipse.kura.camel.component.Configuration.asBoolean;
 import static org.eclipse.kura.camel.component.Configuration.asString;
 
 import java.util.Map;
-
 import org.eclipse.kura.configuration.ConfigurableComponent;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.component.annotations.Activate;
@@ -44,9 +43,12 @@ import org.slf4j.LoggerFactory;
  * never registers a cloud service.
  * </p>
  */
-@Component(name = "org.eclipse.kura.camel.cloud.factory.CamelFactory", immediate = true, configurationPolicy = ConfigurationPolicy.REQUIRE, service = {
-        ConfigurableComponent.class }, property = { "kura.ui.service.hide:Boolean=true",
-                "kura.ui.factory.hide:Boolean=true" })
+@Component(
+        name = "org.eclipse.kura.camel.cloud.factory.CamelFactory",
+        immediate = true,
+        configurationPolicy = ConfigurationPolicy.REQUIRE,
+        service = {ConfigurableComponent.class},
+        property = {"kura.ui.service.hide:Boolean=true", "kura.ui.factory.hide:Boolean=true"})
 @Designate(ocd = CamelFactoryOptions.class, factory = true)
 public class CamelFactory implements ConfigurableComponent {
 
@@ -113,8 +115,8 @@ public class CamelFactory implements ConfigurableComponent {
 
         // start new service
         if (configuration.isValid()) {
-            this.service = new XmlCamelCloudService(FrameworkUtil.getBundle(CamelFactory.class).getBundleContext(), pid,
-                    configuration);
+            this.service = new XmlCamelCloudService(
+                    FrameworkUtil.getBundle(CamelFactory.class).getBundleContext(), pid, configuration);
             this.service.start();
         }
 

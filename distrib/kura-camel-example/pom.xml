@@ -13,9 +13,7 @@
      Eurotech
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -58,20 +56,18 @@
                 <executions>
                     <execution>
                         <id>copy-deps-6s</id>
-                        <phase>generate-resources</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
+                        <phase>generate-resources</phase>
                         <configuration>
                             <excludeTypes>pom</excludeTypes>
                             <excludeClassifiers>sources</excludeClassifiers>
                             <excludeTransitive>true</excludeTransitive>
                             <outputDirectory>${project.build.directory}/plugins/6s</outputDirectory>
-                            <includeArtifactIds>
-                                org.eclipse.kura.example.camel.aggregation,
+                            <includeArtifactIds>org.eclipse.kura.example.camel.aggregation,
                                 org.eclipse.kura.example.camel.publisher,
-                                org.eclipse.kura.example.camel.quickstart
-                            </includeArtifactIds>
+                                org.eclipse.kura.example.camel.quickstart</includeArtifactIds>
                         </configuration>
                     </execution>
                 </executions>
@@ -83,10 +79,10 @@
                 <executions>
                     <execution>
                         <id>generate-deb</id>
-                        <phase>package</phase>
                         <goals>
                             <goal>jdeb</goal>
                         </goals>
+                        <phase>package</phase>
                         <configuration>
                             <dataSet>
                                 <data>

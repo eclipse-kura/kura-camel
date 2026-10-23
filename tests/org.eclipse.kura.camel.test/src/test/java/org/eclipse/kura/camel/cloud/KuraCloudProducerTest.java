@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2017, 2022 Eurotech and/or its affiliates and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  ******************************************************************************/
@@ -60,21 +60,27 @@ public class KuraCloudProducerTest {
         Message msgMock = mock(Message.class);
         when(exchangeMock.getIn()).thenReturn(msgMock);
 
-        Object body = new byte[] { 0x01, 0x02, 0x03 };
+        Object body = new byte[] {0x01, 0x02, 0x03};
         when(msgMock.getBody()).thenReturn(body);
 
         String topic = "topic";
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_TOPIC, String.class)).thenReturn(topic);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_TOPIC, String.class))
+                .thenReturn(topic);
         int qos = 1;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_QOS, Integer.class)).thenReturn(qos);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_QOS, Integer.class))
+                .thenReturn(qos);
         int prio = 1;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_PRIORITY, Integer.class)).thenReturn(prio);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_PRIORITY, Integer.class))
+                .thenReturn(prio);
         boolean retain = false;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_RETAIN, Boolean.class)).thenReturn(retain);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_RETAIN, Boolean.class))
+                .thenReturn(retain);
         boolean control = false;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_CONTROL, Boolean.class)).thenReturn(control);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_CONTROL, Boolean.class))
+                .thenReturn(control);
         String deviceId = "id";
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_DEVICEID, String.class)).thenReturn(deviceId);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_DEVICEID, String.class))
+                .thenReturn(deviceId);
 
         when(clientMock.publish(eq(topic), (KuraPayload) any(), eq(qos), eq(retain), eq(prio)))
                 .thenAnswer(invocation -> {
@@ -101,21 +107,27 @@ public class KuraCloudProducerTest {
         Message msgMock = mock(Message.class);
         when(exchangeMock.getIn()).thenReturn(msgMock);
 
-        Object body = new byte[] { 0x01, 0x02, 0x03 };
+        Object body = new byte[] {0x01, 0x02, 0x03};
         when(msgMock.getBody()).thenReturn(body);
 
         String topic = "topic";
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_TOPIC, String.class)).thenReturn(topic);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_TOPIC, String.class))
+                .thenReturn(topic);
         int qos = 1;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_QOS, Integer.class)).thenReturn(qos);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_QOS, Integer.class))
+                .thenReturn(qos);
         int prio = 1;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_PRIORITY, Integer.class)).thenReturn(prio);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_PRIORITY, Integer.class))
+                .thenReturn(prio);
         boolean retain = false;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_RETAIN, Boolean.class)).thenReturn(retain);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_RETAIN, Boolean.class))
+                .thenReturn(retain);
         boolean control = true;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_CONTROL, Boolean.class)).thenReturn(control);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_CONTROL, Boolean.class))
+                .thenReturn(control);
         String deviceId = null;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_DEVICEID, String.class)).thenReturn(deviceId);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_DEVICEID, String.class))
+                .thenReturn(deviceId);
 
         when(clientMock.controlPublish(eq(topic), (KuraPayload) any(), eq(qos), eq(retain), eq(prio)))
                 .thenAnswer(invocation -> {
@@ -127,8 +139,7 @@ public class KuraCloudProducerTest {
 
         kcp.process(exchangeMock);
 
-        verify(clientMock, times(1)).controlPublish(eq(topic), (KuraPayload) any(), eq(qos), eq(retain),
-                eq(prio));
+        verify(clientMock, times(1)).controlPublish(eq(topic), (KuraPayload) any(), eq(qos), eq(retain), eq(prio));
     }
 
     @Test
@@ -145,21 +156,27 @@ public class KuraCloudProducerTest {
 
         Object body = new Object();
         when(msgMock.getBody()).thenReturn(body);
-        byte[] bodyB = new byte[] { 0x01, 0x02, 0x03 };
+        byte[] bodyB = new byte[] {0x01, 0x02, 0x03};
         when(msgMock.getBody(byte[].class)).thenReturn(bodyB);
 
         String topic = "topic";
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_TOPIC, String.class)).thenReturn(topic);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_TOPIC, String.class))
+                .thenReturn(topic);
         int qos = 1;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_QOS, Integer.class)).thenReturn(qos);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_QOS, Integer.class))
+                .thenReturn(qos);
         int prio = 1;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_PRIORITY, Integer.class)).thenReturn(prio);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_PRIORITY, Integer.class))
+                .thenReturn(prio);
         boolean retain = false;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_RETAIN, Boolean.class)).thenReturn(retain);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_RETAIN, Boolean.class))
+                .thenReturn(retain);
         boolean control = false;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_CONTROL, Boolean.class)).thenReturn(control);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_CONTROL, Boolean.class))
+                .thenReturn(control);
         String deviceId = "id";
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_DEVICEID, String.class)).thenReturn(deviceId);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_DEVICEID, String.class))
+                .thenReturn(deviceId);
 
         when(clientMock.publish(eq(topic), (KuraPayload) any(), eq(qos), eq(retain), eq(prio)))
                 .thenAnswer(invocation -> {
@@ -194,17 +211,23 @@ public class KuraCloudProducerTest {
         when(msgMock.getBody(String.class)).thenReturn(bodyS);
 
         String topic = "topic";
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_TOPIC, String.class)).thenReturn(topic);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_TOPIC, String.class))
+                .thenReturn(topic);
         int qos = 1;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_QOS, Integer.class)).thenReturn(qos);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_QOS, Integer.class))
+                .thenReturn(qos);
         int prio = 1;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_PRIORITY, Integer.class)).thenReturn(prio);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_PRIORITY, Integer.class))
+                .thenReturn(prio);
         boolean retain = false;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_RETAIN, Boolean.class)).thenReturn(retain);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_RETAIN, Boolean.class))
+                .thenReturn(retain);
         boolean control = false;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_CONTROL, Boolean.class)).thenReturn(control);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_CONTROL, Boolean.class))
+                .thenReturn(control);
         String deviceId = "id";
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_DEVICEID, String.class)).thenReturn(deviceId);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_DEVICEID, String.class))
+                .thenReturn(deviceId);
 
         when(clientMock.publish(eq(topic), (KuraPayload) any(), eq(qos), eq(retain), eq(prio)))
                 .thenAnswer(invocation -> {
@@ -231,24 +254,30 @@ public class KuraCloudProducerTest {
         Message msgMock = mock(Message.class);
         when(exchangeMock.getIn()).thenReturn(msgMock);
 
-        Object body = new byte[] { 0x01, 0x02, 0x03 };
+        Object body = new byte[] {0x01, 0x02, 0x03};
         when(msgMock.getBody()).thenReturn(body);
 
         String topic = "topic";
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_TOPIC, String.class)).thenReturn(topic);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_TOPIC, String.class))
+                .thenReturn(topic);
         int qos = 1;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_QOS, Integer.class)).thenReturn(qos);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_QOS, Integer.class))
+                .thenReturn(qos);
         int prio = 1;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_PRIORITY, Integer.class)).thenReturn(prio);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_PRIORITY, Integer.class))
+                .thenReturn(prio);
         boolean retain = false;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_RETAIN, Boolean.class)).thenReturn(retain);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_RETAIN, Boolean.class))
+                .thenReturn(retain);
         boolean control = true;
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_CONTROL, Boolean.class)).thenReturn(control);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_CONTROL, Boolean.class))
+                .thenReturn(control);
         String deviceId = "id";
-        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_DEVICEID, String.class)).thenReturn(deviceId);
+        when(msgMock.getHeader(KuraCloudClientConstants.CAMEL_KURA_CLOUD_DEVICEID, String.class))
+                .thenReturn(deviceId);
 
-        when(clientMock.controlPublish(eq(deviceId), eq(topic), (KuraPayload) any(), eq(qos), eq(retain),
-                eq(prio))).thenAnswer(invocation -> {
+        when(clientMock.controlPublish(eq(deviceId), eq(topic), (KuraPayload) any(), eq(qos), eq(retain), eq(prio)))
+                .thenAnswer(invocation -> {
                     Object[] args = invocation.getArguments();
                     KuraPayload payload = (KuraPayload) args[2];
                     assertEquals(body, payload.getBody());
@@ -257,7 +286,7 @@ public class KuraCloudProducerTest {
 
         kcp.process(exchangeMock);
 
-        verify(clientMock, times(1)).controlPublish(eq(deviceId), eq(topic), (KuraPayload) any(), eq(qos),
-                eq(retain), eq(prio));
+        verify(clientMock, times(1))
+                .controlPublish(eq(deviceId), eq(topic), (KuraPayload) any(), eq(qos), eq(retain), eq(prio));
     }
 }

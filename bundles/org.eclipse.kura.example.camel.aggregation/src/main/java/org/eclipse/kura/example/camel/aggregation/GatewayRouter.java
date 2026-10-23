@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2025 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -29,12 +29,13 @@ import org.slf4j.LoggerFactory;
 /**
  * Example of the Kura Camel application.
  */
-@Component(immediate = true, //
+@Component(
+        immediate = true, //
         enabled = true, //
         name = "org.eclipse.kura.example.camel.aggregation.GatewayRouter", //
         configurationPolicy = ConfigurationPolicy.REQUIRE, //
-        service = { ConfigurableComponent.class } //
-)
+        service = {ConfigurableComponent.class} //
+        )
 @Designate(ocd = GatewayRouterOCD.class, factory = true)
 public class GatewayRouter extends AbstractJavaCamelComponent {
 
@@ -43,8 +44,8 @@ public class GatewayRouter extends AbstractJavaCamelComponent {
     private static final int DEFAULT_MINIMUM = 0;
     private static final int DEFAULT_MAXIMUM = 40;
 
-    private RandomTemperatureGenerator randomTemperatureGenerator = new RandomTemperatureGenerator(DEFAULT_MINIMUM,
-            DEFAULT_MAXIMUM);
+    private RandomTemperatureGenerator randomTemperatureGenerator =
+            new RandomTemperatureGenerator(DEFAULT_MINIMUM, DEFAULT_MAXIMUM);
 
     @Override
     public void configure() throws Exception {
@@ -56,8 +57,7 @@ public class GatewayRouter extends AbstractJavaCamelComponent {
     }
 
     @Activate
-    protected void activate(final ComponentContext componentContext, GatewayRouterOCD ocd)
-            throws Exception {
+    protected void activate(final ComponentContext componentContext, GatewayRouterOCD ocd) throws Exception {
         logger.info("Activated");
 
         setProperties(ocd);

@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2020 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -15,7 +15,6 @@ package org.eclipse.kura.camel.component;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Map;
-
 import org.apache.camel.CamelContext;
 import org.eclipse.kura.camel.runner.CamelRunner;
 import org.eclipse.kura.camel.runner.CamelRunner.Builder;
@@ -76,7 +75,6 @@ public abstract class AbstractCamelComponent {
                 public void stopping(final CamelContext camelContext) throws Exception {
                     AbstractCamelComponent.this.stopping();
                 }
-
             });
         }
 
@@ -124,7 +122,6 @@ public abstract class AbstractCamelComponent {
             this.registration.unregister();
             this.registration = null;
         }
-
     }
 
     /**
@@ -137,8 +134,7 @@ public abstract class AbstractCamelComponent {
      * @param properties
      *            the properties provided to the {@link #start(Map)} method
      */
-    protected void customizeBuilder(final Builder builder, final Map<String, Object> properties) {
-    }
+    protected void customizeBuilder(final Builder builder, final Map<String, Object> properties) {}
 
     protected void stop() throws Exception {
         logger.info("Stopping camel router");
@@ -167,8 +163,7 @@ public abstract class AbstractCamelComponent {
      * @param camelContext
      *            the Camel context which is being prepared for starting
      */
-    protected void beforeStart(final CamelContext camelContext) {
-    }
+    protected void beforeStart(final CamelContext camelContext) {}
 
     protected ContextFactory getContextFactory() {
         return CamelRunner.createOsgiFactory(getBundleContext());

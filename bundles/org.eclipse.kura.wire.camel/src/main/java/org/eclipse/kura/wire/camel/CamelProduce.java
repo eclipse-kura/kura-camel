@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2018, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *  heyoulin <heyoulin@gmail.com>
@@ -22,7 +22,16 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Component(name = "org.eclipse.kura.wire.camel.CamelProduce", immediate = true, configurationPolicy = ConfigurationPolicy.REQUIRE, service = { org.eclipse.kura.configuration.ConfigurableComponent.class, org.eclipse.kura.wire.WireReceiver.class, org.eclipse.kura.wire.WireComponent.class, org.osgi.service.wireadmin.Consumer.class })
+@Component(
+        name = "org.eclipse.kura.wire.camel.CamelProduce",
+        immediate = true,
+        configurationPolicy = ConfigurationPolicy.REQUIRE,
+        service = {
+            org.eclipse.kura.configuration.ConfigurableComponent.class,
+            org.eclipse.kura.wire.WireReceiver.class,
+            org.eclipse.kura.wire.WireComponent.class,
+            org.osgi.service.wireadmin.Consumer.class
+        })
 @Designate(ocd = CamelProduceOptions.class, factory = true)
 public class CamelProduce extends AbstractReceiverWireComponent {
 
@@ -41,7 +50,6 @@ public class CamelProduce extends AbstractReceiverWireComponent {
         } catch (Exception e) {
             logger.warn("Failed to bind Camel context", e);
         }
-
     }
 
     @Override

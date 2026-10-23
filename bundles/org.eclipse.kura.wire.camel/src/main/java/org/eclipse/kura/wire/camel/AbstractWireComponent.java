@@ -1,19 +1,18 @@
 /*******************************************************************************
  * Copyright (c) 2018, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
 package org.eclipse.kura.wire.camel;
 
 import java.util.Map;
-
 import org.eclipse.kura.configuration.ConfigurableComponent;
 import org.eclipse.kura.wire.WireComponent;
 import org.eclipse.kura.wire.WireEnvelope;
@@ -50,14 +49,14 @@ public abstract class AbstractWireComponent implements WireComponent, Configurab
     protected synchronized void activate(final ComponentContext componentContext, final Map<String, ?> properties)
             throws Exception {
         if (this.wireSupport == null) {
-            this.wireSupport = this.wireHelperService.newWireSupport(this,
-                    (ServiceReference<WireComponent>) componentContext.getServiceReference());
+            this.wireSupport = this.wireHelperService.newWireSupport(
+                    this, (ServiceReference<WireComponent>) componentContext.getServiceReference());
         }
     }
 
     @Modified
-    protected void modified(final ComponentContext componentContext, final Map<String, ?> properties) throws Exception {
-    }
+    protected void modified(final ComponentContext componentContext, final Map<String, ?> properties)
+            throws Exception {}
 
     @Deactivate
     protected synchronized void deactivate() {

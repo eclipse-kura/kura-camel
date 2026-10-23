@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -18,7 +18,6 @@ import static org.junit.Assert.assertNotNull;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.eclipse.kura.camel.test.component.AbstractRouterTest;
 import org.eclipse.kura.message.KuraPayload;
 import org.eclipse.kura.type.TypedValue;
@@ -45,11 +44,10 @@ public class TypeConverterTest extends AbstractRouterTest {
     @Test
     public void testRecordToMap() {
 
-        final Map<?, ?> result = convertTo(Map.class, new WireRecord[] { createDefaultRecord() });
+        final Map<?, ?> result = convertTo(Map.class, new WireRecord[] {createDefaultRecord()});
 
         assertNotNull(result);
         assertEquals(createDefaultRecordExpected(), result);
-
     }
 
     @Test
@@ -59,7 +57,6 @@ public class TypeConverterTest extends AbstractRouterTest {
 
         assertNotNull(result);
         assertEquals(createDefaultRecordExpected(), result);
-
     }
 
     private WireRecord createDefaultRecord() {
@@ -70,7 +67,6 @@ public class TypeConverterTest extends AbstractRouterTest {
         values.put("BAR", TypedValues.newTypedValue(42));
 
         return new WireRecord(values);
-
     }
 
     private Map<String, Object> createDefaultRecordExpected() {
@@ -81,6 +77,5 @@ public class TypeConverterTest extends AbstractRouterTest {
         expected.put("BAR", 42);
 
         return expected;
-
     }
 }

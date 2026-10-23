@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2018, 2022 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *  heyoulin <heyoulin@gmail.com>
@@ -15,7 +15,6 @@ package org.eclipse.kura.wire.camel;
 
 import java.util.Map;
 import java.util.function.Consumer;
-
 import org.apache.camel.CamelContext;
 import org.eclipse.kura.camel.component.Configuration;
 import org.eclipse.kura.util.osgi.FilterUtil;
@@ -35,8 +34,8 @@ public abstract class AbstractCamelWireComponent extends AbstractWireComponent {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractCamelWireComponent.class);
 
-    protected final BundleContext context = FrameworkUtil.getBundle(AbstractCamelWireComponent.class)
-            .getBundleContext();
+    protected final BundleContext context =
+            FrameworkUtil.getBundle(AbstractCamelWireComponent.class).getBundleContext();
 
     private SingleServiceTracker<CamelContext> tracker;
 
@@ -48,7 +47,6 @@ public abstract class AbstractCamelWireComponent extends AbstractWireComponent {
             this.tracker.close();
             this.tracker = null;
         }
-
     }
 
     protected void openContextTracker(final String contextId) throws InvalidSyntaxException {
@@ -59,15 +57,14 @@ public abstract class AbstractCamelWireComponent extends AbstractWireComponent {
             return;
         }
 
-        final Filter filter = this.context
-                .createFilter(FilterUtil.simpleFilter(CamelContext.class, "camel.context.id", contextId));
+        final Filter filter =
+                this.context.createFilter(FilterUtil.simpleFilter(CamelContext.class, "camel.context.id", contextId));
 
         this.tracker = new SingleServiceTracker<>(this.context, filter, this::bindContext);
         this.tracker.open();
     }
 
-    protected void bindContext(final CamelContext context) {
-    }
+    protected void bindContext(final CamelContext context) {}
 
     @Override
     protected void activate(final ComponentContext componentContext, final Map<String, ?> properties) throws Exception {

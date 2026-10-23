@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *  Eurotech
@@ -33,7 +33,10 @@ import org.slf4j.LoggerFactory;
  */
 // The annotation is fully qualified on purpose: the simple name Component is already
 // taken by org.apache.camel.Component, which this class returns.
-@org.osgi.service.component.annotations.Component(name = "org.eclipse.kura.camel.KuraCloudComponentResolver", service = ComponentResolver.class, properties = "OSGI-INF/kuraCloudResolver.properties")
+@org.osgi.service.component.annotations.Component(
+        name = "org.eclipse.kura.camel.KuraCloudComponentResolver",
+        service = ComponentResolver.class,
+        properties = "OSGI-INF/kuraCloudResolver.properties")
 public class KuraCloudComponentResolver implements ComponentResolver {
 
     private static final Logger logger = LoggerFactory.getLogger(KuraCloudComponentResolver.class);
@@ -48,13 +51,12 @@ public class KuraCloudComponentResolver implements ComponentResolver {
     @Override
     public Component resolveComponent(final String name, final CamelContext context) throws Exception {
         switch (name) {
-        case KuraCloudComponent.DEFAULT_NAME:
-            final KuraCloudComponent component = new KuraCloudComponent(context, this.cloudService);
-            logger.debug("Created new cloud component: {}", component);
-            return component;
-        default:
+            case KuraCloudComponent.DEFAULT_NAME:
+                final KuraCloudComponent component = new KuraCloudComponent(context, this.cloudService);
+                logger.debug("Created new cloud component: {}", component);
+                return component;
+            default:
         }
         return null;
     }
-
 }

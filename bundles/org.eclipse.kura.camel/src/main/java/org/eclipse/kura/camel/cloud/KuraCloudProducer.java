@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2011, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -42,14 +42,22 @@ public class KuraCloudProducer extends DefaultProducer {
     public void process(Exchange exchange) throws Exception {
         Message in = exchange.getIn();
 
-        String topic = firstNotNull(in.getHeader(CAMEL_KURA_CLOUD_TOPIC, String.class), getEndpoint().getTopic());
-        int qos = firstNotNull(in.getHeader(CAMEL_KURA_CLOUD_QOS, Integer.class), getEndpoint().getQos());
-        int priority = firstNotNull(in.getHeader(CAMEL_KURA_CLOUD_PRIORITY, Integer.class),
+        String topic = firstNotNull(
+                in.getHeader(CAMEL_KURA_CLOUD_TOPIC, String.class),
+                getEndpoint().getTopic());
+        int qos = firstNotNull(
+                in.getHeader(CAMEL_KURA_CLOUD_QOS, Integer.class), getEndpoint().getQos());
+        int priority = firstNotNull(
+                in.getHeader(CAMEL_KURA_CLOUD_PRIORITY, Integer.class),
                 getEndpoint().getPriority());
-        boolean retain = firstNotNull(in.getHeader(CAMEL_KURA_CLOUD_RETAIN, Boolean.class), getEndpoint().isRetain());
-        boolean control = firstNotNull(in.getHeader(CAMEL_KURA_CLOUD_CONTROL, Boolean.class),
+        boolean retain = firstNotNull(
+                in.getHeader(CAMEL_KURA_CLOUD_RETAIN, Boolean.class),
+                getEndpoint().isRetain());
+        boolean control = firstNotNull(
+                in.getHeader(CAMEL_KURA_CLOUD_CONTROL, Boolean.class),
                 getEndpoint().isControl());
-        String deviceId = firstNotNull(in.getHeader(CAMEL_KURA_CLOUD_DEVICEID, String.class),
+        String deviceId = firstNotNull(
+                in.getHeader(CAMEL_KURA_CLOUD_DEVICEID, String.class),
                 getEndpoint().getDeviceId());
 
         Object body = in.getBody();
@@ -95,5 +103,4 @@ public class KuraCloudProducer extends DefaultProducer {
     private static <T> T firstNotNull(T first, T second) {
         return first != null ? first : second;
     }
-
 }

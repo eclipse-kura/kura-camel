@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2011, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -26,8 +26,11 @@ import org.slf4j.LoggerFactory;
 /**
  * Endpoint implementation for {@link KuraCloudComponent}
  */
-@UriEndpoint(scheme = "kura-cloud", title = "Kura Cloud", category = { Category.IOT,
-        Category.CLOUD }, syntax = "kura-cloud:applicationId/appTopic")
+@UriEndpoint(
+        scheme = "kura-cloud",
+        title = "Kura Cloud",
+        category = {Category.IOT, Category.CLOUD},
+        syntax = "kura-cloud:applicationId/appTopic")
 public class KuraCloudEndpoint extends DefaultEndpoint {
 
     private static final Logger logger = LoggerFactory.getLogger(KuraCloudEndpoint.class);

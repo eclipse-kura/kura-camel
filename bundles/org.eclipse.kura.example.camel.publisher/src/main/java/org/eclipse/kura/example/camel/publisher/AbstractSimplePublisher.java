@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2025 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *  Eurotech
@@ -44,8 +44,7 @@ public abstract class AbstractSimplePublisher implements ConfigurableComponent {
     protected static final RouteBuilder NO_ROUTES = new RouteBuilder() {
 
         @Override
-        public void configure() throws Exception {
-        }
+        public void configure() throws Exception {}
     };
 
     private CamelRunner camel;
@@ -136,7 +135,8 @@ public abstract class AbstractSimplePublisher implements ConfigurableComponent {
      *                                illegal syntax
      */
     private CamelRunner createCamelRunner(final String cloudServiceFilter) throws InvalidSyntaxException {
-        final BundleContext ctx = FrameworkUtil.getBundle(AbstractSimplePublisher.class).getBundleContext();
+        final BundleContext ctx =
+                FrameworkUtil.getBundle(AbstractSimplePublisher.class).getBundleContext();
 
         this.cloudServiceFilter = cloudServiceFilter;
 
@@ -146,8 +146,8 @@ public abstract class AbstractSimplePublisher implements ConfigurableComponent {
 
         // add service dependency
 
-        builder.dependOn(ctx, FrameworkUtil.createFilter(cloudServiceFilter),
-                new ServiceConsumer<CloudService, CamelContext>() {
+        builder.dependOn(
+                ctx, FrameworkUtil.createFilter(cloudServiceFilter), new ServiceConsumer<CloudService, CamelContext>() {
 
                     @Override
                     public void consume(final CamelContext context, final CloudService service) {
@@ -168,8 +168,9 @@ public abstract class AbstractSimplePublisher implements ConfigurableComponent {
      * @return the OSGi filter selecting the cloud service instance
      */
     private static String makeCloudServiceFilter(ExampleCamelPublisherOCD ocd) {
-        return String.format("(&(%s=%s)(kura.service.pid=%s))", Constants.OBJECTCLASS,
-                CloudService.class.getName(), ocd.cloud_service_pid());
+        return String.format(
+                "(&(%s=%s)(kura.service.pid=%s))",
+                Constants.OBJECTCLASS, CloudService.class.getName(), ocd.cloud_service_pid());
     }
 
     /**

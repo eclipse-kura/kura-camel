@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2020 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -14,7 +14,6 @@ package org.eclipse.kura.camel.runner;
 
 import java.util.Objects;
 import java.util.TreeMap;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
 import org.osgi.framework.ServiceReference;
@@ -42,8 +41,7 @@ public class DefaultServiceDependency<T, C> implements ServiceDependency<T, C> {
             }
 
             @Override
-            public void modifiedService(ServiceReference<T> reference, T service) {
-            }
+            public void modifiedService(ServiceReference<T> reference, T service) {}
 
             @Override
             public void removedService(ServiceReference<T> reference, T service) {
@@ -51,8 +49,8 @@ public class DefaultServiceDependency<T, C> implements ServiceDependency<T, C> {
             }
         };
 
-        public HandleImpl(BundleContext bundleContext, Filter filter, Runnable runnable,
-                final ServiceConsumer<T, C> consumer) {
+        public HandleImpl(
+                BundleContext bundleContext, Filter filter, Runnable runnable, final ServiceConsumer<T, C> consumer) {
             this.bundleContext = bundleContext;
             this.consumer = consumer;
             this.runnable = runnable;
@@ -101,7 +99,6 @@ public class DefaultServiceDependency<T, C> implements ServiceDependency<T, C> {
         public String toString() {
             return String.format("[Service - filter: %s]", DefaultServiceDependency.this.filter);
         }
-
     }
 
     private final BundleContext bundleContext;
@@ -110,8 +107,8 @@ public class DefaultServiceDependency<T, C> implements ServiceDependency<T, C> {
 
     private final ServiceConsumer<T, C> consumer;
 
-    public DefaultServiceDependency(final BundleContext bundleContext, final Filter filter,
-            final ServiceConsumer<T, C> consumer) {
+    public DefaultServiceDependency(
+            final BundleContext bundleContext, final Filter filter, final ServiceConsumer<T, C> consumer) {
         Objects.requireNonNull(bundleContext);
         Objects.requireNonNull(filter);
 
@@ -125,7 +122,5 @@ public class DefaultServiceDependency<T, C> implements ServiceDependency<T, C> {
         Objects.requireNonNull(runnable);
 
         return new HandleImpl(this.bundleContext, this.filter, runnable, this.consumer);
-
     }
-
 }

@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2020 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -18,7 +18,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.camel.Converter;
 import org.eclipse.kura.message.KuraPayload;
 import org.eclipse.kura.type.TypedValue;
@@ -30,8 +29,7 @@ public final class TypeConverter {
 
     private static final WireRecord[] EMPTY_RECORDS = new WireRecord[0];
 
-    private TypeConverter() {
-    }
+    private TypeConverter() {}
 
     @Converter
     public static KuraPayload fromMap(final Map<String, ?> data) {
@@ -56,7 +54,7 @@ public final class TypeConverter {
 
     @Converter
     public static WireRecord[] recordsFromRecord(final WireRecord record) {
-        return new WireRecord[] { record };
+        return new WireRecord[] {record};
     }
 
     @Converter
@@ -94,12 +92,12 @@ public final class TypeConverter {
 
         final Map<Object, Object> result = new HashMap<>(record.getProperties().size());
 
-        for (final Map.Entry<String, TypedValue<?>> entry : record.getProperties().entrySet()) {
+        for (final Map.Entry<String, TypedValue<?>> entry :
+                record.getProperties().entrySet()) {
             result.put(entry.getKey(), entry.getValue().getValue());
         }
 
         return result;
-
     }
 
     @Converter
@@ -108,12 +106,12 @@ public final class TypeConverter {
         final Map<Object, Object> result = new HashMap<>();
 
         for (final WireRecord record : records) {
-            for (final Map.Entry<String, TypedValue<?>> entry : record.getProperties().entrySet()) {
+            for (final Map.Entry<String, TypedValue<?>> entry :
+                    record.getProperties().entrySet()) {
                 result.put(entry.getKey(), entry.getValue().getValue());
             }
         }
 
         return result;
-
     }
 }

@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2017, 2026 Eurotech and/or its affiliates and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  ******************************************************************************/
@@ -26,7 +26,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
 import org.apache.camel.impl.DefaultCamelContext;
@@ -154,8 +153,7 @@ public class KuraCloudComponentTest {
 
             KuraCloudComponent kcc = new KuraCloudComponent(context);
 
-            Endpoint endpoint = kcc.createEndpoint("kura-cloud:app/topic", "app/topic",
-                    new HashMap<String, Object>());
+            Endpoint endpoint = kcc.createEndpoint("kura-cloud:app/topic", "app/topic", new HashMap<String, Object>());
 
             kcc.start();
             endpoint.start();
@@ -187,5 +185,4 @@ public class KuraCloudComponentTest {
             assertEquals(uri, endpoint.getEndpointUri());
         }
     }
-
 }

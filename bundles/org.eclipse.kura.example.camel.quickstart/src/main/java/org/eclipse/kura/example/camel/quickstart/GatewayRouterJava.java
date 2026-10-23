@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *  Eurotech
@@ -18,7 +18,6 @@ import static org.eclipse.kura.camel.component.Configuration.asInt;
 
 import java.security.SecureRandom;
 import java.util.Map;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -47,7 +46,11 @@ import org.slf4j.LoggerFactory;
 /**
  * Example of a Kura Camel application based on the Camel Java DSL
  */
-@Component(name = "org.eclipse.kura.example.camel.quickstart.GatewayRouterJava", immediate = true, configurationPolicy = ConfigurationPolicy.REQUIRE, service = { ConfigurableComponent.class })
+@Component(
+        name = "org.eclipse.kura.example.camel.quickstart.GatewayRouterJava",
+        immediate = true,
+        configurationPolicy = ConfigurationPolicy.REQUIRE,
+        service = {ConfigurableComponent.class})
 @Designate(ocd = GatewayRouterJavaOCD.class)
 public class GatewayRouterJava implements ConfigurableComponent {
 
@@ -123,7 +126,8 @@ public class GatewayRouterJava implements ConfigurableComponent {
     }
 
     private CamelRunner createCamelRunner(final String fullFilter) throws InvalidSyntaxException {
-        final BundleContext ctx = FrameworkUtil.getBundle(GatewayRouterJava.class).getBundleContext();
+        final BundleContext ctx =
+                FrameworkUtil.getBundle(GatewayRouterJava.class).getBundleContext();
 
         this.cloudServiceFilter = fullFilter;
 
@@ -133,8 +137,8 @@ public class GatewayRouterJava implements ConfigurableComponent {
 
         // add service dependency
 
-        builder.dependOn(ctx, FrameworkUtil.createFilter(fullFilter),
-                new ServiceConsumer<CloudService, CamelContext>() {
+        builder.dependOn(
+                ctx, FrameworkUtil.createFilter(fullFilter), new ServiceConsumer<CloudService, CamelContext>() {
 
                     @Override
                     public void consume(final CamelContext context, final CloudService service) {
@@ -155,10 +159,10 @@ public class GatewayRouterJava implements ConfigurableComponent {
      * @return the OSGi filter selecting the cloud service instance
      */
     private static String makeCloudServiceFilter(final Map<String, Object> properties) {
-        final String filterPid = Configuration.asStringNotEmpty(properties, "cloudService",
-                "org.eclipse.kura.cloud.CloudService");
-        final String fullFilter = String.format("(&(%s=%s)(kura.service.pid=%s))", Constants.OBJECTCLASS,
-                CloudService.class.getName(), filterPid);
+        final String filterPid =
+                Configuration.asStringNotEmpty(properties, "cloudService", "org.eclipse.kura.cloud.CloudService");
+        final String fullFilter = String.format(
+                "(&(%s=%s)(kura.service.pid=%s))", Constants.OBJECTCLASS, CloudService.class.getName(), filterPid);
         return fullFilter;
     }
 
@@ -181,34 +185,41 @@ public class GatewayRouterJava implements ConfigurableComponent {
 
             @Override
             public void configure() throws Exception {
-                from("timer://heartbeat").process(new Processor() {
+                from("timer://heartbeat")
+                        .process(new Processor() {
 
-                    @Override
-                    public void process(final Exchange exchange) throws Exception {
-                        final int value = random.nextInt(maxTemp);
-                        final Map<String, Integer> data = singletonMap("temperature", value);
-                        exchange.getIn().setBody(data);
-                    }
-                }) //
+                            @Override
+                            public void process(final Exchange exchange) throws Exception {
+                                final int value = random.nextInt(maxTemp);
+                                final Map<String, Integer> data = singletonMap("temperature", value);
+                                exchange.getIn().setBody(data);
+                            }
+                        }) //
                         .convertBodyTo(KuraPayload.class) //
-                        .to("cloud:myapp/topic").id("temp-heartbeat");
+                        .to("cloud:myapp/topic")
+                        .id("temp-heartbeat");
 
                 from("cloud:myapp/topic") //
                         .choice() //
-                        .when(simple("${body.metrics()[temperature]} < 10")).to("log:lessThanTen") //
-                        .when(simple("${body.metrics()[temperature]} == 10")).to("log:equalToTen") //
-                        .otherwise().to("log:greaterThanTen") //
+                        .when(simple("${body.metrics()[temperature]} < 10"))
+                        .to("log:lessThanTen") //
+                        .when(simple("${body.metrics()[temperature]} == 10"))
+                        .to("log:equalToTen") //
+                        .otherwise()
+                        .to("log:greaterThanTen") //
                         .id("test-log");
 
-                from("timer://xmltopic").process(new Processor() {
+                from("timer://xmltopic")
+                        .process(new Processor() {
 
-                    @Override
-                    public void process(final Exchange exchange) throws Exception {
-                        final KuraPayload payload = new KuraPayload();
-                        payload.addMetric("temperature", random.nextInt(20));
-                        exchange.getIn().setBody(payload);
-                    }
-                }).to("cloud:myapp/xmltopic");
+                            @Override
+                            public void process(final Exchange exchange) throws Exception {
+                                final KuraPayload payload = new KuraPayload();
+                                payload.addMetric("temperature", random.nextInt(20));
+                                exchange.getIn().setBody(payload);
+                            }
+                        })
+                        .to("cloud:myapp/xmltopic");
             }
         };
     }
