@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2018, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -26,7 +26,16 @@ import org.osgi.service.metatype.annotations.Designate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Component(name = "org.eclipse.kura.wire.camel.CamelConsume", immediate = true, configurationPolicy = ConfigurationPolicy.REQUIRE, service = { org.eclipse.kura.configuration.ConfigurableComponent.class, org.eclipse.kura.wire.WireEmitter.class, org.eclipse.kura.wire.WireComponent.class, org.osgi.service.wireadmin.Producer.class })
+@Component(
+        name = "org.eclipse.kura.wire.camel.CamelConsume",
+        immediate = true,
+        configurationPolicy = ConfigurationPolicy.REQUIRE,
+        service = {
+            org.eclipse.kura.configuration.ConfigurableComponent.class,
+            org.eclipse.kura.wire.WireEmitter.class,
+            org.eclipse.kura.wire.WireComponent.class,
+            org.osgi.service.wireadmin.Producer.class
+        })
 @Designate(ocd = CamelConsumeOptions.class, factory = true)
 public class CamelConsume extends AbstractEndpointWireComponent implements WireEmitter {
 
@@ -47,7 +56,6 @@ public class CamelConsume extends AbstractEndpointWireComponent implements WireE
         } catch (Exception e) {
             logger.warn("Failed to bind Camel context", e);
         }
-
     }
 
     @Override
@@ -79,7 +87,6 @@ public class CamelConsume extends AbstractEndpointWireComponent implements WireE
             this.consumer = this.endpoint.createConsumer(exchange -> processMessage(exchange.getIn()));
             this.consumer.start();
         }
-
     }
 
     private void stopConsumer() throws Exception {

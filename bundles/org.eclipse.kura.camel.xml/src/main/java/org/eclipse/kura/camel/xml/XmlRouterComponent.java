@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -24,10 +24,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.kura.camel.bean.PayloadFactory;
 import org.eclipse.kura.camel.component.AbstractXmlCamelComponent;
-import org.eclipse.kura.camel.component.Configuration;
 import org.eclipse.kura.camel.runner.CamelRunner.Builder;
 import org.eclipse.kura.cloud.CloudService;
 import org.osgi.framework.BundleContext;
@@ -47,7 +45,11 @@ import org.slf4j.LoggerFactory;
  *
  * @noextend This class is not intended to be extended
  */
-@Component(name = "org.eclipse.kura.camel.xml.XmlRouterComponent", immediate = true, configurationPolicy = ConfigurationPolicy.REQUIRE, service = { org.eclipse.kura.configuration.ConfigurableComponent.class })
+@Component(
+        name = "org.eclipse.kura.camel.xml.XmlRouterComponent",
+        immediate = true,
+        configurationPolicy = ConfigurationPolicy.REQUIRE,
+        service = {org.eclipse.kura.configuration.ConfigurableComponent.class})
 @Designate(ocd = XmlRouterComponentOptions.class, factory = true)
 public class XmlRouterComponent extends AbstractXmlCamelComponent {
 
@@ -74,7 +76,6 @@ public class XmlRouterComponent extends AbstractXmlCamelComponent {
     public void deactivate(final BundleContext context) throws Exception {
         super.deactivate(context);
     }
-
 
     private static final String TOKEN_PATTERN = "\\s*,\\s*";
 
@@ -112,8 +113,8 @@ public class XmlRouterComponent extends AbstractXmlCamelComponent {
         final Set<String> newRequiredComponents = parseRequirements(asString(properties, COMPONENT_PREREQS));
         final Set<String> newRequiredLanguages = parseRequirements(asString(properties, LANGUAGE_PREREQS));
 
-        final Map<String, String> cloudServiceRequirementsTemp = parseCloudServiceRequirements(
-                asString(properties, CLOUD_SERVICE_PREREQS));
+        final Map<String, String> cloudServiceRequirementsTemp =
+                parseCloudServiceRequirements(asString(properties, CLOUD_SERVICE_PREREQS));
 
         // set component requirements
 
@@ -137,8 +138,9 @@ public class XmlRouterComponent extends AbstractXmlCamelComponent {
             if (entry.getValue().startsWith("(")) {
                 filter = entry.getValue();
             } else {
-                filter = format("(&(%s=%s)(kura.service.pid=%s))", Constants.OBJECTCLASS, CloudService.class.getName(),
-                        entry.getValue());
+                filter = format(
+                        "(&(%s=%s)(kura.service.pid=%s))",
+                        Constants.OBJECTCLASS, CloudService.class.getName(), entry.getValue());
             }
             builder.cloudService(null, filter, Builder.addAsCloudComponent(entry.getKey()));
         }
@@ -165,8 +167,8 @@ public class XmlRouterComponent extends AbstractXmlCamelComponent {
 
         final Set<String> newRequiredComponents = parseRequirements(asString(properties, COMPONENT_PREREQS));
 
-        final Map<String, String> cloudServiceRequirementsTemp = parseCloudServiceRequirements(
-                asString(properties, CLOUD_SERVICE_PREREQS));
+        final Map<String, String> cloudServiceRequirementsTemp =
+                parseCloudServiceRequirements(asString(properties, CLOUD_SERVICE_PREREQS));
 
         if (this.disableJmx != disableJmxTemp) {
             logger.debug("Require restart due to '{}' change", DISABLE_JMX);
@@ -225,5 +227,4 @@ public class XmlRouterComponent extends AbstractXmlCamelComponent {
     protected BundleContext getBundleContext() {
         return this.bundleContext;
     }
-
 }

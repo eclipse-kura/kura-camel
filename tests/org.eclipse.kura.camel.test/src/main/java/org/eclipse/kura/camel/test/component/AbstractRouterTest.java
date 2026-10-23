@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -17,7 +17,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.Route;
 import org.apache.camel.component.mock.MockEndpoint;
@@ -37,8 +36,9 @@ public abstract class AbstractRouterTest {
     @Before
     public void before() throws Exception {
         this.router = createRouter();
-        this.router.activate(FrameworkUtil.getBundle(AbstractRouterTest.class).getBundleContext(),
-                Collections.<String, Object> emptyMap());
+        this.router.activate(
+                FrameworkUtil.getBundle(AbstractRouterTest.class).getBundleContext(),
+                Collections.<String, Object>emptyMap());
     }
 
     @After
@@ -55,7 +55,7 @@ public abstract class AbstractRouterTest {
     }
 
     protected static Map<String, Object> xmlProperties(String resourceName) {
-        return Collections.<String, Object> singletonMap(XML_PROPERTY, readStringResource(resourceName));
+        return Collections.<String, Object>singletonMap(XML_PROPERTY, readStringResource(resourceName));
     }
 
     protected static TestableXmlCamelComponent createRouter() {
@@ -63,8 +63,8 @@ public abstract class AbstractRouterTest {
     }
 
     protected static String readStringResource(String resourceName) {
-        try (InputStreamReader reader = new InputStreamReader(RouterTest.class.getResourceAsStream(resourceName),
-                StandardCharsets.UTF_8)) {
+        try (InputStreamReader reader =
+                new InputStreamReader(RouterTest.class.getResourceAsStream(resourceName), StandardCharsets.UTF_8)) {
             return IOUtils.toString(reader);
         } catch (IOException e) {
             throw new RuntimeException(e);

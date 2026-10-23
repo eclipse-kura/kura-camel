@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -21,7 +21,6 @@ import static org.osgi.framework.Constants.SERVICE_PID;
 import java.io.ByteArrayInputStream;
 import java.util.Dictionary;
 import java.util.Hashtable;
-
 import org.apache.camel.ServiceStatus;
 import org.apache.camel.karaf.core.OsgiBeanRepository;
 import org.apache.camel.karaf.core.OsgiDefaultCamelContext;
@@ -62,8 +61,8 @@ public class XmlCamelCloudService {
 
     private ServiceRegistration<CloudService> handle;
 
-    public XmlCamelCloudService(final BundleContext context, final String pid,
-            final ServiceConfiguration configuration) {
+    public XmlCamelCloudService(
+            final BundleContext context, final String pid, final ServiceConfiguration configuration) {
         this.context = context;
         this.pid = pid;
         this.configuration = configuration;
@@ -96,9 +95,9 @@ public class XmlCamelCloudService {
         this.router.addComponent("kura-cloud", cloudComponent);
 
         final RoutesDefinition routesDefinition = new ModelParser(
-                new ByteArrayInputStream(this.configuration.getXml().getBytes())).parseRoutesDefinition()
-                        .orElseThrow(() -> new IllegalArgumentException(
-                                "The route definition contains no <routes> element"));
+                        new ByteArrayInputStream(this.configuration.getXml().getBytes()))
+                .parseRoutesDefinition()
+                .orElseThrow(() -> new IllegalArgumentException("The route definition contains no <routes> element"));
         this.router.addRouteDefinitions(routesDefinition.getRoutes());
 
         // start
@@ -133,5 +132,4 @@ public class XmlCamelCloudService {
             this.router = null;
         }
     }
-
 }

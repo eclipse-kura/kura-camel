@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -18,7 +18,6 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.function.Supplier;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.model.RoutesDefinition;
 import org.apache.camel.xml.in.ModelParser;
@@ -47,9 +46,10 @@ public class XmlRoutesProvider extends AbstractRoutesProvider {
          * one declaring the historical http://camel.apache.org/schema/spring namespace.
          */
         try (final InputStream in = this.inputStreamProvider.get()) {
-            return new ModelParser(in).parseRoutesDefinition()
-                    .orElseThrow(() -> new IllegalArgumentException(
-                            "The route definition contains no <routes> element"));
+            return new ModelParser(in)
+                    .parseRoutesDefinition()
+                    .orElseThrow(
+                            () -> new IllegalArgumentException("The route definition contains no <routes> element"));
         }
     }
 

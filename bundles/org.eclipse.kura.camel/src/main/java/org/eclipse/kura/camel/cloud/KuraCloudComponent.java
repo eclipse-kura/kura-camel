@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2011, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -15,7 +15,6 @@ package org.eclipse.kura.camel.cloud;
 import static org.eclipse.kura.camel.internal.utils.KuraServiceFactory.retrieveService;
 
 import java.util.Map;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
 import org.apache.camel.support.DefaultComponent;
@@ -102,7 +101,8 @@ public class KuraCloudComponent extends DefaultComponent {
 
     protected CloudService lookupCloudService() {
         if (this.cloudService == null) {
-            this.cloudService = retrieveService(CloudService.class, getCamelContext().getRegistry());
+            this.cloudService =
+                    retrieveService(CloudService.class, getCamelContext().getRegistry());
         }
         return this.cloudService;
     }

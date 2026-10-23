@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat Inc and others
- * 
+ * Copyright (c) 2016, 2026 Red Hat Inc and others
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -19,8 +19,7 @@ import java.util.Map;
  */
 public final class Configuration {
 
-    private Configuration() {
-    }
+    private Configuration() {}
 
     /**
      * Get a string value, defaulting to {@code null}
@@ -74,7 +73,8 @@ public final class Configuration {
      *            the default value, may be {@code null}
      * @return the string value or the default value
      */
-    public static String asStringNotEmpty(final Map<String, ?> properties, final String key, final String defaultValue) {
+    public static String asStringNotEmpty(
+            final Map<String, ?> properties, final String key, final String defaultValue) {
         if (properties == null) {
             return defaultValue;
         }

@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat Inc and others
- * 
+ * Copyright (c) 2016, 2026 Red Hat Inc and others
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import org.eclipse.kura.camel.runner.DependencyRunner;
 import org.eclipse.kura.camel.runner.DependencyRunner.Listener;
 import org.eclipse.kura.camel.runner.ServiceDependency;
@@ -111,7 +110,6 @@ public class DependencyRunnerTest {
             public void consume(Map<String, Object> context) {
                 context.put(this.name, this.service);
             }
-
         }
 
         private final String name;
@@ -147,8 +145,8 @@ public class DependencyRunnerTest {
     @Test
     public void testEmpty1() {
         final MockListener listener = new MockListener();
-        final DependencyRunner<Map<String, Object>> runner = new DependencyRunner<>(
-                Collections.<ServiceDependency<?, Map<String, Object>>> emptyList(), listener);
+        final DependencyRunner<Map<String, Object>> runner =
+                new DependencyRunner<>(Collections.<ServiceDependency<?, Map<String, Object>>>emptyList(), listener);
 
         // no events yet
 
@@ -157,7 +155,7 @@ public class DependencyRunnerTest {
         // start
 
         runner.start();
-        expectEvent(listener, Collections.<String, Object> emptyMap());
+        expectEvent(listener, Collections.<String, Object>emptyMap());
 
         // stop
 

@@ -1,23 +1,21 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2020 Red Hat Inc and others
- * 
+ * Copyright (c) 2016, 2026 Red Hat Inc and others
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
-
 package org.eclipse.kura.camel.component;
 
 import static org.eclipse.kura.camel.component.Configuration.asString;
 
 import java.util.Map;
 import java.util.Objects;
-
 import org.eclipse.kura.configuration.ConfigurableComponent;
 import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
@@ -100,5 +98,4 @@ public abstract class AbstractXmlCamelComponent extends AbstractCamelComponent i
     protected boolean isRestartNeeded(final Map<String, Object> properties) {
         return false;
     }
-
 }

@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Red Hat Inc and others
- * 
+ * Copyright (c) 2016, 2026 Red Hat Inc and others
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *  Eurotech
@@ -18,7 +18,6 @@ import static java.lang.Math.round;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
 import org.eclipse.kura.configuration.ConfigurableComponent;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
@@ -27,12 +26,13 @@ import org.osgi.service.metatype.annotations.Designate;
 /**
  * An example publisher based on Apache Camel
  */
-@Component(immediate = true, //
+@Component(
+        immediate = true, //
         configurationPolicy = ConfigurationPolicy.REQUIRE, //
         name = "org.eclipse.kura.example.camel.publisher.ExampleCamelPublisher", //
-        service = { ConfigurableComponent.class }, //
+        service = {ConfigurableComponent.class}, //
         enabled = true //
-)
+        )
 @Designate(ocd = ExampleCamelPublisherOCD.class, factory = false)
 public class ExampleCamelPublisher
         extends AbstractSimplePeriodicPublisher<ExampleCamelPublisher.PublisherConfiguration> {
@@ -50,8 +50,13 @@ public class ExampleCamelPublisher
         private final double offsetDouble;
         private final int periodDouble;
 
-        private PublisherConfiguration(final int ampInt, final int offsetInt, final int periodInt,
-                final double ampDouble, final double offsetDouble, final int periodDouble) {
+        private PublisherConfiguration(
+                final int ampInt,
+                final int offsetInt,
+                final int periodInt,
+                final double ampDouble,
+                final double offsetDouble,
+                final int periodDouble) {
 
             this.ampInt = ampInt;
             this.offsetInt = offsetInt;
@@ -126,10 +131,15 @@ public class ExampleCamelPublisher
 
         // fill with sine curves
 
-        result.put("intValue",
+        result.put(
+                "intValue",
                 round(makeSine(configuration.getAmpInt(), configuration.getOffsetInt(), configuration.getPeriodInt())));
-        result.put("doubleValue", makeSine(configuration.getAmpDouble(), configuration.getOffsetDouble(),
-                configuration.getPeriodDouble()));
+        result.put(
+                "doubleValue",
+                makeSine(
+                        configuration.getAmpDouble(),
+                        configuration.getOffsetDouble(),
+                        configuration.getPeriodDouble()));
 
         // return result
 

@@ -13,9 +13,7 @@
      Eurotech
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -173,17 +171,16 @@
                     -->
                     <execution>
                         <id>copy-deps-5s</id>
-                        <phase>generate-resources</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
+                        <phase>generate-resources</phase>
                         <configuration>
                             <excludeTypes>pom</excludeTypes>
                             <excludeClassifiers>sources</excludeClassifiers>
                             <excludeTransitive>true</excludeTransitive>
                             <outputDirectory>${project.build.directory}/plugins/5s</outputDirectory>
-                            <includeArtifactIds>
-                                camel-api,
+                            <includeArtifactIds>camel-api,
                                 camel-management-api,
                                 camel-util,
                                 camel-util-json,
@@ -206,28 +203,25 @@
                                 camel-seda,
                                 camel-vm,
                                 camel-stream,
-                                camel-timer
-                            </includeArtifactIds>
+                                camel-timer</includeArtifactIds>
                         </configuration>
                     </execution>
                     <!-- Level 6, auto-started: the add-on's own DS components -->
                     <execution>
                         <id>copy-deps-6s</id>
-                        <phase>generate-resources</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
+                        <phase>generate-resources</phase>
                         <configuration>
                             <excludeTypes>pom</excludeTypes>
                             <excludeClassifiers>sources</excludeClassifiers>
                             <excludeTransitive>true</excludeTransitive>
                             <outputDirectory>${project.build.directory}/plugins/6s</outputDirectory>
-                            <includeArtifactIds>
-                                org.eclipse.kura.camel,
+                            <includeArtifactIds>org.eclipse.kura.camel,
                                 org.eclipse.kura.camel.cloud.factory,
                                 org.eclipse.kura.camel.xml,
-                                org.eclipse.kura.wire.camel
-                            </includeArtifactIds>
+                                org.eclipse.kura.wire.camel</includeArtifactIds>
                         </configuration>
                     </execution>
                 </executions>
@@ -239,10 +233,10 @@
                 <executions>
                     <execution>
                         <id>generate-deb</id>
-                        <phase>package</phase>
                         <goals>
                             <goal>jdeb</goal>
                         </goals>
+                        <phase>package</phase>
                         <configuration>
                             <dataSet>
                                 <data>

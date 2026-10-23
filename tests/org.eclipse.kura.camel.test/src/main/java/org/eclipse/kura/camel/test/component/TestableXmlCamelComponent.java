@@ -14,7 +14,6 @@
 package org.eclipse.kura.camel.test.component;
 
 import java.util.Map;
-
 import org.eclipse.kura.camel.component.AbstractXmlCamelComponent;
 import org.osgi.framework.BundleContext;
 
@@ -55,5 +54,4 @@ public class TestableXmlCamelComponent extends AbstractXmlCamelComponent {
     public void stop() throws Exception {
         super.stop();
     }
-
 }

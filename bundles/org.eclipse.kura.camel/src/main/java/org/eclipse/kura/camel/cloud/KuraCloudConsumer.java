@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2011, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -74,14 +74,14 @@ public class KuraCloudConsumer extends DefaultConsumer implements CloudClientLis
     // CloudClientListener callbacks
 
     @Override
-    public void onControlMessageArrived(final String deviceId, final String appTopic, final KuraPayload msg,
-            final int qos, final boolean retain) {
+    public void onControlMessageArrived(
+            final String deviceId, final String appTopic, final KuraPayload msg, final int qos, final boolean retain) {
         onInternalMessageArrived(deviceId, appTopic, msg, qos, retain, true);
     }
 
     @Override
-    public void onMessageArrived(final String deviceId, final String appTopic, final KuraPayload msg, final int qos,
-            final boolean retain) {
+    public void onMessageArrived(
+            final String deviceId, final String appTopic, final KuraPayload msg, final int qos, final boolean retain) {
         onInternalMessageArrived(deviceId, appTopic, msg, qos, retain, false);
     }
 
@@ -98,7 +98,10 @@ public class KuraCloudConsumer extends DefaultConsumer implements CloudClientLis
 
     private void performSubscribe() {
         try {
-            logger.debug("Perform subscribe: {} / {}", this.cloudClient, getEndpoint().getTopic());
+            logger.debug(
+                    "Perform subscribe: {} / {}",
+                    this.cloudClient,
+                    getEndpoint().getTopic());
             this.cloudClient.subscribe(getEndpoint().getTopic(), 0);
         } catch (final KuraException e) {
             logger.warn("Failed to subscribe", e);
@@ -107,20 +110,29 @@ public class KuraCloudConsumer extends DefaultConsumer implements CloudClientLis
 
     @Override
     public void onMessageConfirmed(final int messageId, final String appTopic) {
-        logger.debug("Executing empty 'onMessageConfirmed' callback with message ID {} and application topic {}.",
-                messageId, appTopic);
+        logger.debug(
+                "Executing empty 'onMessageConfirmed' callback with message ID {} and application topic {}.",
+                messageId,
+                appTopic);
     }
 
     @Override
     public void onMessagePublished(final int messageId, final String appTopic) {
-        logger.debug("Executing empty 'onMessagePublished' callback with message ID {} and application topic {}.",
-                messageId, appTopic);
+        logger.debug(
+                "Executing empty 'onMessagePublished' callback with message ID {} and application topic {}.",
+                messageId,
+                appTopic);
     }
 
     // Helpers
 
-    private void onInternalMessageArrived(final String deviceId, final String appTopic, final KuraPayload message,
-            final int qos, final boolean retain, final boolean control) {
+    private void onInternalMessageArrived(
+            final String deviceId,
+            final String appTopic,
+            final KuraPayload message,
+            final int qos,
+            final boolean retain,
+            final boolean control) {
         logger.debug("Received message with deviceId {}, application topic {}.", deviceId, appTopic);
 
         final Exchange exchange = anExchange(getEndpoint().getCamelContext()) //
@@ -147,5 +159,4 @@ public class KuraCloudConsumer extends DefaultConsumer implements CloudClientLis
     public KuraCloudEndpoint getEndpoint() {
         return (KuraCloudEndpoint) super.getEndpoint();
     }
-
 }

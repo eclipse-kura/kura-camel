@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2025 Red Hat Inc and others
- * 
+ * Copyright (c) 2016, 2026 Red Hat Inc and others
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *  Eurotech
@@ -15,7 +15,6 @@ package org.eclipse.kura.example.camel.publisher;
 
 import java.util.Date;
 import java.util.Map;
-
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
@@ -56,28 +55,30 @@ public abstract class AbstractSimplePeriodicPublisher<T> extends AbstractSimpleP
             @Override
             public void configure() throws Exception {
 
-                from("timer://heartbeat").id("payload").process(new Processor() {
+                from("timer://heartbeat")
+                        .id("payload")
+                        .process(new Processor() {
 
-                    @Override
-                    public void process(final Exchange exchange) throws Exception {
-                        // get new payload for this run
-                        final Map<String, Object> payload = getPayload(configuration);
+                            @Override
+                            public void process(final Exchange exchange) throws Exception {
+                                // get new payload for this run
+                                final Map<String, Object> payload = getPayload(configuration);
 
-                        // create new Kura payload structure
-                        final KuraPayload kuraPayload = new KuraPayload();
-                        kuraPayload.setTimestamp(new Date());
+                                // create new Kura payload structure
+                                final KuraPayload kuraPayload = new KuraPayload();
+                                kuraPayload.setTimestamp(new Date());
 
-                        // set map of data
-                        for (final Map.Entry<String, Object> entry : payload.entrySet()) {
-                            kuraPayload.addMetric(entry.getKey(), entry.getValue());
-                        }
+                                // set map of data
+                                for (final Map.Entry<String, Object> entry : payload.entrySet()) {
+                                    kuraPayload.addMetric(entry.getKey(), entry.getValue());
+                                }
 
-                        // set camel exchange data
-                        exchange.getIn().setBody(kuraPayload);
-                    }
-                }).to("cloud:" + AbstractSimplePeriodicPublisher.this.appId);
+                                // set camel exchange data
+                                exchange.getIn().setBody(kuraPayload);
+                            }
+                        })
+                        .to("cloud:" + AbstractSimplePeriodicPublisher.this.appId);
             }
         };
     }
-
 }

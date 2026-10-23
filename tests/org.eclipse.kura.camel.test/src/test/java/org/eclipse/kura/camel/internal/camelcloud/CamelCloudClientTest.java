@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2022 Eurotech and/or its affiliates and others
- * 
+ * Copyright (c) 2017, 2026 Eurotech and/or its affiliates and others
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Eurotech
  ******************************************************************************/
@@ -37,7 +37,6 @@ import static org.mockito.Mockito.when;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.StartupListener;
@@ -58,7 +57,7 @@ public class CamelCloudClientTest {
         String baseEndpoint = "endpoint";
 
         String appTopic = "topic";
-        byte[] payload = new byte[] { 0x01, 0x02 };
+        byte[] payload = new byte[] {0x01, 0x02};
         int qos = 0;
         boolean retain = false;
         int priority = 0;
@@ -74,22 +73,24 @@ public class CamelCloudClientTest {
                 .thenReturn(execSvcMock);
 
         doAnswer(invocation -> {
-            final String target = invocation.getArgument(0, String.class);
-            assertEquals("endpoint" + applicationId + ":" + appTopic, target);
+                    final String target = invocation.getArgument(0, String.class);
+                    assertEquals("endpoint" + applicationId + ":" + appTopic, target);
 
-            final KuraPayload load = invocation.getArgument(1, KuraPayload.class);
-            assertArrayEquals(payload, load.getBody());
+                    final KuraPayload load = invocation.getArgument(1, KuraPayload.class);
+                    assertArrayEquals(payload, load.getBody());
 
-            final Map<String, Object> headers = invocation.getArgument(2, Map.class);
-            assertFalse((boolean) headers.get(CAMEL_KURA_CLOUD_CONTROL));
-            assertNotNull(headers.get(CAMEL_KURA_CLOUD_MESSAGEID));
-            assertNull(headers.get(CAMEL_KURA_CLOUD_DEVICEID));
-            assertEquals(qos, headers.get(CAMEL_KURA_CLOUD_QOS));
-            assertEquals(retain, headers.get(CAMEL_KURA_CLOUD_RETAIN));
-            assertEquals(priority, headers.get(CAMEL_KURA_CLOUD_PRIORITY));
+                    final Map<String, Object> headers = invocation.getArgument(2, Map.class);
+                    assertFalse((boolean) headers.get(CAMEL_KURA_CLOUD_CONTROL));
+                    assertNotNull(headers.get(CAMEL_KURA_CLOUD_MESSAGEID));
+                    assertNull(headers.get(CAMEL_KURA_CLOUD_DEVICEID));
+                    assertEquals(qos, headers.get(CAMEL_KURA_CLOUD_QOS));
+                    assertEquals(retain, headers.get(CAMEL_KURA_CLOUD_RETAIN));
+                    assertEquals(priority, headers.get(CAMEL_KURA_CLOUD_PRIORITY));
 
-            return null;
-        }).when(producerMock).sendBodyAndHeaders(anyString(), any(), any());
+                    return null;
+                })
+                .when(producerMock)
+                .sendBodyAndHeaders(anyString(), any(), any());
 
         CamelCloudClient ccc = new CamelCloudClient(cloudServiceMock, camelContextMock, applicationId, baseEndpoint);
 
@@ -107,7 +108,7 @@ public class CamelCloudClientTest {
 
         String deviceId = "deviceId";
         String appTopic = "topc";
-        byte[] payload = new byte[] { 0x01 };
+        byte[] payload = new byte[] {0x01};
         int qos = 2;
         boolean retain = false;
         int priority = 7;
@@ -123,22 +124,24 @@ public class CamelCloudClientTest {
                 .thenReturn(execSvcMock);
 
         doAnswer(invocation -> {
-            final String target = invocation.getArgument(0, String.class);
-            assertEquals("endpoint:" + deviceId + ":" + applicationId + ":" + appTopic, target);
+                    final String target = invocation.getArgument(0, String.class);
+                    assertEquals("endpoint:" + deviceId + ":" + applicationId + ":" + appTopic, target);
 
-            final KuraPayload load = invocation.getArgument(1, KuraPayload.class);
-            assertArrayEquals(payload, load.getBody());
+                    final KuraPayload load = invocation.getArgument(1, KuraPayload.class);
+                    assertArrayEquals(payload, load.getBody());
 
-            final Map<String, Object> headers = invocation.getArgument(2, Map.class);
-            assertFalse((boolean) headers.get(CAMEL_KURA_CLOUD_CONTROL));
-            assertNotNull(headers.get(CAMEL_KURA_CLOUD_MESSAGEID));
-            assertEquals(deviceId, headers.get(CAMEL_KURA_CLOUD_DEVICEID));
-            assertEquals(qos, headers.get(CAMEL_KURA_CLOUD_QOS));
-            assertEquals(retain, headers.get(CAMEL_KURA_CLOUD_RETAIN));
-            assertEquals(priority, headers.get(CAMEL_KURA_CLOUD_PRIORITY));
+                    final Map<String, Object> headers = invocation.getArgument(2, Map.class);
+                    assertFalse((boolean) headers.get(CAMEL_KURA_CLOUD_CONTROL));
+                    assertNotNull(headers.get(CAMEL_KURA_CLOUD_MESSAGEID));
+                    assertEquals(deviceId, headers.get(CAMEL_KURA_CLOUD_DEVICEID));
+                    assertEquals(qos, headers.get(CAMEL_KURA_CLOUD_QOS));
+                    assertEquals(retain, headers.get(CAMEL_KURA_CLOUD_RETAIN));
+                    assertEquals(priority, headers.get(CAMEL_KURA_CLOUD_PRIORITY));
 
-            return null;
-        }).when(producerMock).sendBodyAndHeaders(anyString(), any(), any());
+                    return null;
+                })
+                .when(producerMock)
+                .sendBodyAndHeaders(anyString(), any(), any());
 
         CamelCloudClient ccc = new CamelCloudClient(cloudServiceMock, camelContextMock, applicationId, baseEndpoint);
 
@@ -156,7 +159,7 @@ public class CamelCloudClientTest {
 
         String deviceId = "deviceId";
         String appTopic = "topc";
-        byte[] payload = new byte[] { 0x01 };
+        byte[] payload = new byte[] {0x01};
         int qos = 2;
         boolean retain = false;
         int priority = 7;
@@ -172,22 +175,24 @@ public class CamelCloudClientTest {
                 .thenReturn(execSvcMock);
 
         doAnswer(invocation -> {
-            final String target = invocation.getArgument(0, String.class);
-            assertEquals("endpoint:" + deviceId + ":" + applicationId + ":" + appTopic, target);
+                    final String target = invocation.getArgument(0, String.class);
+                    assertEquals("endpoint:" + deviceId + ":" + applicationId + ":" + appTopic, target);
 
-            final KuraPayload load = invocation.getArgument(1, KuraPayload.class);
-            assertArrayEquals(payload, load.getBody());
+                    final KuraPayload load = invocation.getArgument(1, KuraPayload.class);
+                    assertArrayEquals(payload, load.getBody());
 
-            final Map<String, Object> headers = invocation.getArgument(2, Map.class);
-            assertTrue((boolean) headers.get(CAMEL_KURA_CLOUD_CONTROL));
-            assertNotNull(headers.get(CAMEL_KURA_CLOUD_MESSAGEID));
-            assertEquals(deviceId, headers.get(CAMEL_KURA_CLOUD_DEVICEID));
-            assertEquals(qos, headers.get(CAMEL_KURA_CLOUD_QOS));
-            assertEquals(retain, headers.get(CAMEL_KURA_CLOUD_RETAIN));
-            assertEquals(priority, headers.get(CAMEL_KURA_CLOUD_PRIORITY));
+                    final Map<String, Object> headers = invocation.getArgument(2, Map.class);
+                    assertTrue((boolean) headers.get(CAMEL_KURA_CLOUD_CONTROL));
+                    assertNotNull(headers.get(CAMEL_KURA_CLOUD_MESSAGEID));
+                    assertEquals(deviceId, headers.get(CAMEL_KURA_CLOUD_DEVICEID));
+                    assertEquals(qos, headers.get(CAMEL_KURA_CLOUD_QOS));
+                    assertEquals(retain, headers.get(CAMEL_KURA_CLOUD_RETAIN));
+                    assertEquals(priority, headers.get(CAMEL_KURA_CLOUD_PRIORITY));
 
-            return null;
-        }).when(producerMock).sendBodyAndHeaders(anyString(), any(), any());
+                    return null;
+                })
+                .when(producerMock)
+                .sendBodyAndHeaders(anyString(), any(), any());
 
         CamelCloudClient ccc = new CamelCloudClient(cloudServiceMock, camelContextMock, applicationId, baseEndpoint);
 
@@ -248,7 +253,7 @@ public class CamelCloudClientTest {
 
         ExecutorService execSvcMock = mock(ExecutorService.class);
         when(esmgrMock.newThreadPool(any(), eq("CamelCloudClient/" + applicationId), eq(0), eq(1)))
-        .thenReturn(execSvcMock);
+                .thenReturn(execSvcMock);
 
         CamelCloudClient ccc = new CamelCloudClient(cloudServiceMock, camelContextMock, applicationId, baseEndpoint);
 
@@ -261,12 +266,14 @@ public class CamelCloudClientTest {
         });
 
         doAnswer(invocation -> {
-            StartupListener listener = invocation.getArgument(0, StartupListener.class);
+                    StartupListener listener = invocation.getArgument(0, StartupListener.class);
 
-            listener.onCamelContextStarted(camelContextMock, false);
+                    listener.onCamelContextStarted(camelContextMock, false);
 
-            return null;
-        }).when(camelContextMock).addStartupListener(any());
+                    return null;
+                })
+                .when(camelContextMock)
+                .addStartupListener(any());
 
         doThrow(new RuntimeException("test")).when(camelContextMock).addRoutes(any());
 
@@ -310,22 +317,25 @@ public class CamelCloudClientTest {
         });
 
         doAnswer(invocation -> {
-            StartupListener listener = invocation.getArgument(0, StartupListener.class);
+                    StartupListener listener = invocation.getArgument(0, StartupListener.class);
 
-            listener.onCamelContextStarted(camelContextMock, false);
+                    listener.onCamelContextStarted(camelContextMock, false);
 
-            return null;
-        }).when(camelContextMock).addStartupListener(any());
+                    return null;
+                })
+                .when(camelContextMock)
+                .addStartupListener(any());
 
         doAnswer(invocation -> {
-            RouteBuilder builder = invocation.getArgument(0, RouteBuilder.class);
+                    RouteBuilder builder = invocation.getArgument(0, RouteBuilder.class);
 
-            builder.configure();
+                    builder.configure();
 
-            return null;
-        }).when(camelContextMock).addRoutes(any());
+                    return null;
+                })
+                .when(camelContextMock)
+                .addRoutes(any());
 
         ccc.subscribe(deviceId, appTopic, qos);
     }
-
 }

@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.Route;
 import org.apache.camel.builder.RouteBuilder;
@@ -97,8 +96,8 @@ public class CamelRunner {
         return () -> new DefaultRegistry(new OsgiBeanRepository(bundleContext));
     }
 
-    public static RegistryFactory createOsgiRegistry(final BundleContext bundleContext,
-            final Map<String, Object> services) {
+    public static RegistryFactory createOsgiRegistry(
+            final BundleContext bundleContext, final Map<String, Object> services) {
         Objects.requireNonNull(bundleContext);
 
         if (services == null || services.isEmpty()) {
@@ -233,8 +232,8 @@ public class CamelRunner {
             return dependOn(null, filter, consumer);
         }
 
-        public <T> Builder dependOn(BundleContext bundleContext, final Filter filter,
-                final ServiceConsumer<T, CamelContext> consumer) {
+        public <T> Builder dependOn(
+                BundleContext bundleContext, final Filter filter, final ServiceConsumer<T, CamelContext> consumer) {
             Objects.requireNonNull(filter);
             Objects.requireNonNull(consumer);
 
@@ -263,7 +262,9 @@ public class CamelRunner {
          *            the consumer processing the service instance
          * @return the builder instance
          */
-        public Builder cloudService(BundleContext bundleContext, final String filter,
+        public Builder cloudService(
+                BundleContext bundleContext,
+                final String filter,
                 final ServiceConsumer<CloudService, CamelContext> consumer) {
             final String baseFilter = String.format("(%s=%s)", Constants.OBJECTCLASS, CloudService.class.getName());
 
@@ -329,11 +330,11 @@ public class CamelRunner {
          */
         public Builder requireComponent(final String componentName) {
             try {
-                final String filterString = String.format("(&(%s=%s)(%s=%s))", Constants.OBJECTCLASS,
-                        ComponentResolver.class.getName(), "component", componentName);
+                final String filterString = String.format(
+                        "(&(%s=%s)(%s=%s))",
+                        Constants.OBJECTCLASS, ComponentResolver.class.getName(), "component", componentName);
                 final Filter filter = FrameworkUtil.createFilter(filterString);
-                dependOn(filter, (context, service) -> {
-                });
+                dependOn(filter, (context, service) -> {});
             } catch (InvalidSyntaxException e) {
                 throw new IllegalArgumentException(String.format("Illegal component name: '%s'", componentName), e);
             }
@@ -350,11 +351,11 @@ public class CamelRunner {
          */
         public Builder requireLanguage(final String languageName) {
             try {
-                final String filterString = String.format("(&(%s=%s)(%s=%s))", Constants.OBJECTCLASS,
-                        LanguageResolver.class.getName(), "language", languageName);
+                final String filterString = String.format(
+                        "(&(%s=%s)(%s=%s))",
+                        Constants.OBJECTCLASS, LanguageResolver.class.getName(), "language", languageName);
                 final Filter filter = FrameworkUtil.createFilter(filterString);
-                dependOn(filter, (context, service) -> {
-                });
+                dependOn(filter, (context, service) -> {});
             } catch (InvalidSyntaxException e) {
                 throw new IllegalArgumentException(String.format("Illegal languageName name: '%s'", languageName), e);
             }
@@ -420,7 +421,11 @@ public class CamelRunner {
                     camelContext.getShutdownStrategy().setTimeout(shutdownTimeoutTemp);
                 });
             }
-            return new CamelRunner(this.registryFactory, this.contextFactory, beforeStartsTemp, this.lifecycleListeners,
+            return new CamelRunner(
+                    this.registryFactory,
+                    this.contextFactory,
+                    beforeStartsTemp,
+                    this.lifecycleListeners,
                     dependenciesTemp);
         }
     }
@@ -435,8 +440,11 @@ public class CamelRunner {
     private RoutesProvider routes = EmptyRoutesProvider.INSTANCE;
     private DependencyRunner<CamelContext> dependencyRunner;
 
-    private CamelRunner(final RegistryFactory registryFactory, final ContextFactory contextFactory,
-            final List<BeforeStart> beforeStarts, final List<ContextLifecycleListener> lifecycleListeners,
+    private CamelRunner(
+            final RegistryFactory registryFactory,
+            final ContextFactory contextFactory,
+            final List<BeforeStart> beforeStarts,
+            final List<ContextLifecycleListener> lifecycleListeners,
             final List<ServiceDependency<?, CamelContext>> dependencies) {
         this.registryFactory = registryFactory;
         this.contextFactory = contextFactory;
@@ -465,8 +473,8 @@ public class CamelRunner {
 
         logger.info("Starting...");
 
-        this.dependencyRunner = new DependencyRunner<>(this.dependencies,
-                new DependencyRunner.Listener<CamelContext>() {
+        this.dependencyRunner =
+                new DependencyRunner<>(this.dependencies, new DependencyRunner.Listener<CamelContext>() {
 
                     @Override
                     public void ready(final List<ServiceDependency.Handle<CamelContext>> dependencies) {
@@ -532,7 +540,6 @@ public class CamelRunner {
 
             this.context.stop();
             this.context = null;
-
         }
     }
 
@@ -544,7 +551,8 @@ public class CamelRunner {
         }
     }
 
-    private void fireLifecycle(final CamelContext context,
+    private void fireLifecycle(
+            final CamelContext context,
             final ThrowingBiConsumer<ContextLifecycleListener, CamelContext, Exception> consumer) {
 
         for (final ContextLifecycleListener listener : this.lifecycleListeners) {
@@ -554,9 +562,7 @@ public class CamelRunner {
             } catch (Exception e) {
                 logger.warn("Failed to call listener", e);
             }
-
         }
-
     }
 
     /**
@@ -772,5 +778,4 @@ public class CamelRunner {
     public CamelContext getCamelContext() {
         return this.context;
     }
-
 }

@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2011, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -32,7 +32,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.function.IntSupplier;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -75,15 +74,15 @@ public class CamelCloudClient implements CloudClient {
 
     private final IntSupplier messageIdGenerator = () -> Math.abs(this.messageIdRandom.nextInt());
 
-    public CamelCloudClient(CamelCloudService cloudService, CamelContext camelContext, String applicationId,
-            String baseEndpoint) {
+    public CamelCloudClient(
+            CamelCloudService cloudService, CamelContext camelContext, String applicationId, String baseEndpoint) {
         this.cloudService = cloudService;
         this.camelContext = camelContext;
         this.producerTemplate = camelContext.createProducerTemplate();
         this.applicationId = applicationId;
         this.baseEndpoint = baseEndpoint;
-        this.executorService = camelContext.getExecutorServiceManager().newThreadPool(this,
-                "CamelCloudClient/" + applicationId, 0, 1);
+        this.executorService =
+                camelContext.getExecutorServiceManager().newThreadPool(this, "CamelCloudClient/" + applicationId, 0, 1);
     }
 
     public CamelCloudClient(CamelCloudService cloudService, CamelContext camelContext, String applicationId) {
@@ -153,8 +152,9 @@ public class CamelCloudClient implements CloudClient {
     }
 
     @Override
-    public int controlPublish(String deviceId, String topic, KuraPayload kuraPayload, int qos, boolean retain,
-            int priority) throws KuraException {
+    public int controlPublish(
+            String deviceId, String topic, KuraPayload kuraPayload, int qos, boolean retain, int priority)
+            throws KuraException {
         return doPublish(true, deviceId, topic, kuraPayload, qos, retain, priority);
     }
 
@@ -265,8 +265,15 @@ public class CamelCloudClient implements CloudClient {
         }
     }
 
-    private int doPublish(boolean isControl, String deviceId, String topic, KuraPayload kuraPayload, int qos,
-            boolean retain, int priority) throws KuraException {
+    private int doPublish(
+            boolean isControl,
+            String deviceId,
+            String topic,
+            KuraPayload kuraPayload,
+            int qos,
+            boolean retain,
+            int priority)
+            throws KuraException {
         final String target = target(buildTopicName(deviceId, topic));
         final int kuraMessageId = this.messageIdGenerator.getAsInt();
 
@@ -344,7 +351,8 @@ public class CamelCloudClient implements CloudClient {
                                     payload = (KuraPayload) body;
                                 } else {
                                     payload = new KuraPayload();
-                                    payload.setBody(getContext().getTypeConverter().convertTo(byte[].class, body));
+                                    payload.setBody(
+                                            getContext().getTypeConverter().convertTo(byte[].class, body));
                                 }
                                 String deviceId = exchange.getIn().getHeader(CAMEL_KURA_CLOUD_DEVICEID, String.class);
                                 int qos = exchange.getIn().getHeader(CAMEL_KURA_CLOUD_QOS, 0, int.class);

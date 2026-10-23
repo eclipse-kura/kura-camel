@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2026 Red Hat Inc and others
- * 
+ *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
  * which is available at https://www.eclipse.org/legal/epl-2.0/
- * 
+ *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *  Red Hat Inc
  *******************************************************************************/
@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
-
 import org.eclipse.kura.KuraException;
 import org.eclipse.kura.camel.component.Configuration;
 import org.eclipse.kura.cloud.factory.CloudServiceFactory;
@@ -41,12 +40,18 @@ import org.slf4j.LoggerFactory;
 /**
  * An implementation of {@link CloudServiceFactory} based on Apache Camel
  */
-@Component(name = "org.eclipse.kura.camel.cloud.factory.CamelCloudServiceFactory", immediate = true, configurationPolicy = ConfigurationPolicy.OPTIONAL, service = { CloudServiceFactory.class }, property = {
-        "kura.ui.csf.pid.default=org.eclipse.kura.camel.cloud.factory.CamelFactory",
-        "kura.ui.csf.pid.regex=^org.eclipse.kura.camel.cloud.factory.CamelFactory(\\-[a-zA-Z0-9]+)?$",
-        // deliberately different from the component name: this pid is what the framework
-        // looks the factory up by, so it must survive the descriptor conversion
-        "service.pid=org.eclipse.kura.camel.cloud.factory.CamelManager" })
+@Component(
+        name = "org.eclipse.kura.camel.cloud.factory.CamelCloudServiceFactory",
+        immediate = true,
+        configurationPolicy = ConfigurationPolicy.OPTIONAL,
+        service = {CloudServiceFactory.class},
+        property = {
+            "kura.ui.csf.pid.default=org.eclipse.kura.camel.cloud.factory.CamelFactory",
+            "kura.ui.csf.pid.regex=^org.eclipse.kura.camel.cloud.factory.CamelFactory(\\-[a-zA-Z0-9]+)?$",
+            // deliberately different from the component name: this pid is what the framework
+            // looks the factory up by, so it must survive the descriptor conversion
+            "service.pid=org.eclipse.kura.camel.cloud.factory.CamelManager"
+        })
 public class CamelCloudServiceFactory implements CloudServiceFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(CamelCloudServiceFactory.class);
@@ -111,8 +116,9 @@ public class CamelCloudServiceFactory implements CloudServiceFactory {
         final Set<String> ids = new TreeSet<>();
         try {
 
-            final Collection<ServiceReference<CamelFactory>> refs = FrameworkUtil
-                    .getBundle(CamelCloudServiceFactory.class).getBundleContext()
+            final Collection<ServiceReference<CamelFactory>> refs = FrameworkUtil.getBundle(
+                            CamelCloudServiceFactory.class)
+                    .getBundleContext()
                     .getServiceReferences(CamelFactory.class, null);
             if (refs != null) {
                 for (final ServiceReference<CamelFactory> ref : refs) {
@@ -175,7 +181,8 @@ public class CamelCloudServiceFactory implements CloudServiceFactory {
         final Set<String> result = new HashSet<>();
 
         for (final ComponentConfiguration cc : this.configurationService.getComponentConfigurations()) {
-            if (cc.getDefinition() != null && FACTORY_ID.equals(cc.getDefinition().getId())) {
+            if (cc.getDefinition() != null
+                    && FACTORY_ID.equals(cc.getDefinition().getId())) {
                 result.add(fromInternalPid(cc.getPid()));
             }
         }

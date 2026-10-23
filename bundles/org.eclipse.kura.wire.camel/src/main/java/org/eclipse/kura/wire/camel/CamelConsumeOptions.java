@@ -16,13 +16,17 @@ package org.eclipse.kura.wire.camel;
 import org.osgi.service.metatype.annotations.AttributeDefinition;
 import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 
-@ObjectClassDefinition(id = "org.eclipse.kura.wire.camel.CamelConsume", name = "Camel Consumer", description = "Consume from an endpoint")
+@ObjectClassDefinition(
+        id = "org.eclipse.kura.wire.camel.CamelConsume",
+        name = "Camel Consumer",
+        description = "Consume from an endpoint")
 public @interface CamelConsumeOptions {
 
     @AttributeDefinition(name = "ID", description = "The ID of the Camel Context")
     String id();
 
-    @AttributeDefinition(name = "Endpoint URI", description = "The URI to the Camel endpoint the component will consume from.")
+    @AttributeDefinition(
+            name = "Endpoint URI",
+            description = "The URI to the Camel endpoint the component will consume from.")
     String endpointUri();
-
 }

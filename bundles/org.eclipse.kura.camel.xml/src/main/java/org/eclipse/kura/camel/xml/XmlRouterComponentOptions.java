@@ -25,27 +25,57 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
  * device configurations keep resolving.
  * </p>
  */
-@ObjectClassDefinition(id = "org.eclipse.kura.camel.xml.XmlRouterComponent", name = "Camel XML router", description = "Configurable Camel-based XML router", icon = @Icon(resource = "OSGI-INF/logo.png", size = 32))
+@ObjectClassDefinition(
+        id = "org.eclipse.kura.camel.xml.XmlRouterComponent",
+        name = "Camel XML router",
+        description = "Configurable Camel-based XML router",
+        icon = @Icon(resource = "OSGI-INF/logo.png", size = 32))
 public @interface XmlRouterComponentOptions {
 
-    @AttributeDefinition(name = "Router XML", cardinality = 1, required = false, max = "2147483647", description = "Camel XML route definitions|TextArea")
-    String xml_data() default "<routes xmlns=\"http://camel.apache.org/schema/spring\">\n"
-            + "    <route id=\"route1\">\n"
-            + "        <from uri=\"kura-cloud:myapp/xmltopic\"/>\n"
-            + "        <to uri=\"log:MESSAGE_FROM_CLOUD\"/>\n"
-            + "    </route>\n"
-            + "</routes>";
+    @AttributeDefinition(
+            name = "Router XML",
+            cardinality = 1,
+            required = false,
+            max = "2147483647",
+            description = "Camel XML route definitions|TextArea")
+    String xml_data() default
+            "<routes xmlns=\"http://camel.apache.org/schema/spring\">\n"
+                    + "    <route id=\"route1\">\n"
+                    + "        <from uri=\"kura-cloud:myapp/xmltopic\"/>\n"
+                    + "        <to uri=\"log:MESSAGE_FROM_CLOUD\"/>\n"
+                    + "    </route>\n"
+                    + "</routes>";
 
-    @AttributeDefinition(name = "Required Camel Components", cardinality = 1, required = false, max = "2147483647", description = "A comma separated list of Camel components which are required in order to start up this setup (e.g. amqp, stream)")
+    @AttributeDefinition(
+            name = "Required Camel Components",
+            cardinality = 1,
+            required = false,
+            max = "2147483647",
+            description =
+                    "A comma separated list of Camel components which are required in order to start up this setup (e.g. amqp, stream)")
     String component_prereqs();
 
-    @AttributeDefinition(name = "Required Camel Languages", cardinality = 1, required = false, max = "2147483647", description = "A comma separated list of Camel languages which are required in order to start up this setup (e.g. javaScript)")
+    @AttributeDefinition(
+            name = "Required Camel Languages",
+            cardinality = 1,
+            required = false,
+            max = "2147483647",
+            description =
+                    "A comma separated list of Camel languages which are required in order to start up this setup (e.g. javaScript)")
     String language_prereqs();
 
-    @AttributeDefinition(name = "Cloud Service Mappings", cardinality = 1, required = false, max = "2147483647", description = "A comma separated list of entries in the format name=filter or name=kura-pid, mapping cloud service instances to component names. (e.g. cloud=org.eclipse.kura.cloud.CloudService)")
+    @AttributeDefinition(
+            name = "Cloud Service Mappings",
+            cardinality = 1,
+            required = false,
+            max = "2147483647",
+            description =
+                    "A comma separated list of entries in the format name=filter or name=kura-pid, mapping cloud service instances to component names. (e.g. cloud=org.eclipse.kura.cloud.CloudService)")
     String cloudService_prereqs();
 
-    @AttributeDefinition(name = "Disable JMX", cardinality = 1, description = "Disable the JMX integration for this Camel context")
+    @AttributeDefinition(
+            name = "Disable JMX",
+            cardinality = 1,
+            description = "Disable the JMX integration for this Camel context")
     boolean disableJmx() default false;
-
 }
