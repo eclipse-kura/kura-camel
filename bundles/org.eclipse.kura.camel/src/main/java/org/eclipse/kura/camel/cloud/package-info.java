@@ -11,6 +11,6 @@
  *  Red Hat Inc
  *******************************************************************************/
 /**
- * Functionality to support access to {@link org.eclipse.kura.cloud.CloudService} instances from Apache Camel
+ * Functionality to support access to {@link org.eclipse.kura.cloudconnection.CloudEndpoint} instances from Apache Camel
  */
 package org.eclipse.kura.camel.cloud;

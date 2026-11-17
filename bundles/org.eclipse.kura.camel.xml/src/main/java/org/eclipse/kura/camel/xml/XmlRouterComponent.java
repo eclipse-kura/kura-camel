@@ -27,7 +27,7 @@ import java.util.Set;
 import org.eclipse.kura.camel.bean.PayloadFactory;
 import org.eclipse.kura.camel.component.AbstractXmlCamelComponent;
 import org.eclipse.kura.camel.runner.CamelRunner.Builder;
-import org.eclipse.kura.cloud.CloudService;
+import org.eclipse.kura.cloudconnection.CloudEndpoint;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.FrameworkUtil;
@@ -140,7 +140,7 @@ public class XmlRouterComponent extends AbstractXmlCamelComponent {
             } else {
                 filter = format(
                         "(&(%s=%s)(kura.service.pid=%s))",
-                        Constants.OBJECTCLASS, CloudService.class.getName(), entry.getValue());
+                        Constants.OBJECTCLASS, CloudEndpoint.class.getName(), entry.getValue());
             }
             builder.cloudService(null, filter, Builder.addAsCloudComponent(entry.getKey()));
         }

@@ -12,14 +12,26 @@
  *******************************************************************************/
 package org.eclipse.kura.camel.camelcloud;
 
-import org.eclipse.kura.cloud.CloudService;
+import org.eclipse.kura.cloudconnection.CloudConnectionManager;
+import org.eclipse.kura.cloudconnection.CloudEndpoint;
 
 /**
- * An extension interface adding Camel specific functionality to the {@link CloudService} interface
+ * An extension interface adding Camel specific functionality to the {@link CloudConnectionManager} and
+ * {@link CloudEndpoint} interfaces
  */
-public interface CamelCloudService extends CloudService {
+public interface CamelCloudService extends CloudConnectionManager, CloudEndpoint {
 
+    /**
+     * Set the base Camel endpoint used to exchange messages of an application
+     * <p>
+     * The base endpoint is a format string (e.g. {@code vm:%s}) in which the internal queue name will be
+     * substituted. If the string contains no {@code %s} the queue name is appended instead.
+     * </p>
+     *
+     * @param applicationId
+     *            the application ID the base endpoint applies to
+     * @param baseEndpoint
+     *            the base endpoint
+     */
     void registerBaseEndpoint(String applicationId, String baseEndpoint);
-
-    void release(String applicationId);
 }

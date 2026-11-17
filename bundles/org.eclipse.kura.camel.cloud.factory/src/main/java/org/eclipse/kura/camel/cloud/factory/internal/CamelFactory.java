@@ -29,9 +29,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A Kura component which takes care of creating a {@link org.eclipse.kura.cloud.CloudService} based in Apache Camel
+ * A Kura component which takes care of creating a {@link org.eclipse.kura.cloudconnection.CloudEndpoint} based in Apache Camel
  * <p>
- * This component does not directly register as {@link org.eclipse.kura.cloud.CloudService}, but can be managed
+ * This component does not directly register as {@link org.eclipse.kura.cloudconnection.CloudEndpoint}, but can be managed
  * through the Kura configuration system and will forward this configuration to the
  * {@link XmlCamelCloudService} which will take care of the lifecycle of the Camel context.
  * </p>

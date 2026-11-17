@@ -29,19 +29,22 @@ import org.apache.camel.support.DefaultRegistry;
 import org.apache.camel.support.SimpleRegistry;
 import org.apache.camel.xml.in.ModelParser;
 import org.eclipse.kura.camel.bean.PayloadFactory;
+import org.eclipse.kura.camel.camelcloud.CamelCloudService;
 import org.eclipse.kura.camel.camelcloud.DefaultCamelCloudService;
 import org.eclipse.kura.camel.cloud.KuraCloudComponent;
-import org.eclipse.kura.cloud.CloudService;
+import org.eclipse.kura.cloudconnection.CloudConnectionManager;
+import org.eclipse.kura.cloudconnection.CloudEndpoint;
+import org.eclipse.kura.cloudconnection.factory.CloudConnectionFactory;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * An service managing a single Camel context as {@link CloudService}
+ * An service managing a single Camel context as {@link CloudEndpoint}
  * <p>
  * This service component does manage the lifecycle of a single {@link DefaultCamelCloudService}
- * instance. It will instantiate the Camel context and register the {@link CloudService} instance
+ * instance. It will instantiate the Camel context and register the {@link CloudEndpoint} instance
  * with OSGi.
  * </p>
  */
@@ -59,7 +62,7 @@ public class XmlCamelCloudService {
 
     private OsgiDefaultCamelContext router;
 
-    private ServiceRegistration<CloudService> handle;
+    private ServiceRegistration<?> handle;
 
     public XmlCamelCloudService(
             final BundleContext context, final String pid, final ServiceConfiguration configuration) {
@@ -113,9 +116,18 @@ public class XmlCamelCloudService {
         props.put(SERVICE_PID, this.pid);
         props.put("service.factoryPid", FACTORY_ID);
         props.put(KURA_SERVICE_PID, this.pid);
+        // kept for configurations created before the removal of the CloudService API
         props.put("kura.cloud.service.factory.pid", PID);
+        props.put(CloudConnectionFactory.KURA_CLOUD_CONNECTION_FACTORY_PID, PID);
 
-        this.handle = this.context.registerService(CloudService.class, this.service, props);
+        this.handle = this.context.registerService(
+                new String[] {
+                    CloudEndpoint.class.getName(),
+                    CloudConnectionManager.class.getName(),
+                    CamelCloudService.class.getName()
+                },
+                this.service,
+                props);
     }
 
     public void stop() throws Exception {

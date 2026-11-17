@@ -11,6 +11,6 @@
  *  Red Hat Inc
  *******************************************************************************/
 /**
- * Support for implementing a {@link org.eclipse.kura.cloud.CloudService} based on Apache Camel
+ * Support for implementing a {@link org.eclipse.kura.cloudconnection.CloudEndpoint} based on Apache Camel
  */
 package org.eclipse.kura.camel.camelcloud;

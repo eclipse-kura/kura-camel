@@ -13,7 +13,7 @@
 package org.eclipse.kura.camel.cloud.factory.internal;
 
 /**
- * The configuration of a Camel based {@link org.eclipse.kura.cloud.CloudService} instance
+ * The configuration of a Camel based {@link org.eclipse.kura.cloudconnection.CloudEndpoint} instance
  */
 public class ServiceConfiguration {
 

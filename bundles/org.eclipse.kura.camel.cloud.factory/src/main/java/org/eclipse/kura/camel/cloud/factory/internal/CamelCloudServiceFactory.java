@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import org.eclipse.kura.KuraException;
 import org.eclipse.kura.camel.component.Configuration;
-import org.eclipse.kura.cloud.factory.CloudServiceFactory;
+import org.eclipse.kura.cloudconnection.factory.CloudConnectionFactory;
 import org.eclipse.kura.configuration.ComponentConfiguration;
 import org.eclipse.kura.configuration.ConfigurationService;
 import org.osgi.framework.FrameworkUtil;
@@ -38,13 +38,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * An implementation of {@link CloudServiceFactory} based on Apache Camel
+ * An implementation of {@link CloudConnectionFactory} based on Apache Camel
  */
 @Component(
         name = "org.eclipse.kura.camel.cloud.factory.CamelCloudServiceFactory",
         immediate = true,
         configurationPolicy = ConfigurationPolicy.OPTIONAL,
-        service = {CloudServiceFactory.class},
+        service = {CloudConnectionFactory.class},
         property = {
             "kura.ui.csf.pid.default=org.eclipse.kura.camel.cloud.factory.CamelFactory",
             "kura.ui.csf.pid.regex=^org.eclipse.kura.camel.cloud.factory.CamelFactory(\\-[a-zA-Z0-9]+)?$",
@@ -52,7 +52,7 @@ import org.slf4j.LoggerFactory;
             // looks the factory up by, so it must survive the descriptor conversion
             "service.pid=org.eclipse.kura.camel.cloud.factory.CamelManager"
         })
-public class CamelCloudServiceFactory implements CloudServiceFactory {
+public class CamelCloudServiceFactory implements CloudConnectionFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(CamelCloudServiceFactory.class);
 
@@ -93,6 +93,7 @@ public class CamelCloudServiceFactory implements CloudServiceFactory {
         }
 
         props.put("cloud.service.pid", pid);
+        props.put(CloudConnectionFactory.KURA_CLOUD_CONNECTION_FACTORY_PID, PID);
 
         this.configurationService.createFactoryConfiguration(FACTORY_ID, fromUserPid(pid), props, true);
     }
@@ -177,7 +178,7 @@ public class CamelCloudServiceFactory implements CloudServiceFactory {
     }
 
     @Override
-    public Set<String> getManagedCloudServicePids() throws KuraException {
+    public Set<String> getManagedCloudConnectionPids() throws KuraException {
         final Set<String> result = new HashSet<>();
 
         for (final ComponentConfiguration cc : this.configurationService.getComponentConfigurations()) {

@@ -18,7 +18,7 @@ import java.util.Map;
 import org.apache.camel.CamelContext;
 import org.eclipse.kura.camel.cloud.KuraCloudComponent;
 import org.eclipse.kura.camel.component.AbstractXmlCamelComponent;
-import org.eclipse.kura.cloud.CloudService;
+import org.eclipse.kura.cloudconnection.CloudEndpoint;
 import org.eclipse.kura.configuration.ConfigurableComponent;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -45,20 +45,20 @@ import org.osgi.service.metatype.annotations.Designate;
 @Designate(ocd = GatewayRouterXmlOCD.class)
 public class GatewayRouterXml extends AbstractXmlCamelComponent {
 
-    private CloudService cloudService;
+    private CloudEndpoint cloudEndpoint;
 
     public GatewayRouterXml() {
         super("camel.route.xml");
     }
 
-    @Reference(name = "CloudService", service = CloudService.class, unbind = "-")
-    public void setCloudService(final CloudService cloudService) {
-        this.cloudService = cloudService;
+    @Reference(name = "CloudEndpoint", service = CloudEndpoint.class, unbind = "-")
+    public void setCloudEndpoint(final CloudEndpoint cloudEndpoint) {
+        this.cloudEndpoint = cloudEndpoint;
     }
 
     @Override
     protected void beforeStart(final CamelContext camelContext) {
-        camelContext.addComponent(DEFAULT_NAME, new KuraCloudComponent(camelContext, this.cloudService));
+        camelContext.addComponent(DEFAULT_NAME, new KuraCloudComponent(camelContext, this.cloudEndpoint));
     }
 
     @Activate

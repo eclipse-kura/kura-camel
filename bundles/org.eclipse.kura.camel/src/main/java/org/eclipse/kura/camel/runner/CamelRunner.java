@@ -38,7 +38,7 @@ import org.apache.camel.support.DefaultRegistry;
 import org.apache.camel.support.SimpleRegistry;
 import org.apache.camel.util.function.ThrowingBiConsumer;
 import org.eclipse.kura.camel.cloud.KuraCloudComponent;
-import org.eclipse.kura.cloud.CloudService;
+import org.eclipse.kura.cloudconnection.CloudEndpoint;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.framework.Filter;
@@ -247,10 +247,10 @@ public class CamelRunner {
         }
 
         /**
-         * Depend on a specific {@link CloudService} instance
+         * Depend on a specific {@link CloudEndpoint} (cloud connection) instance
          * <p>
          * If a filter is specified then it will be combined with the filter for the object class of the
-         * {@link CloudService}.
+         * {@link CloudEndpoint}.
          * If the filter expression is omitted then only the object class filter will be used.
          * </p>
          *
@@ -265,8 +265,8 @@ public class CamelRunner {
         public Builder cloudService(
                 BundleContext bundleContext,
                 final String filter,
-                final ServiceConsumer<CloudService, CamelContext> consumer) {
-            final String baseFilter = String.format("(%s=%s)", Constants.OBJECTCLASS, CloudService.class.getName());
+                final ServiceConsumer<CloudEndpoint, CamelContext> consumer) {
+            final String baseFilter = String.format("(%s=%s)", Constants.OBJECTCLASS, CloudEndpoint.class.getName());
 
             try {
                 if (filter != null && !filter.trim().isEmpty()) {
@@ -283,13 +283,13 @@ public class CamelRunner {
         }
 
         /**
-         * Depend on a specific {@link CloudService} instance
+         * Depend on a specific {@link CloudEndpoint} (cloud connection) instance
          * <p>
          * The cloud service will be injected into the camel context as component "kura-cloud".
          * </p>
          * <p>
          * If a filter is specified then it will be combined with the filter for the object class of the
-         * {@link CloudService}.
+         * {@link CloudEndpoint}.
          * If the filter expression is omitted then only the object class filter will be used.
          * </p>
          *
@@ -302,7 +302,7 @@ public class CamelRunner {
         }
 
         /**
-         * Depend on a specific {@link CloudService} instance by key and value
+         * Depend on a specific {@link CloudEndpoint} (cloud connection) instance by key and value
          * <p>
          * This is a convenience method for {@link #cloudService(String)}. It will effectively call
          * this method with a filter of {@code "(" + attribute + "=" + value + ")"}
@@ -363,7 +363,7 @@ public class CamelRunner {
             return this;
         }
 
-        public static ServiceConsumer<CloudService, CamelContext> addAsCloudComponent(final String componentName) {
+        public static ServiceConsumer<CloudEndpoint, CamelContext> addAsCloudComponent(final String componentName) {
             return (context, service) -> context.addComponent(componentName, new KuraCloudComponent(context, service));
         }
 
