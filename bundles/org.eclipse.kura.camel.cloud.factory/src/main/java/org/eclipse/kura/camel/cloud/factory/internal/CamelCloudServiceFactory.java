@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
-
 import org.eclipse.kura.KuraException;
 import org.eclipse.kura.camel.component.Configuration;
 import org.eclipse.kura.cloudconnection.factory.CloudConnectionFactory;
@@ -42,14 +41,18 @@ import org.slf4j.LoggerFactory;
 /**
  * An implementation of {@link CloudConnectionFactory} based on Apache Camel
  */
-@Component(name = "org.eclipse.kura.camel.cloud.factory.CamelCloudServiceFactory", immediate = true, configurationPolicy = ConfigurationPolicy.OPTIONAL, service = {
-        CloudConnectionFactory.class }, property = {
-                "kura.ui.csf.pid.default=org.eclipse.kura.camel.cloud.factory.CamelFactory",
-                "kura.ui.csf.pid.regex=^org.eclipse.kura.camel.cloud.factory.CamelFactory(\\-[a-zA-Z0-9]+)?$",
-                // deliberately different from the component name: this pid is what the
-                // framework
-                // looks the factory up by, so it must survive the descriptor conversion
-                "service.pid=org.eclipse.kura.camel.cloud.factory.CamelManager"
+@Component(
+        name = "org.eclipse.kura.camel.cloud.factory.CamelCloudServiceFactory",
+        immediate = true,
+        configurationPolicy = ConfigurationPolicy.OPTIONAL,
+        service = {CloudConnectionFactory.class},
+        property = {
+            "kura.ui.csf.pid.default=org.eclipse.kura.camel.cloud.factory.CamelFactory",
+            "kura.ui.csf.pid.regex=^org.eclipse.kura.camel.cloud.factory.CamelFactory(\\-[a-zA-Z0-9]+)?$",
+            // deliberately different from the component name: this pid is what the
+            // framework
+            // looks the factory up by, so it must survive the descriptor conversion
+            "service.pid=org.eclipse.kura.camel.cloud.factory.CamelManager"
         })
 public class CamelCloudServiceFactory implements CloudConnectionFactory {
 
@@ -118,7 +121,7 @@ public class CamelCloudServiceFactory implements CloudConnectionFactory {
         try {
 
             final Collection<ServiceReference<CamelFactory>> refs = FrameworkUtil.getBundle(
-                    CamelCloudServiceFactory.class)
+                            CamelCloudServiceFactory.class)
                     .getBundleContext()
                     .getServiceReferences(CamelFactory.class, null);
             if (refs != null) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2026 Red Hat Inc and others
+ * Copyright (c) 2011, 2026 Red Hat Inc and/or its affiliates and others
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -9,6 +9,7 @@
  *
  * Contributors:
  *  Red Hat Inc
+ *  Eurotech
  *******************************************************************************/
 package org.eclipse.kura.camel.cloud;
 
