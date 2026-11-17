@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2026 Red Hat Inc and others
+ * Copyright (c) 2016, 2026 Red Hat Inc and/or its affiliates and others
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -9,6 +9,7 @@
  *
  * Contributors:
  *  Red Hat Inc
+ *  Eurotech
  *******************************************************************************/
 package org.eclipse.kura.camel.cloud.factory.internal;
 
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+
 import org.eclipse.kura.KuraException;
 import org.eclipse.kura.camel.component.Configuration;
 import org.eclipse.kura.cloudconnection.factory.CloudConnectionFactory;
@@ -40,17 +42,14 @@ import org.slf4j.LoggerFactory;
 /**
  * An implementation of {@link CloudConnectionFactory} based on Apache Camel
  */
-@Component(
-        name = "org.eclipse.kura.camel.cloud.factory.CamelCloudServiceFactory",
-        immediate = true,
-        configurationPolicy = ConfigurationPolicy.OPTIONAL,
-        service = {CloudConnectionFactory.class},
-        property = {
-            "kura.ui.csf.pid.default=org.eclipse.kura.camel.cloud.factory.CamelFactory",
-            "kura.ui.csf.pid.regex=^org.eclipse.kura.camel.cloud.factory.CamelFactory(\\-[a-zA-Z0-9]+)?$",
-            // deliberately different from the component name: this pid is what the framework
-            // looks the factory up by, so it must survive the descriptor conversion
-            "service.pid=org.eclipse.kura.camel.cloud.factory.CamelManager"
+@Component(name = "org.eclipse.kura.camel.cloud.factory.CamelCloudServiceFactory", immediate = true, configurationPolicy = ConfigurationPolicy.OPTIONAL, service = {
+        CloudConnectionFactory.class }, property = {
+                "kura.ui.csf.pid.default=org.eclipse.kura.camel.cloud.factory.CamelFactory",
+                "kura.ui.csf.pid.regex=^org.eclipse.kura.camel.cloud.factory.CamelFactory(\\-[a-zA-Z0-9]+)?$",
+                // deliberately different from the component name: this pid is what the
+                // framework
+                // looks the factory up by, so it must survive the descriptor conversion
+                "service.pid=org.eclipse.kura.camel.cloud.factory.CamelManager"
         })
 public class CamelCloudServiceFactory implements CloudConnectionFactory {
 
@@ -69,11 +68,11 @@ public class CamelCloudServiceFactory implements CloudConnectionFactory {
      * Add a new CamelFactory
      *
      * @param userPid
-     *            the PID as entered by the user
+     *                   the PID as entered by the user
      * @param properties
-     *            the provided configuration properties
+     *                   the provided configuration properties
      * @throws KuraException
-     *             if anything goes wrong
+     *                       if anything goes wrong
      */
     protected void add(final String pid, final Map<String, Object> properties) throws KuraException {
         logger.info("Add: {}", pid);
@@ -111,14 +110,15 @@ public class CamelCloudServiceFactory implements CloudConnectionFactory {
     /**
      * Enumerate all registered CamelFactory instances
      *
-     * @return a PID (<code>kura.service.pid</code>) set of all registered CamelFactory instances
+     * @return a PID (<code>kura.service.pid</code>) set of all registered
+     *         CamelFactory instances
      */
     public static Set<String> lookupIds() {
         final Set<String> ids = new TreeSet<>();
         try {
 
             final Collection<ServiceReference<CamelFactory>> refs = FrameworkUtil.getBundle(
-                            CamelCloudServiceFactory.class)
+                    CamelCloudServiceFactory.class)
                     .getBundleContext()
                     .getServiceReferences(CamelFactory.class, null);
             if (refs != null) {
@@ -141,13 +141,14 @@ public class CamelCloudServiceFactory implements CloudConnectionFactory {
     /**
      * Provide a common way to delete camel factory configurations
      * <p>
-     * Right now this is a rather slim implementation used by CamelFactory and the CamelManager
+     * Right now this is a rather slim implementation used by CamelFactory and the
+     * CamelManager
      * </p>
      *
      * @param configurationService
-     *            the configuration service to use
+     *                             the configuration service to use
      * @param pid
-     *            the PID to delete
+     *                             the PID to delete
      */
     static void delete(final ConfigurationService configurationService, final String pid) {
         try {
