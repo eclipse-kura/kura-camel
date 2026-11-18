@@ -36,7 +36,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
-import java.util.function.IntSupplier;
+
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.StartupListener;
@@ -56,13 +56,17 @@ import org.slf4j.LoggerFactory;
 /**
  * A default implementation of the {@link CamelCloudService}
  * <p>
- * Published messages are sent to a Camel endpoint (by default {@code vm:<applicationId>:<topic>}), and
- * subscriptions are implemented by adding a Camel route consuming from that same endpoint.
+ * Published messages are sent to a Camel endpoint (by default
+ * {@code vm:<applicationId>:<topic>}), and
+ * subscriptions are implemented by adding a Camel route consuming from that
+ * same endpoint.
  * </p>
  * <p>
  * The message properties understood by {@link #publish(KuraMessage)} and
- * {@link #registerSubscriber(Map, CloudSubscriberListener)} are the ones used by the Kura cloud connections
- * (see the {@code PROP_*} constants of {@link KuraCloudClientConstants}): application ID, application topic, QoS,
+ * {@link #registerSubscriber(Map, CloudSubscriberListener)} are the ones used
+ * by the Kura cloud connections
+ * (see the {@code PROP_*} constants of {@link KuraCloudClientConstants}):
+ * application ID, application topic, QoS,
  * retain, priority and control, plus the optional device ID.
  * </p>
  */
@@ -80,7 +84,6 @@ public class DefaultCamelCloudService implements CamelCloudService {
     private final CopyOnWriteArrayList<CloudConnectionListener> connectionListeners = new CopyOnWriteArrayList<>();
     private final CopyOnWriteArrayList<CloudDeliveryListener> deliveryListeners = new CopyOnWriteArrayList<>();
     private final Random messageIdRandom = new Random();
-    private final IntSupplier messageIdGenerator = () -> Math.abs(this.messageIdRandom.nextInt());
 
     public DefaultCamelCloudService(CamelContext camelContext) {
         this.camelContext = camelContext;
@@ -133,7 +136,7 @@ public class DefaultCamelCloudService implements CamelCloudService {
         }
 
         final String target = target(applicationId, buildTopicName(applicationId, deviceId, topic));
-        final int messageId = this.messageIdGenerator.getAsInt();
+        final int messageId = this.messageIdRandom.nextInt(Integer.MAX_VALUE);
 
         final Map<String, Object> headers = new HashMap<>();
         headers.put(CAMEL_KURA_CLOUD_CONTROL, asBoolean(props.get(PROP_CONTROL), false));
@@ -230,8 +233,8 @@ public class DefaultCamelCloudService implements CamelCloudService {
         final String routeId = routeId(applicationId, deviceId, topic, l);
         try {
             ShutdownStrategy strategy = this.camelContext.getShutdownStrategy();
-            if (strategy instanceof DefaultShutdownStrategy
-                    && ((DefaultShutdownStrategy) strategy).getCurrentShutdownTaskFuture() != null) {
+            if (strategy instanceof DefaultShutdownStrategy defaultShutdownStrategy
+                    && defaultShutdownStrategy.getCurrentShutdownTaskFuture() != null) {
                 logger.info("Skipping cleanup of '{}' since the camel context is being shut down", routeId);
                 // we are "in shutdown" and would deadlock
                 return;
@@ -294,7 +297,9 @@ public class DefaultCamelCloudService implements CamelCloudService {
 
         final String internalQueue = buildTopicName(applicationId, deviceId, topic);
         final String routeId = routeId(applicationId, deviceId, topic, listener);
-        logger.debug("About to subscribe to '{}' / {}", target(applicationId, internalQueue), this.camelContext);
+        if (logger.isDebugEnabled()) {
+            logger.debug("About to subscribe to '{}' / {}", target(applicationId, internalQueue), this.camelContext);
+        }
 
         try {
             this.camelContext.addRoutes(new RouteBuilder() {
@@ -305,8 +310,8 @@ public class DefaultCamelCloudService implements CamelCloudService {
 
                         final Object body = exchange.getIn().getBody();
                         final KuraPayload payload;
-                        if (body instanceof KuraPayload) {
-                            payload = (KuraPayload) body;
+                        if (body instanceof KuraPayload kuraPayload) {
+                            payload = kuraPayload;
                         } else {
                             payload = new KuraPayload();
                             payload.setBody(getContext().getTypeConverter().convertTo(byte[].class, body));
@@ -344,10 +349,10 @@ public class DefaultCamelCloudService implements CamelCloudService {
     }
 
     private static int asInt(final Object value, final int defaultValue) {
-        return value instanceof Number ? ((Number) value).intValue() : defaultValue;
+        return value instanceof Number numberValue ? numberValue.intValue() : defaultValue;
     }
 
     private static boolean asBoolean(final Object value, final boolean defaultValue) {
-        return value instanceof Boolean ? (Boolean) value : defaultValue;
+        return value instanceof Boolean booleanValue ? booleanValue : defaultValue;
     }
 }
