@@ -43,8 +43,7 @@ public abstract class AbstractSimplePublisher implements ConfigurableComponent {
     protected static final RouteBuilder NO_ROUTES = new RouteBuilder() {
 
         @Override
-        public void configure() throws Exception {
-        }
+        public void configure() throws Exception {}
     };
 
     private CamelRunner camel;
@@ -135,7 +134,8 @@ public abstract class AbstractSimplePublisher implements ConfigurableComponent {
      *                                illegal syntax
      */
     private CamelRunner createCamelRunner(final String cloudServiceFilter) throws InvalidSyntaxException {
-        final BundleContext ctx = FrameworkUtil.getBundle(AbstractSimplePublisher.class).getBundleContext();
+        final BundleContext ctx =
+                FrameworkUtil.getBundle(AbstractSimplePublisher.class).getBundleContext();
 
         this.cloudServiceFilter = cloudServiceFilter;
 
@@ -148,8 +148,8 @@ public abstract class AbstractSimplePublisher implements ConfigurableComponent {
         builder.dependOn(
                 ctx,
                 FrameworkUtil.createFilter(cloudServiceFilter),
-                (final CamelContext context, final CloudEndpoint service) -> context.addComponent(
-                        "cloud", new KuraCloudComponent(context, service)));
+                (final CamelContext context, final CloudEndpoint service) ->
+                        context.addComponent("cloud", new KuraCloudComponent(context, service)));
 
         // return un-started instance
 
