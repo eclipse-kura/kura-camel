@@ -18,7 +18,6 @@ import org.apache.camel.builder.RouteBuilder;
 import org.eclipse.kura.camel.cloud.KuraCloudComponent;
 import org.eclipse.kura.camel.runner.CamelRunner;
 import org.eclipse.kura.camel.runner.CamelRunner.Builder;
-import org.eclipse.kura.camel.runner.ServiceConsumer;
 import org.eclipse.kura.cloudconnection.CloudEndpoint;
 import org.eclipse.kura.configuration.ConfigurableComponent;
 import org.osgi.framework.BundleContext;
@@ -44,7 +43,8 @@ public abstract class AbstractSimplePublisher implements ConfigurableComponent {
     protected static final RouteBuilder NO_ROUTES = new RouteBuilder() {
 
         @Override
-        public void configure() throws Exception {}
+        public void configure() throws Exception {
+        }
     };
 
     private CamelRunner camel;
@@ -135,8 +135,7 @@ public abstract class AbstractSimplePublisher implements ConfigurableComponent {
      *                                illegal syntax
      */
     private CamelRunner createCamelRunner(final String cloudServiceFilter) throws InvalidSyntaxException {
-        final BundleContext ctx =
-                FrameworkUtil.getBundle(AbstractSimplePublisher.class).getBundleContext();
+        final BundleContext ctx = FrameworkUtil.getBundle(AbstractSimplePublisher.class).getBundleContext();
 
         this.cloudServiceFilter = cloudServiceFilter;
 
@@ -149,13 +148,8 @@ public abstract class AbstractSimplePublisher implements ConfigurableComponent {
         builder.dependOn(
                 ctx,
                 FrameworkUtil.createFilter(cloudServiceFilter),
-                new ServiceConsumer<CloudEndpoint, CamelContext>() {
-
-                    @Override
-                    public void consume(final CamelContext context, final CloudEndpoint service) {
-                        context.addComponent("cloud", new KuraCloudComponent(context, service));
-                    }
-                });
+                (final CamelContext context, final CloudEndpoint service) -> context.addComponent(
+                        "cloud", new KuraCloudComponent(context, service)));
 
         // return un-started instance
 
