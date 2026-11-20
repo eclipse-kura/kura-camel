@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2026 Red Hat Inc and others
+ * Copyright (c) 2016, 2026 Red Hat Inc and/or its affiliates and others
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -27,7 +27,7 @@ import org.eclipse.kura.camel.component.Configuration;
 import org.eclipse.kura.camel.runner.CamelRunner;
 import org.eclipse.kura.camel.runner.CamelRunner.Builder;
 import org.eclipse.kura.camel.runner.ServiceConsumer;
-import org.eclipse.kura.cloud.CloudService;
+import org.eclipse.kura.cloudconnection.CloudEndpoint;
 import org.eclipse.kura.configuration.ConfigurableComponent;
 import org.eclipse.kura.message.KuraPayload;
 import org.osgi.framework.BundleContext;
@@ -138,10 +138,10 @@ public class GatewayRouterJava implements ConfigurableComponent {
         // add service dependency
 
         builder.dependOn(
-                ctx, FrameworkUtil.createFilter(fullFilter), new ServiceConsumer<CloudService, CamelContext>() {
+                ctx, FrameworkUtil.createFilter(fullFilter), new ServiceConsumer<CloudEndpoint, CamelContext>() {
 
                     @Override
-                    public void consume(final CamelContext context, final CloudService service) {
+                    public void consume(final CamelContext context, final CloudEndpoint service) {
                         context.addComponent("cloud", new KuraCloudComponent(context, service));
                     }
                 });
@@ -162,7 +162,7 @@ public class GatewayRouterJava implements ConfigurableComponent {
         final String filterPid =
                 Configuration.asStringNotEmpty(properties, "cloudService", "org.eclipse.kura.cloud.CloudService");
         final String fullFilter = String.format(
-                "(&(%s=%s)(kura.service.pid=%s))", Constants.OBJECTCLASS, CloudService.class.getName(), filterPid);
+                "(&(%s=%s)(kura.service.pid=%s))", Constants.OBJECTCLASS, CloudEndpoint.class.getName(), filterPid);
         return fullFilter;
     }
 

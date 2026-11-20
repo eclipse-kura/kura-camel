@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2026 Red Hat Inc and others
+ * Copyright (c) 2011, 2026 Red Hat Inc and/or its affiliates and others
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -9,6 +9,7 @@
  *
  * Contributors:
  *  Red Hat Inc
+ *  Eurotech
  *******************************************************************************/
 package org.eclipse.kura.camel.cloud;
 
@@ -18,31 +19,42 @@ import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.CAMEL_K
 import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.CAMEL_KURA_CLOUD_QOS;
 import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.CAMEL_KURA_CLOUD_RETAIN;
 import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.CAMEL_KURA_CLOUD_TOPIC;
+import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.PROP_APP_ID;
+import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.PROP_APP_TOPIC;
+import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.PROP_CONTROL;
+import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.PROP_DEVICE_ID;
+import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.PROP_QOS;
+import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.PROP_RETAIN;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.camel.Endpoint;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.support.DefaultConsumer;
-import org.eclipse.kura.KuraException;
-import org.eclipse.kura.cloud.CloudClient;
-import org.eclipse.kura.cloud.CloudClientListener;
-import org.eclipse.kura.message.KuraPayload;
+import org.eclipse.kura.cloudconnection.CloudEndpoint;
+import org.eclipse.kura.cloudconnection.message.KuraMessage;
+import org.eclipse.kura.cloudconnection.subscriber.listener.CloudSubscriberListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Consumer implementation for {@link KuraCloudComponent}
+ * <p>
+ * The consumer registers itself as subscriber of the {@link CloudEndpoint}. Re-establishing the subscription after
+ * a connection loss is up to the cloud endpoint implementation.
+ * </p>
  */
-public class KuraCloudConsumer extends DefaultConsumer implements CloudClientListener {
+public class KuraCloudConsumer extends DefaultConsumer implements CloudSubscriberListener {
 
     // Camel 3 removed the inherited 'log' field from DefaultConsumer
     private static final Logger logger = LoggerFactory.getLogger(KuraCloudConsumer.class);
 
-    private final CloudClient cloudClient;
+    private final CloudEndpoint cloudEndpoint;
 
-    public KuraCloudConsumer(final Endpoint endpoint, final Processor processor, final CloudClient cloudClient) {
+    public KuraCloudConsumer(final Endpoint endpoint, final Processor processor, final CloudEndpoint cloudEndpoint) {
         super(endpoint, processor);
-        this.cloudClient = cloudClient;
+        this.cloudEndpoint = cloudEndpoint;
     }
 
     // Life-cycle
@@ -51,99 +63,53 @@ public class KuraCloudConsumer extends DefaultConsumer implements CloudClientLis
     protected void doStart() throws Exception {
         super.doStart();
 
-        logger.debug("Starting CloudClientListener.");
+        logger.debug("Registering cloud subscriber.");
 
-        this.cloudClient.addCloudClientListener(this);
-        if (this.cloudClient.isConnected()) {
-            performSubscribe();
-        }
+        final Map<String, Object> subscriptionProperties = new HashMap<>();
+        subscriptionProperties.put(PROP_APP_ID, getEndpoint().getApplicationId());
+        subscriptionProperties.put(PROP_APP_TOPIC, getEndpoint().getTopic());
+        subscriptionProperties.put(PROP_QOS, getEndpoint().getQos());
+        subscriptionProperties.put(PROP_CONTROL, getEndpoint().isControl());
+
+        this.cloudEndpoint.registerSubscriber(subscriptionProperties, this);
     }
 
     @Override
     protected void doStop() throws Exception {
+        logger.debug("Unregistering cloud subscriber.");
+
         try {
-            this.cloudClient.unsubscribe(getEndpoint().getTopic());
+            this.cloudEndpoint.unregisterSubscriber(this);
         } catch (final Exception e) {
             logger.info("Failed to unsubscribe", e);
         }
-        this.cloudClient.removeCloudClientListener(this);
-        logger.debug("Stopping CloudClientListener.");
+
         super.doStop();
     }
 
-    // CloudClientListener callbacks
+    // CloudSubscriberListener callback
 
     @Override
-    public void onControlMessageArrived(
-            final String deviceId, final String appTopic, final KuraPayload msg, final int qos, final boolean retain) {
-        onInternalMessageArrived(deviceId, appTopic, msg, qos, retain, true);
-    }
+    public void onMessageArrived(final KuraMessage message) {
+        final Map<String, Object> properties = message.getProperties();
 
-    @Override
-    public void onMessageArrived(
-            final String deviceId, final String appTopic, final KuraPayload msg, final int qos, final boolean retain) {
-        onInternalMessageArrived(deviceId, appTopic, msg, qos, retain, false);
-    }
+        final String deviceId = (String) properties.get(PROP_DEVICE_ID);
+        final String appTopic = (String) properties.get("appTopic");
 
-    @Override
-    public void onConnectionLost() {
-        logger.debug("Executing empty 'onConnectionLost' callback.");
-    }
-
-    @Override
-    public void onConnectionEstablished() {
-        logger.debug("Executing 'onConnectionEstablished'.");
-        performSubscribe();
-    }
-
-    private void performSubscribe() {
-        try {
-            logger.debug(
-                    "Perform subscribe: {} / {}",
-                    this.cloudClient,
-                    getEndpoint().getTopic());
-            this.cloudClient.subscribe(getEndpoint().getTopic(), 0);
-        } catch (final KuraException e) {
-            logger.warn("Failed to subscribe", e);
-        }
-    }
-
-    @Override
-    public void onMessageConfirmed(final int messageId, final String appTopic) {
-        logger.debug(
-                "Executing empty 'onMessageConfirmed' callback with message ID {} and application topic {}.",
-                messageId,
-                appTopic);
-    }
-
-    @Override
-    public void onMessagePublished(final int messageId, final String appTopic) {
-        logger.debug(
-                "Executing empty 'onMessagePublished' callback with message ID {} and application topic {}.",
-                messageId,
-                appTopic);
-    }
-
-    // Helpers
-
-    private void onInternalMessageArrived(
-            final String deviceId,
-            final String appTopic,
-            final KuraPayload message,
-            final int qos,
-            final boolean retain,
-            final boolean control) {
         logger.debug("Received message with deviceId {}, application topic {}.", deviceId, appTopic);
 
+        final Object qos = properties.getOrDefault(PROP_QOS, getEndpoint().getQos());
+        final Object control =
+                properties.getOrDefault(PROP_CONTROL, getEndpoint().isControl());
+
         final Exchange exchange = anExchange(getEndpoint().getCamelContext()) //
-                .withBody(message) //
+                .withBody(message.getPayload()) //
                 .withHeader(CAMEL_KURA_CLOUD_TOPIC, appTopic) //
                 .withHeader(CAMEL_KURA_CLOUD_DEVICEID, deviceId) //
                 .withHeader(CAMEL_KURA_CLOUD_QOS, qos) //
                 .withHeader(CAMEL_KURA_CLOUD_CONTROL, control) //
-                .withHeader(CAMEL_KURA_CLOUD_RETAIN, retain) //
+                .withHeader(CAMEL_KURA_CLOUD_RETAIN, properties.get(PROP_RETAIN)) //
                 .build();
-
         exchange.getExchangeExtension().setFromEndpoint(getEndpoint());
 
         try {

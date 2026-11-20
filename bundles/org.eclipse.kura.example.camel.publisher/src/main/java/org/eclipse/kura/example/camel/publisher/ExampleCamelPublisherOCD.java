@@ -23,7 +23,7 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 @ObjectClassDefinition( //
         id = "org.eclipse.kura.example.camel.publisher.ExampleCamelPublisher", //
         name = "Camel example publisher", //
-        description = "Configurable Apache Camel based example publisher. It publishes to 'camel/example'.", //
+        description = "Configurable Apache Camel based example publisher. It publishes to camel/example.", //
         icon = { //
             @Icon(resource = "logos/logo.png", size = 32) //
         } //

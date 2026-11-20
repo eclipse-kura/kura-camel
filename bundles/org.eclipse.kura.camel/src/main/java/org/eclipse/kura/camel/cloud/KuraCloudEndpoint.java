@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2026 Red Hat Inc and others
+ * Copyright (c) 2011, 2026 Red Hat Inc and/or its affiliates and others
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -9,6 +9,7 @@
  *
  * Contributors:
  *  Red Hat Inc
+ *  Eurotech
  *******************************************************************************/
 package org.eclipse.kura.camel.cloud;
 
@@ -18,8 +19,7 @@ import org.apache.camel.Processor;
 import org.apache.camel.spi.UriEndpoint;
 import org.apache.camel.spi.UriParam;
 import org.apache.camel.support.DefaultEndpoint;
-import org.eclipse.kura.camel.internal.cloud.CloudClientCache;
-import org.eclipse.kura.camel.internal.cloud.CloudClientCache.CloudClientHandle;
+import org.eclipse.kura.cloudconnection.CloudEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,51 +56,43 @@ public class KuraCloudEndpoint extends DefaultEndpoint {
     @UriParam(defaultValue = "")
     private String deviceId;
 
-    private CloudClientHandle cloudClientHandle;
-
-    private CloudClientCache cache;
+    private CloudEndpoint cloudEndpoint;
 
     public KuraCloudEndpoint(String uri, KuraCloudComponent kuraCloudComponent) {
         super(uri, kuraCloudComponent);
     }
 
-    public KuraCloudEndpoint(String uri, KuraCloudComponent kuraCloudComponent, CloudClientCache cache) {
+    public KuraCloudEndpoint(String uri, KuraCloudComponent kuraCloudComponent, CloudEndpoint cloudEndpoint) {
         super(uri, kuraCloudComponent);
-        this.cache = cache;
+        this.cloudEndpoint = cloudEndpoint;
     }
 
     @Override
     protected void doStart() throws Exception {
         synchronized (this) {
-            if (this.cache == null) {
-                this.cache = getComponent().getCache();
+            if (this.cloudEndpoint == null) {
+                this.cloudEndpoint = getComponent().getCloudEndpoint();
             }
-            this.cloudClientHandle = this.cache.getOrCreate(this.applicationId);
-            logger.debug("CloudClient {} -> {}", this.applicationId, this.cloudClientHandle.getClient());
+            logger.debug("CloudEndpoint {} -> {}", this.applicationId, this.cloudEndpoint);
         }
         super.doStart();
     }
 
     @Override
-    protected void doStop() throws Exception {
-        super.doStop();
-
-        synchronized (this) {
-            if (this.cloudClientHandle != null) {
-                this.cloudClientHandle.close();
-                this.cloudClientHandle = null;
-            }
-        }
-    }
-
-    @Override
     public Consumer createConsumer(Processor processor) throws Exception {
-        return new KuraCloudConsumer(this, processor, this.cloudClientHandle.getClient());
+        return new KuraCloudConsumer(this, processor, getCloudEndpoint());
     }
 
     @Override
     public KuraCloudProducer createProducer() throws Exception {
-        return new KuraCloudProducer(this, this.cloudClientHandle.getClient());
+        return new KuraCloudProducer(this, getCloudEndpoint());
+    }
+
+    private synchronized CloudEndpoint getCloudEndpoint() {
+        if (this.cloudEndpoint == null) {
+            this.cloudEndpoint = getComponent().getCloudEndpoint();
+        }
+        return this.cloudEndpoint;
     }
 
     @Override

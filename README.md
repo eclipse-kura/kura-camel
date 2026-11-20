@@ -12,7 +12,7 @@ independently.
 | Bundle | Purpose |
 |---|---|
 | `org.eclipse.kura.camel` | Core and API bundle: the `kura-cloud:` Camel component, the `CamelRunner` context lifecycle, the Kura↔Camel type converters and the `AbstractCamelComponent` base classes. Exports the `org.eclipse.kura.camel.*` API at version `1.1.0`. |
-| `org.eclipse.kura.camel.cloud.factory` | A `CloudServiceFactory` backed by an XML-defined Camel route. |
+| `org.eclipse.kura.camel.cloud.factory` | A `CloudConnectionFactory` backed by an XML-defined Camel route. |
 | `org.eclipse.kura.camel.xml` | The `Camel XML router` configurable component: runs Camel routes defined as XML in the component configuration. |
 | `org.eclipse.kura.wire.camel` | Camel wire components — `CamelConsume`, `CamelProcess`, `CamelProduce` — for use in a Kura Wire graph. |
 

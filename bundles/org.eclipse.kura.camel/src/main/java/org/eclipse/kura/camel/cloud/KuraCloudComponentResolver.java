@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2026 Red Hat Inc and others
+ * Copyright (c) 2016, 2026 Red Hat Inc and/or its affiliates and others
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -16,7 +16,7 @@ package org.eclipse.kura.camel.cloud;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Component;
 import org.apache.camel.spi.ComponentResolver;
-import org.eclipse.kura.cloud.CloudService;
+import org.eclipse.kura.cloudconnection.CloudEndpoint;
 import org.osgi.service.component.annotations.Reference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A resolver for "kura-cloud"
  * <p>
- * This resolver will register to any instance of {@link CloudService} and
+ * This resolver will register to any instance of {@link CloudEndpoint} and
  * wrap it into a {@link KuraCloudComponent} instance.
  * </p>
  * <p>
@@ -41,18 +41,18 @@ public class KuraCloudComponentResolver implements ComponentResolver {
 
     private static final Logger logger = LoggerFactory.getLogger(KuraCloudComponentResolver.class);
 
-    private CloudService cloudService;
+    private CloudEndpoint cloudEndpoint;
 
-    @Reference(name = "CloudService", service = CloudService.class, unbind = "-")
-    public void setCloudService(final CloudService cloudService) {
-        this.cloudService = cloudService;
+    @Reference(name = "CloudEndpoint", service = CloudEndpoint.class, unbind = "-")
+    public void setCloudEndpoint(final CloudEndpoint cloudEndpoint) {
+        this.cloudEndpoint = cloudEndpoint;
     }
 
     @Override
     public Component resolveComponent(final String name, final CamelContext context) throws Exception {
         switch (name) {
             case KuraCloudComponent.DEFAULT_NAME:
-                final KuraCloudComponent component = new KuraCloudComponent(context, this.cloudService);
+                final KuraCloudComponent component = new KuraCloudComponent(context, this.cloudEndpoint);
                 logger.debug("Created new cloud component: {}", component);
                 return component;
             default:
