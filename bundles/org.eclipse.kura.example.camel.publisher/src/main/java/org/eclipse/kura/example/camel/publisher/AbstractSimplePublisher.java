@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2016, 2026 Red Hat Inc and others
+ * Copyright (c) 2016, 2026 Red Hat Inc and/or its affiliates and others
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -18,8 +18,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.eclipse.kura.camel.cloud.KuraCloudComponent;
 import org.eclipse.kura.camel.runner.CamelRunner;
 import org.eclipse.kura.camel.runner.CamelRunner.Builder;
-import org.eclipse.kura.camel.runner.ServiceConsumer;
-import org.eclipse.kura.cloud.CloudService;
+import org.eclipse.kura.cloudconnection.CloudEndpoint;
 import org.eclipse.kura.configuration.ConfigurableComponent;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
@@ -147,13 +146,10 @@ public abstract class AbstractSimplePublisher implements ConfigurableComponent {
         // add service dependency
 
         builder.dependOn(
-                ctx, FrameworkUtil.createFilter(cloudServiceFilter), new ServiceConsumer<CloudService, CamelContext>() {
-
-                    @Override
-                    public void consume(final CamelContext context, final CloudService service) {
-                        context.addComponent("cloud", new KuraCloudComponent(context, service));
-                    }
-                });
+                ctx,
+                FrameworkUtil.createFilter(cloudServiceFilter),
+                (final CamelContext context, final CloudEndpoint service) ->
+                        context.addComponent("cloud", new KuraCloudComponent(context, service)));
 
         // return un-started instance
 
@@ -170,7 +166,7 @@ public abstract class AbstractSimplePublisher implements ConfigurableComponent {
     private static String makeCloudServiceFilter(ExampleCamelPublisherOCD ocd) {
         return String.format(
                 "(&(%s=%s)(kura.service.pid=%s))",
-                Constants.OBJECTCLASS, CloudService.class.getName(), ocd.cloud_service_pid());
+                Constants.OBJECTCLASS, CloudEndpoint.class.getName(), ocd.cloud_service_pid());
     }
 
     /**

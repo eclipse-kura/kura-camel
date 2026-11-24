@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2026 Red Hat Inc and others
+ * Copyright (c) 2011, 2026 Red Hat Inc and/or its affiliates and others
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -9,6 +9,7 @@
  *
  * Contributors:
  *  Red Hat Inc
+ *  Eurotech
  *******************************************************************************/
 package org.eclipse.kura.camel.cloud;
 
@@ -18,9 +19,7 @@ import java.util.Map;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
 import org.apache.camel.support.DefaultComponent;
-import org.eclipse.kura.camel.internal.cloud.CloudClientCache;
-import org.eclipse.kura.camel.internal.cloud.CloudClientCacheImpl;
-import org.eclipse.kura.cloud.CloudService;
+import org.eclipse.kura.cloudconnection.CloudEndpoint;
 
 /**
  * The Camel component for providing "kura-cloud"
@@ -29,8 +28,7 @@ public class KuraCloudComponent extends DefaultComponent {
 
     public static final String DEFAULT_NAME = "kura-cloud";
 
-    private CloudService cloudService;
-    private CloudClientCache cache;
+    private CloudEndpoint cloudEndpoint;
 
     public KuraCloudComponent() {
         super();
@@ -42,43 +40,25 @@ public class KuraCloudComponent extends DefaultComponent {
         super(context);
     }
 
-    public KuraCloudComponent(final CamelContext context, final CloudService cloudService) {
+    public KuraCloudComponent(final CamelContext context, final CloudEndpoint cloudEndpoint) {
         super(context);
-        this.cloudService = cloudService;
+        this.cloudEndpoint = cloudEndpoint;
     }
 
     @Override
     protected void doStart() throws Exception {
-        // fail fast when no CloudService is resolvable, before any route starts
-        getCache();
-
+        // fail fast when no CloudEndpoint is resolvable, before any route starts
+        getCloudEndpoint();
         super.doStart();
     }
 
-    @Override
-    protected synchronized void doStop() throws Exception {
-        super.doStop();
-        if (this.cache != null) {
-            this.cache.close();
-            this.cache = null;
-        }
-    }
-
-    public synchronized CloudClientCache getCache() {
-        final CloudClientCache currentCache = this.cache;
-        if (currentCache != null) {
-            return currentCache;
-        }
-
-        final CloudService cloudServiceInstance = lookupCloudService();
-
-        if (cloudServiceInstance == null) {
+    public synchronized CloudEndpoint getCloudEndpoint() {
+        final CloudEndpoint endpoint = lookupCloudEndpoint();
+        if (endpoint == null) {
             throw new IllegalStateException(
-                    "'cloudService' is not set and not found in Camel context service registry");
+                    "'cloudEndpoint' is not set and not found in Camel context service registry");
         }
-
-        this.cache = new CloudClientCacheImpl(cloudServiceInstance);
-        return this.cache;
+        return endpoint;
     }
 
     // Operations
@@ -99,11 +79,11 @@ public class KuraCloudComponent extends DefaultComponent {
         return kuraCloudEndpoint;
     }
 
-    protected CloudService lookupCloudService() {
-        if (this.cloudService == null) {
-            this.cloudService =
-                    retrieveService(CloudService.class, getCamelContext().getRegistry());
+    protected CloudEndpoint lookupCloudEndpoint() {
+        if (this.cloudEndpoint == null) {
+            this.cloudEndpoint =
+                    retrieveService(CloudEndpoint.class, getCamelContext().getRegistry());
         }
-        return this.cloudService;
+        return this.cloudEndpoint;
     }
 }

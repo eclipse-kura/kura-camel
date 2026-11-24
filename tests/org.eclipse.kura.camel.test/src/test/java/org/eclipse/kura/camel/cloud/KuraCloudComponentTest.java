@@ -18,8 +18,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
@@ -30,9 +28,7 @@ import org.apache.camel.CamelContext;
 import org.apache.camel.Endpoint;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.camel.spi.Registry;
-import org.eclipse.kura.camel.internal.cloud.CloudClientCache;
-import org.eclipse.kura.cloud.CloudClient;
-import org.eclipse.kura.cloud.CloudService;
+import org.eclipse.kura.cloudconnection.CloudEndpoint;
 import org.eclipse.kura.core.testutil.TestUtil;
 import org.junit.Test;
 
@@ -66,8 +62,8 @@ public class KuraCloudComponentTest {
         Registry regMock = mock(Registry.class);
         when(ctxMock.getRegistry()).thenReturn(regMock);
 
-        Class<CloudService> clazz = CloudService.class;
-        Set<CloudService> set = new HashSet<CloudService>();
+        Class<CloudEndpoint> clazz = CloudEndpoint.class;
+        Set<CloudEndpoint> set = new HashSet<CloudEndpoint>();
         set.add(null);
         when(regMock.findByType(clazz)).thenReturn(set);
 
@@ -83,12 +79,12 @@ public class KuraCloudComponentTest {
             kcc.doStart();
             fail("Exception was expected.");
         } catch (IllegalStateException e) {
-            assertEquals("'cloudService' is not set and not found in Camel context service registry", e.getMessage());
+            assertEquals("'cloudEndpoint' is not set and not found in Camel context service registry", e.getMessage());
         } catch (Exception e) {
             fail("This exception was not expected.");
         }
 
-        assertNull(TestUtil.getFieldValue(kcc, "cloudService"));
+        assertNull(TestUtil.getFieldValue(kcc, "cloudEndpoint"));
     }
 
     @Test
@@ -97,9 +93,9 @@ public class KuraCloudComponentTest {
         Registry regMock = mock(Registry.class);
         when(ctxMock.getRegistry()).thenReturn(regMock);
 
-        Class<CloudService> clazz = CloudService.class;
-        Set<CloudService> set = new HashSet<CloudService>();
-        CloudService cs = mock(clazz);
+        Class<CloudEndpoint> clazz = CloudEndpoint.class;
+        Set<CloudEndpoint> set = new HashSet<CloudEndpoint>();
+        CloudEndpoint cs = mock(clazz);
         set.add(cs);
         when(regMock.findByType(clazz)).thenReturn(set);
 
@@ -107,24 +103,7 @@ public class KuraCloudComponentTest {
 
         kcc.doStart();
 
-        assertEquals(cs, TestUtil.getFieldValue(kcc, "cloudService"));
-        assertNotNull(TestUtil.getFieldValue(kcc, "cache"));
-    }
-
-    @Test
-    public void testDoStop() throws Exception {
-        final CloudClientCache cacheMock = mock(CloudClientCache.class);
-
-        KuraCloudComponent kcc = new KuraCloudComponent();
-
-        TestUtil.setFieldValue(kcc, "cache", cacheMock);
-
-        assertNotNull(TestUtil.getFieldValue(kcc, "cache"));
-
-        kcc.doStop();
-
-        assertNull(TestUtil.getFieldValue(kcc, "cache"));
-        verify(cacheMock, times(1)).close();
+        assertEquals(cs, TestUtil.getFieldValue(kcc, "cloudEndpoint"));
     }
 
     @Test
@@ -146,10 +125,8 @@ public class KuraCloudComponentTest {
     @Test
     public void testEndpointCreatedBeforeComponentStart() throws Exception {
         try (CamelContext context = new DefaultCamelContext()) {
-            CloudService cs = mock(CloudService.class);
-            CloudClient client = mock(CloudClient.class);
-            when(cs.newCloudClient("app")).thenReturn(client);
-            context.getRegistry().bind("cloudService", CloudService.class, cs);
+            CloudEndpoint cs = mock(CloudEndpoint.class);
+            context.getRegistry().bind("cloudEndpoint", CloudEndpoint.class, cs);
 
             KuraCloudComponent kcc = new KuraCloudComponent(context);
 
@@ -157,8 +134,6 @@ public class KuraCloudComponentTest {
 
             kcc.start();
             endpoint.start();
-
-            verify(cs, times(1)).newCloudClient("app");
 
             endpoint.stop();
             kcc.stop();

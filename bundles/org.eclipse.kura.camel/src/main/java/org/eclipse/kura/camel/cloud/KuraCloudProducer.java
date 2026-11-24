@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011, 2026 Red Hat Inc and others
+ * Copyright (c) 2011, 2026 Red Hat Inc and/or its affiliates and others
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -9,6 +9,7 @@
  *
  * Contributors:
  *  Red Hat Inc
+ *  Eurotech
  *******************************************************************************/
 package org.eclipse.kura.camel.cloud;
 
@@ -18,11 +19,21 @@ import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.CAMEL_K
 import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.CAMEL_KURA_CLOUD_QOS;
 import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.CAMEL_KURA_CLOUD_RETAIN;
 import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.CAMEL_KURA_CLOUD_TOPIC;
+import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.PROP_APP_ID;
+import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.PROP_APP_TOPIC;
+import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.PROP_CONTROL;
+import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.PROP_DEVICE_ID;
+import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.PROP_PRIORITY;
+import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.PROP_QOS;
+import static org.eclipse.kura.camel.camelcloud.KuraCloudClientConstants.PROP_RETAIN;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.support.DefaultProducer;
-import org.eclipse.kura.cloud.CloudClient;
+import org.eclipse.kura.cloudconnection.CloudEndpoint;
+import org.eclipse.kura.cloudconnection.message.KuraMessage;
 import org.eclipse.kura.message.KuraPayload;
 
 /**
@@ -31,11 +42,11 @@ import org.eclipse.kura.message.KuraPayload;
 public class KuraCloudProducer extends DefaultProducer {
 
     // Visible for testing
-    CloudClient cloudClient;
+    CloudEndpoint cloudEndpoint;
 
-    public KuraCloudProducer(KuraCloudEndpoint endpoint, CloudClient cloudClient) {
+    public KuraCloudProducer(KuraCloudEndpoint endpoint, CloudEndpoint cloudEndpoint) {
         super(endpoint);
-        this.cloudClient = cloudClient;
+        this.cloudEndpoint = cloudEndpoint;
     }
 
     @Override
@@ -80,15 +91,18 @@ public class KuraCloudProducer extends DefaultProducer {
             body = payload;
         }
 
-        if (control) {
-            if (deviceId != null) {
-                this.cloudClient.controlPublish(deviceId, topic, (KuraPayload) body, qos, retain, priority);
-            } else {
-                this.cloudClient.controlPublish(topic, (KuraPayload) body, qos, retain, priority);
-            }
-        } else {
-            this.cloudClient.publish(topic, (KuraPayload) body, qos, retain, priority);
+        final Map<String, Object> properties = new HashMap<>();
+        properties.put(PROP_APP_ID, getEndpoint().getApplicationId());
+        properties.put(PROP_APP_TOPIC, topic);
+        properties.put(PROP_QOS, qos);
+        properties.put(PROP_RETAIN, retain);
+        properties.put(PROP_PRIORITY, priority);
+        properties.put(PROP_CONTROL, control);
+        if (deviceId != null) {
+            properties.put(PROP_DEVICE_ID, deviceId);
         }
+
+        this.cloudEndpoint.publish(new KuraMessage((KuraPayload) body, properties));
     }
 
     // Getters
